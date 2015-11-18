@@ -7,9 +7,9 @@
 
 #import "UIView+LXAdditions.h"
 
-@implementation UIView (LXAdditions)
+NS_ASSUME_NONNULL_BEGIN
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+@implementation UIView (LXAdditions)
 
 #pragma mark - size
 
@@ -49,8 +49,6 @@
     return CGRectGetHeight(self.frame);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - origin
 
 - (void)setLx_origin:(CGPoint)lx_origin
@@ -89,8 +87,6 @@
     return CGRectGetMinY(self.frame);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - center
 
 - (void)setLx_centerX:(CGFloat)lx_centerX
@@ -113,9 +109,7 @@
     return self.center.y;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 图层圆角/边框宽度/边框颜色
+#pragma mark - 图层圆角|边框宽度|边框颜色
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
@@ -137,20 +131,18 @@
     return self.layer.borderWidth;
 }
 
-- (void)setBorderColor:(UIColor *)borderColor
+- (void)setBorderColor:(nullable UIColor *)borderColor
 {
     self.layer.borderColor = borderColor.CGColor;
 }
 
-- (UIColor *)borderColor
+- (nullable UIColor *)borderColor
 {
     CGColorRef color = self.layer.borderColor;
     return color ? [UIColor colorWithCGColor:color] : nil;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - Nib 相关方法
+#pragma mark - UINib 相关方法
 
 + (UINib *)lx_nib
 {
@@ -176,29 +168,17 @@
             return view;
         }
     }
-    NSAssert(NO, @"文件不存在 => %@", [NSString stringWithFormat:@"%@.xib", [self lx_nibName]]);
+    NSAssert(NO, @"%@.xib 中未找到对应的 %@", NSStringFromClass(self), NSStringFromClass(self));
     return nil;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 获取视图所属的控制器
+#pragma mark - 获取所属的控制器
 
 - (nullable __kindof UIViewController *)lx_viewController
 {
-    UIResponder *nextResponder = [self nextResponder];
+    UIResponder *nextResponder = self.nextResponder;
 
-/* 该方法的目的是获取视图控制器,所以只要是 UIViewController 子类就应该认为成立.
-   注释的条件是查找 UIViewController 子类但不是 UINavigationController 或 UITabBarController 子类的控制器.
-
-    while (nextResponder &&
-           (![nextResponder isKindOfClass:[UIViewController class]] ||
-           [nextResponder isKindOfClass:[UINavigationController class]] ||
-            [nextResponder isKindOfClass:[UITabBarController class]])) {
-        nextResponder = nextResponder.nextResponder;
-    }
-*/
-    while (nextResponder && ![nextResponder isKindOfClass:[UIViewController class]]) {
+    while (nextResponder && ![nextResponder isKindOfClass:UIViewController.class]) {
         nextResponder = nextResponder.nextResponder;
     }
 
@@ -207,9 +187,9 @@
 
 - (nullable __kindof UINavigationController *)lx_navigationController
 {
-    UIResponder *nextResponder = [self nextResponder];
+    UIResponder *nextResponder = self.nextResponder;
 
-    while (nextResponder && ![nextResponder isKindOfClass:[UINavigationController class]]) {
+    while (nextResponder && ![nextResponder isKindOfClass:UINavigationController.class]) {
         nextResponder = nextResponder.nextResponder;
     }
 
@@ -218,20 +198,18 @@
 
 - (nullable __kindof UITabBarController *)lx_tabBarController
 {
-    UIResponder *nextResponder = [self nextResponder];
+    UIResponder *nextResponder = self.nextResponder;
 
-    while (nextResponder && ![nextResponder isKindOfClass:[UITabBarController class]]) {
+    while (nextResponder && ![nextResponder isKindOfClass:UITabBarController.class]) {
         nextResponder = nextResponder.nextResponder;
     }
 
     return (UITabBarController *)nextResponder;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - 执行晃动动画
 
-#pragma mark - 晃动动画
-
-- (void)lx_shakeAnimation
+- (void)lx_performShakeAnimation
 {
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
 
@@ -245,3 +223,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

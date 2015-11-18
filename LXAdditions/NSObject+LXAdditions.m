@@ -7,9 +7,8 @@
 
 @import ObjectiveC.runtime;
 #import "LXUtilities.h"
-#import "NSObject+LXAdditions.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSObject (LXAdditions)
 
@@ -25,9 +24,7 @@
 }
 #endif
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 获取属性数组
+#pragma mark - 获取属性名数组
 
 + (NSArray<NSString *> *)lx_propertyList
 {
@@ -36,8 +33,7 @@
         uint outCount = 0;
         objc_property_t *properties = class_copyPropertyList(self, &outCount);
         for (uint i = 0; i < outCount; ++i) {
-            [propertyArray addObject:
-             (NSString *)[NSString stringWithUTF8String:property_getName(properties[i])]];
+            [propertyArray addObject:[NSString stringWithUTF8String:property_getName(properties[i])]];
         }
         free(properties);
     }
@@ -49,9 +45,7 @@
     return self.class.lx_propertyList;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 获取实例变量数组
+#pragma mark - 获取实例变量名数组
 
 + (NSArray<NSString *> *)lx_ivarList
 {
@@ -60,8 +54,7 @@
         uint outCount = 0;
         Ivar *ivars = class_copyIvarList(self, &outCount);
         for (uint i = 0; i < outCount; ++i) {
-            [ivarArray addObject:
-             (NSString *)[NSString stringWithUTF8String:ivar_getName(ivars[i])]];
+            [ivarArray addObject:[NSString stringWithUTF8String:ivar_getName(ivars[i])]];
         }
         free(ivars);
     }
@@ -73,9 +66,33 @@
     return self.class.lx_ivarList;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - 关联对象
 
-#pragma mark - 调试
+- (void)lx_setValue:(nullable id)value forKey:(NSString *)key
+{
+    NSParameterAssert(key.length > 0);
+
+    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (nullable id)lx_valueForKey:(NSString *)key
+{
+    NSParameterAssert(key.length > 0);
+
+    return objc_getAssociatedObject(self, NSSelectorFromString(key));
+}
+
+#pragma mark - KVO
+
+- (void)lx_removeAllObservers
+{
+    for (id observance in [(__bridge id)[self observationInfo] valueForKey:@"observances"]) {
+        [self removeObserver:[observance valueForKey:@"observer"]
+                  forKeyPath:[observance valueForKeyPath:@"property.keyPath"]];
+    }
+}
+
+#pragma mark - 调试增强
 
 #ifdef DEBUG
 - (NSString *)lx_description
@@ -96,22 +113,6 @@
 }
 #endif
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 关联对象
-
-- (void)lx_setValue:(id)value forKey:(NSString *)key
-{
-    NSAssert(key.length, @"参数 key 为空字符串或 nil.");
-
-    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (id)lx_valueForKey:(NSString *)key
-{
-    NSAssert(key.length, @"参数 key 为空字符串或 nil.");
-    
-    return objc_getAssociatedObject(self, NSSelectorFromString(key));
-}
-
 @end
+
+NS_ASSUME_NONNULL_END

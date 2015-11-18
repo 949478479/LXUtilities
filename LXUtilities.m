@@ -7,11 +7,10 @@
 
 @import UIKit;
 @import ObjectiveC.runtime;
-#import "AppDelegate.h"
 
 #pragma clang diagnostic ignored "-Wgnu-conditional-omitted-operand"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 版本号
 
@@ -24,8 +23,6 @@ NSString * LXBundleShortVersionString()
 {
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 沙盒路径
 
@@ -59,8 +56,6 @@ NSString * LXCachesDirectoryByAppendingPathComponent(NSString *pathComponent)
     return [LXCachesDirectory() stringByAppendingPathComponent:pathComponent];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 设备信息
 
 BOOL LXDeviceIsPad()
@@ -68,16 +63,12 @@ BOOL LXDeviceIsPad()
     return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - AppDelegate
 
-AppDelegate * LXAppDelegate()
+id<UIApplicationDelegate> LXAppDelegate()
 {
     return [UIApplication sharedApplication].delegate;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 屏幕|窗口|控制器
 
@@ -93,20 +84,12 @@ CGFloat LXScreenScale()
 
 UIWindow * LXKeyWindow()
 {
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow ?: LXAppDelegate().window;
-
-    NSCAssert(keyWindow, @"AppDelegate 的 window 属性为 nil.");
-
-    return keyWindow;
+    return [UIApplication sharedApplication].keyWindow ?: LXAppDelegate().window;
 }
 
 UIWindow * LXTopWindow()
 {
-    UIWindow *topWindow = [UIApplication sharedApplication].windows.lastObject ?: LXAppDelegate().window;
-
-    NSCAssert(topWindow, @"AppDelegate 的 window 属性为 nil.");
-
-    return topWindow;
+    return [UIApplication sharedApplication].windows.lastObject ?: LXAppDelegate().window;
 }
 
 UIViewController * LXTopViewController()
@@ -122,32 +105,27 @@ UIViewController * LXRootViewController()
     return LXKeyWindow().rootViewController;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - GCD
 
-dispatch_source_t LXGCDTimer(NSTimeInterval interval,
-                             NSTimeInterval leeway,
-                             dispatch_block_t handler,
-                             dispatch_block_t cancelHandler)
+dispatch_source_t lx_dispatch_source_timer(NSTimeInterval secondInterval,
+                                           NSTimeInterval secondLeeway,
+                                           dispatch_block_t handler,
+                                           _Nullable dispatch_block_t cancelHandler)
 {
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, interval * NSEC_PER_SEC, leeway * NSEC_PER_SEC);
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, secondInterval * NSEC_PER_SEC, secondLeeway * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, handler);
     if (cancelHandler) {
         dispatch_source_set_cancel_handler(timer, cancelHandler);
     }
-
     return timer;
 }
 
-void LXGCDDelay(NSTimeInterval delayInSeconds, dispatch_block_t handler)
+void lx_dispatch_after(NSTimeInterval delayInSeconds, dispatch_block_t handler)
 {
     dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(when, dispatch_get_main_queue(), handler);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - runtime
 
@@ -172,3 +150,19 @@ void LXMethodSwizzling(Class cls, SEL originalSelector, SEL swizzledSelector)
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
+
+NSArray<NSString *> * lx_protocol_propertyList(Protocol *protocol)
+{
+    NSMutableArray *propertyList = [NSMutableArray new];
+    {
+        uint outCount = 0;
+        objc_property_t *properties = protocol_copyPropertyList(protocol, &outCount);
+        for (uint i = 0; i< outCount; ++i) {
+            [propertyList addObject:[NSString stringWithUTF8String:property_getName(properties[i])]];
+        }
+        free(properties);
+    }
+    return propertyList;
+}
+
+NS_ASSUME_NONNULL_END

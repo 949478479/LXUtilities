@@ -7,28 +7,45 @@
 
 #import "UIColor+LXAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation UIColor (LXAdditions)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - RGB 颜色
+
++ (UIColor *)lx_colorWithRed:(CGFloat)red
+                       green:(CGFloat)green
+                        blue:(CGFloat)blue
+{
+    return [self lx_colorWithRed:red green:green blue:blue alpha:1.0];
+}
+
++ (UIColor *)lx_colorWithRed:(CGFloat)red
+                       green:(CGFloat)green
+                        blue:(CGFloat)blue
+                       alpha:(CGFloat)alpha;
+{
+    return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
+}
 
 #pragma mark - 十六进制颜色
 
-+ (instancetype)lx_colorWithHex:(NSUInteger)hex alpha:(CGFloat)alpha
++ (UIColor *)lx_colorWithHex:(NSUInteger)hex alpha:(CGFloat)alpha
 {
-    NSAssert(hex >= 0x000000 && hex <= 0xFFFFFF, @"传入的颜色值不正确.");
+    NSParameterAssert(hex >= 0x000000 && hex <= 0xFFFFFF);
 
-    return [UIColor colorWithRed:(CGFloat)((hex & 0xFF0000) >> 16) / 0xFF
-                           green:(CGFloat)((hex & 0xFF00)    >> 8) / 0xFF
-                            blue:(CGFloat) (hex & 0xFF)            / 0xFF
-                           alpha:alpha];
+    return [self colorWithRed:(CGFloat)((hex & 0xFF0000) >> 16) / 0xFF
+                        green:(CGFloat)((hex & 0xFF00)    >> 8) / 0xFF
+                         blue:(CGFloat) (hex & 0xFF)            / 0xFF
+                        alpha:alpha];
 }
 
-+ (instancetype)lx_colorWithHex:(NSUInteger)hex
++ (UIColor *)lx_colorWithHex:(NSUInteger)hex
 {
-    return [self lx_colorWithHex:hex alpha:1];
+    return [self lx_colorWithHex:hex alpha:1.0];
 }
 
-+ (instancetype)lx_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha
++ (UIColor *)lx_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha
 {
     if ([hexString hasPrefix:@"#"]) {
         hexString = [hexString substringFromIndex:1];
@@ -36,7 +53,7 @@
 
     NSAssert([hexString rangeOfString:@"^[0-9A-Fa-f]{6}$"
                               options:NSRegularExpressionSearch].location != NSNotFound,
-             @"参数 hexString 格式不正确.必须为 #FFFFFF 或 FFFFFF 这种形式.");
+             @"参数 hexString 格式必须为 #FFFFFF 或 FFFFFF 。");
 
     NSString *redHexString   = [hexString substringToIndex:2];
     NSString *greenHexString = [hexString substringWithRange:(NSRange){2,2}];
@@ -51,21 +68,26 @@
     return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
 }
 
-+ (instancetype)lx_colorWithHexString:(NSString *)hexString
++ (UIColor *)lx_colorWithHexString:(NSString *)hexString
 {
-    return [self lx_colorWithHexString:hexString alpha:1];
+    return [self lx_colorWithHexString:hexString alpha:1.0];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 随机色
 
-+ (instancetype)lx_randomColor
++ (UIColor *)lx_randomColor
+{
+    return [self lx_randomColorWithAlpha:1.0];
+}
+
++ (UIColor *)lx_randomColorWithAlpha:(CGFloat)alpha
 {
     return [self colorWithRed:arc4random_uniform(256)/255.0
                         green:arc4random_uniform(256)/255.0
                          blue:arc4random_uniform(256)/255.0
-                        alpha:1];
+                        alpha:alpha];
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

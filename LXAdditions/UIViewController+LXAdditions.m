@@ -7,6 +7,8 @@
 
 #import "UIViewController+LXAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation UIViewController (LXAdditions)
 
 + (instancetype)lx_instantiateFromNib
@@ -14,4 +16,11 @@
     return [[self alloc] initWithNibName:NSStringFromClass(self) bundle:nil];
 }
 
+- (nullable __kindof UINavigationBar *)lx_navigationBar
+{
+    return self.navigationController.navigationBar;
+}
+
 @end
+
+NS_ASSUME_NONNULL_END

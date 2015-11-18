@@ -8,33 +8,20 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "NSString+LXAdditions.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSString (LXAdditions)
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 常用
-
-- (BOOL)lx_isEmpty
-{
-    return self.length == 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 文本范围
 
 - (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font
 {
-    NSAssert(font, @"参数 font 为 nil.");
-    NSAssert(size.width && size.height, @"参数 size 的宽高必须大于 0. => %@", NSStringFromCGSize(size));
-
+    NSParameterAssert(font != nil);
     return CGRectIntegral([self boundingRectWithSize:size
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:@{ NSFontAttributeName : font }
                                              context:nil]).size;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 表单验证
 
@@ -83,8 +70,6 @@
      */
     return [self lx_evaluateWithRegularExpression:@"^([a-zA-Z0-9\\.\\-_]+)@([a-zA-Z0-9]+)\\.(com|cn)$"];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 加密处理
 
@@ -138,4 +123,26 @@ typedef unsigned char *LXDigestFunction(const void *data, CC_LONG len, unsigned 
     return [self lx_hashStringWithDigestLength:CC_SHA512_DIGEST_LENGTH digestFunction:CC_SHA512];
 }
 
+#pragma mark - 
+
+- (NSString *)lx_alphanumericString
+{
+    NSParameterAssert(self.length > 0);
+    
+    NSMutableString *alphanumericString = self.mutableCopy;
+
+    [alphanumericString replaceOccurrencesOfString:@"[^a-z0-9A-Z_]"
+                                        withString:@"_"
+                                           options:NSRegularExpressionSearch
+                                             range:(NSRange){0,self.length}];
+
+    [alphanumericString replaceOccurrencesOfString:@"[^a-zA-Z_]"
+                                        withString:@"_"
+                                           options:NSRegularExpressionSearch
+                                             range:(NSRange){0,1}];
+    return alphanumericString;
+}
+
 @end
+
+NS_ASSUME_NONNULL_END
