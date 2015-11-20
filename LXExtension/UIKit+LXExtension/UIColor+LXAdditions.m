@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIColor *)lx_colorWithRed:(CGFloat)red
                        green:(CGFloat)green
                         blue:(CGFloat)blue
-                       alpha:(CGFloat)alpha;
+                       alpha:(CGFloat)alpha
 {
     return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
 }
