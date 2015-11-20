@@ -10,9 +10,9 @@
 @import ObjectiveC.runtime;
 #import "NSObject+DLIntrospection.h"
 
-#pragma clang diagnostic ignored "-Wcstring-format-directive"
+NS_ASSUME_NONNULL_BEGIN
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma clang diagnostic ignored "-Wcstring-format-directive"
 
 #pragma mark - 用于格式化的辅助函数
 
@@ -240,8 +240,6 @@ static NSArray<NSString *> * DLFormattedMethodsForProtocol(Protocol *proto, BOOL
     return methodsDescription;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 查看所有类的类名
 
 NSArray<NSString *> * DLClassList()
@@ -315,8 +313,6 @@ void DLPrintDescriptionForProtocol(Protocol *proto)
     NSLog(@"%s\n%@", protocol_getName(proto), DLDescriptionForProtocol(proto));
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 @implementation NSObject (DLIntrospection)
 
 #pragma mark - 查看属性
@@ -367,8 +363,6 @@ void DLPrintDescriptionForProtocol(Protocol *proto)
     NSLog(@"%s\n%@", class_getName(self), self.dl_ivarList);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 查看类方法
 
 + (NSArray<NSString *> *)dl_classMethodList
@@ -392,8 +386,6 @@ void DLPrintDescriptionForProtocol(Protocol *proto)
 {
     NSLog(@"%s\n%@", class_getName(self), self.dl_instanceMethodList);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 查看采纳的协议
 
@@ -438,8 +430,6 @@ void DLPrintDescriptionForProtocol(Protocol *proto)
     NSLog(@"%s\n%@", class_getName(self), self.dl_protocolList);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 查看继承层级关系
 
 + (NSString *)dl_inheritanceTree
@@ -476,68 +466,4 @@ void DLPrintDescriptionForProtocol(Protocol *proto)
 
 @end
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 打印对齐
-
-#if ENABLE_LOG_ALIGNMENT
-
-@implementation NSArray (LXLogAlignment)
-
-- (NSString *)debugDescription
-{
-    NSMutableString *description = [NSMutableString stringWithString:@"(\n"];
-
-    for (id obj in self) {
-        NSMutableString *subDescription = [NSMutableString stringWithFormat:@"    %@,\n", obj];
-        if ([obj isKindOfClass:NSArray.self] || [obj isKindOfClass:NSDictionary.self]) {
-            [subDescription replaceOccurrencesOfString:@"\n"
-                                            withString:@"\n    "
-                                               options:(NSStringCompareOptions)0
-                                                 range:(NSRange){0,subDescription.length - 1}];
-        }
-        [description appendString:subDescription];
-    }
-
-    [description appendString:@")"];
-
-    return description;
-}
-
-- (NSString *)descriptionWithLocale:(id)locale
-{
-    return self.debugDescription;
-}
-
-@end
-
-@implementation NSDictionary (LXLogAlignment)
-
-- (NSString *)debugDescription
-{
-    NSMutableString *description = [NSMutableString stringWithString:@"{\n"];
-
-    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL * _Nonnull stop) {
-        NSMutableString *subDescription = [NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
-        if ([obj isKindOfClass:NSArray.self] || [obj isKindOfClass:NSDictionary.self]) {
-            [subDescription replaceOccurrencesOfString:@"\n"
-                                            withString:@"\n    "
-                                               options:(NSStringCompareOptions)0
-                                                 range:(NSRange){0,subDescription.length - 1}];
-        }
-        [description appendString:subDescription];
-    }];
-
-    [description appendString:@"}"];
-
-    return description;
-}
-
-- (NSString *)descriptionWithLocale:(id)locale
-{
-    return self.debugDescription;
-}
-
-@end
-
-#endif
+NS_ASSUME_NONNULL_END

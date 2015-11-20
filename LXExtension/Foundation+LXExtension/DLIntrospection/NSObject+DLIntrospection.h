@@ -8,11 +8,6 @@
 
 @import Foundation;
 
-/*
- 开启后会通过分类方法覆盖 NSArray 和 NSDictionary 的 debugDescription 和 descriptionWithLocale: 方法.
- */
-#define ENABLE_LOG_ALIGNMENT 1
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (DLIntrospection)
