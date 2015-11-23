@@ -8,9 +8,9 @@
 #import "LXUtilities.h"
 #import "MBProgressHUD+LXExtension.h"
 
-@implementation MBProgressHUD (LXExtension)
+NS_ASSUME_NONNULL_BEGIN
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+@implementation MBProgressHUD (LXExtension)
 
 #pragma mark - 持续显示带蒙版的普通 HUD
 
@@ -42,8 +42,6 @@
     return hud;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 短暂显示自定义图标的 HUD
 
 + (void)lx_show:(nullable NSString *)text icon:(NSString *)icon view:(UIView *)view
@@ -73,8 +71,6 @@
 
     [hud hide:YES afterDelay:1];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 短暂显示成功/失败图标的 HUD
 
@@ -110,8 +106,6 @@
     [self lx_show:error icon:@"MBProgressHUD.bundle/error.png" view:view];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 显示进度条 HUD
 
 + (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(NSString *)text
@@ -138,8 +132,6 @@
     return [self lx_showProgressHUDToView:LXKeyWindow() text:text];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 隐藏 HUD
 
 + (void)lx_hideHUD
@@ -155,3 +147,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

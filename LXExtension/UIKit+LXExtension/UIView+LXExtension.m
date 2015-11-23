@@ -11,7 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (LXExtension)
 
-#pragma mark - size
+#pragma mark - Bounds|Frame -
+
+#pragma mark size
 
 - (void)setLx_size:(CGSize)lx_size
 {
@@ -49,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
     return CGRectGetHeight(self.frame);
 }
 
-#pragma mark - origin
+#pragma mark origin
 
 - (void)setLx_origin:(CGPoint)lx_origin
 {
@@ -87,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
     return CGRectGetMinY(self.frame);
 }
 
-#pragma mark - center
+#pragma mark center
 
 - (void)setLx_centerX:(CGFloat)lx_centerX
 {
@@ -109,7 +111,9 @@ NS_ASSUME_NONNULL_BEGIN
     return self.center.y;
 }
 
-#pragma mark - 图层圆角|边框宽度|边框颜色
+#pragma mark - CALayer -
+
+#pragma mark 图层圆角
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
@@ -121,10 +125,14 @@ NS_ASSUME_NONNULL_BEGIN
     return self.layer.cornerRadius;
 }
 
+#pragma mark 边框宽度
+
 - (void)setBorderWidth:(CGFloat)borderWidth
 {
     self.layer.borderWidth = borderWidth;
 }
+
+#pragma mark 边框颜色
 
 - (CGFloat)borderWidth
 {
@@ -142,37 +150,15 @@ NS_ASSUME_NONNULL_BEGIN
     return color ? [UIColor colorWithCGColor:color] : nil;
 }
 
-#pragma mark - UINib 相关方法
+#pragma mark 添加图层
 
-+ (UINib *)lx_nib
+- (void)lx_addSublayer:(CALayer *)layer
 {
-    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+    NSParameterAssert(layer != nil);
+    [self.layer addSublayer:layer];
 }
 
-+ (NSString *)lx_nibName
-{
-    return NSStringFromClass(self);
-}
-
-+ (instancetype)lx_instantiateFromNib
-{
-    return [self lx_instantiateFromNibWithOwner:nil options:nil];
-}
-
-+ (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
-                                       options:(nullable NSDictionary *)optionsOrNil
-{
-    NSArray *views = [[self lx_nib] instantiateWithOwner:ownerOrNil options:optionsOrNil];
-    for (UIView *view in views) {
-        if ([view isMemberOfClass:self]) {
-            return view;
-        }
-    }
-    NSAssert(NO, @"%@.xib 中未找到对应的 %@", NSStringFromClass(self), NSStringFromClass(self));
-    return nil;
-}
-
-#pragma mark - 获取所属的控制器
+#pragma mark - UIViewController -
 
 - (nullable __kindof UIViewController *)lx_viewController
 {
@@ -207,7 +193,37 @@ NS_ASSUME_NONNULL_BEGIN
     return (UITabBarController *)nextResponder;
 }
 
-#pragma mark - 执行晃动动画
+#pragma mark - UINib -
+
++ (UINib *)lx_nib
+{
+    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+}
+
++ (NSString *)lx_nibName
+{
+    return NSStringFromClass(self);
+}
+
++ (instancetype)lx_instantiateFromNib
+{
+    return [self lx_instantiateFromNibWithOwner:nil options:nil];
+}
+
++ (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
+                                       options:(nullable NSDictionary *)optionsOrNil
+{
+    NSArray *views = [[self lx_nib] instantiateWithOwner:ownerOrNil options:optionsOrNil];
+    for (UIView *view in views) {
+        if ([view isMemberOfClass:self]) {
+            return view;
+        }
+    }
+    NSAssert(NO, @"%@.xib 中未找到对应的 %@", NSStringFromClass(self), NSStringFromClass(self));
+    return nil;
+}
+
+#pragma mark - 动画 -
 
 - (void)lx_performShakeAnimation
 {

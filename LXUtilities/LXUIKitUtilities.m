@@ -18,9 +18,9 @@ BOOL LXDeviceIsPad()
 
 #pragma mark - AppDelegate
 
-id<UIApplicationDelegate> LXAppDelegate()
+AppDelegate * LXAppDelegate()
 {
-    return [UIApplication sharedApplication].delegate;
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
 #pragma mark - 屏幕
@@ -39,12 +39,16 @@ CGFloat LXScreenScale()
 
 UIWindow * LXKeyWindow()
 {
-    return [UIApplication sharedApplication].keyWindow ?: LXAppDelegate().window;
+    UIApplication *application = [UIApplication sharedApplication];
+    id<UIApplicationDelegate> appDelegate = application.delegate;
+    return application.keyWindow ?: appDelegate.window;
 }
 
 UIWindow * LXTopWindow()
 {
-    return [UIApplication sharedApplication].windows.lastObject ?: LXAppDelegate().window;
+    UIApplication *application = [UIApplication sharedApplication];
+    id<UIApplicationDelegate> appDelegate = application.delegate;
+    return application.windows.lastObject ?: appDelegate.window;
 }
 
 #pragma mark - 控制器

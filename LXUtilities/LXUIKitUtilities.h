@@ -6,6 +6,7 @@
 //
 
 @import UIKit;
+@class AppDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,7 +20,7 @@ BOOL LXDeviceIsPad();
 /// @name UIApplicationDelegate
 ///----------------------------
 
-id<UIApplicationDelegate> LXAppDelegate();
+AppDelegate * LXAppDelegate();
 
 ///-----------
 /// @name 屏幕
