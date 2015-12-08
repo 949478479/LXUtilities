@@ -11,9 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- @c NSObject 的直接子类采纳此协议将会覆盖 @c [NSObject description] 方法,在默认实现上附带实例变量名和值.
+ @c NSObject 的直接子类采纳此协议将会覆盖 @c [NSObject description] 方法，在默认实现上附带实例变量名和值。
  */
-@protocol LXDescription <NSObject>
+@protocol LXDescriptionProtocol <NSObject>
 @end
 
 @interface NSObject (LXExtension)

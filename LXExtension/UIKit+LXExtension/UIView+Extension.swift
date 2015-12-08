@@ -9,10 +9,16 @@ import UIKit
 
 extension UIView {
 
+    /**
+     根据类名同名 `xib` 文件实例化视图。
+     */
     static func instantiateFromNib() -> Self {
         return instantiateFromNibWithOwner(nil, options: nil)
     }
 
+    /**
+     根据类名同名 `xib` 文件实例化视图。
+     */
     static func instantiateFromNibWithOwner(ownerOrNil: AnyObject?,
         options optionsOrNil: [NSObject : AnyObject]?) -> Self {
 

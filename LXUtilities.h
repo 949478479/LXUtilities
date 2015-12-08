@@ -36,6 +36,7 @@
 #import "LXRuntimeUtilities.h"
 #import "LXCGAffineTransformUtilities.h"
 
+#import "LXTimer.h"
+#import "LXImagePicker.h"
+#import "LXMulticastDelegate.h"
 //#import "MBProgressHUD+LXExtension.h"
-//#import "LXImagePicker.h"
-//#import "LXMulticastDelegate.h"

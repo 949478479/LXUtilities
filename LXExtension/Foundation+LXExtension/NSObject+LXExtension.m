@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 #ifdef DEBUG
 - (NSString *)lx_description
 {
-    if (![self conformsToProtocol:@protocol(LXDescription)]) {
+    if (![self conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
         return [self lx_description];
     }
 

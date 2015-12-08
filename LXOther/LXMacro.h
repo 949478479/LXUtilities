@@ -5,32 +5,49 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-///------------------------------------------------------------------------------------------------
-/// @name log 宏
-///------------------------------------------------------------------------------------------------
+#pragma mark - 忽略警告宏 -
 
-#pragma mark - log 宏
+///----------------
+/// @name 忽略警告宏
+///----------------
+
+#define STRINGIFY(S) #S
+
+#define LX_DIAGNOSTIC_IGNORED(warning) _Pragma(STRINGIFY(clang diagnostic ignored #warning))
+
+#define LX_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
+
+#define LX_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
+
+#define LX_DIAGNOSTIC_PUSH_IGNORED(warning) \
+LX_DIAGNOSTIC_PUSH \
+LX_DIAGNOSTIC_IGNORED(warning) \
+
+#pragma mark - LOG 宏 -
+
+///-------------
+/// @name LOG 宏
+///-------------
 
 #ifdef DEBUG
 
 /**
- *  附带 文件名,行号,函数名 的 log 宏.
+ *  附带 文件名、行号、函数名的 LOG 宏。
  */
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+
+#define LX_FORMAT_WARNING -Wcstring-format-directive
+
 #define LXLog(format, ...) \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Wcstring-format-directive\"") \
+LX_DIAGNOSTIC_PUSH_IGNORED(LX_FORMAT_WARNING) \
 NSLog(@"[%@ : %d] %s\n\n%@\n\n", \
 [[NSString stringWithUTF8String:__FILE__] lastPathComponent], \
 __LINE__, \
 __FUNCTION__, \
 [NSString stringWithFormat:(format), ##__VA_ARGS__]) \
-_Pragma("clang diagnostic pop")
-#pragma clang diagnostic pop
+LX_DIAGNOSTIC_POP
 
 /**
- *  打印 CGRect.
+ *  打印 CGRect。
  */
 #define LXLogRect(rect) \
 _Pragma("clang diagnostic push") \
@@ -39,7 +56,7 @@ LXLog(@"%s => %@", #rect, NSStringFromCGRect(rect)) \
 _Pragma("clang diagnostic pop")
 
 /**
- *  打印 CGSize.
+ *  打印 CGSize。
  */
 #define LXLogSize(size) \
 _Pragma("clang diagnostic push") \
@@ -48,7 +65,7 @@ LXLog(@"%s => %@", #size, NSStringFromCGSize(size)) \
 _Pragma("clang diagnostic pop")
 
 /**
- *  打印 CGPoint.
+ *  打印 CGPoint。
  */
 #define LXLogPoint(point) \
 _Pragma("clang diagnostic push") \
@@ -57,7 +74,7 @@ LXLog(@"%s => %@", #point, NSStringFromCGPoint(point)) \
 _Pragma("clang diagnostic pop")
 
 /**
- *  打印 NSRange.
+ *  打印 NSRange。
  */
 #define LXLogRange(range) \
 _Pragma("clang diagnostic push") \
@@ -66,7 +83,7 @@ LXLog(@"%s => %@", #range, NSStringFromRange(range)) \
 _Pragma("clang diagnostic pop")
 
 /**
- *  打印 UIEdgeInsets.
+ *  打印 UIEdgeInsets。
  */
 #define LXLogInsets(insets) \
 _Pragma("clang diagnostic push") \
@@ -75,7 +92,7 @@ LXLog(@"%s => %@", #insets, NSStringFromUIEdgeInsets(insets)) \
 _Pragma("clang diagnostic pop")
 
 /**
- *  打印 NSIndexPath.
+ *  打印 NSIndexPath。
  */
 #define LXLogIndexPath(indexPath) \
 _Pragma("clang diagnostic push") \
@@ -83,14 +100,14 @@ _Pragma("clang diagnostic ignored \"-Wcstring-format-directive\"") \
 LXLog(@"%s => %lu - %lu", #indexPath, [indexPath indexAtPosition:0], [indexPath indexAtPosition:1]) \
 _Pragma("clang diagnostic pop")
 
-///------------------------------------------------------------------------------------------------
-/// @name 调试宏
-///------------------------------------------------------------------------------------------------
+#pragma mark - 调试宏 -
 
-#pragma mark - 调试宏
+///------------
+/// @name 调试宏
+///------------
 
 #define LX_BENCHMARKING_BEGIN CFTimeInterval begin = CACurrentMediaTime();
-#define LX_BENCHMARKING_END   CFTimeInterval end   = CACurrentMediaTime(); printf("运行时间: %g 秒.\n", end - begin);
+#define LX_BENCHMARKING_END   CFTimeInterval end   = CACurrentMediaTime(); printf("运行时间: %g 秒\n", end - begin);
 
 #pragma mark -
 
@@ -109,23 +126,23 @@ _Pragma("clang diagnostic pop")
 
 #endif
 
-///------------------------------------------------------------------------------------------------
-/// @name 单例 宏
-///------------------------------------------------------------------------------------------------
+#pragma mark - 单例宏 -
 
-#pragma mark - 单例 宏
+///------------
+/// @name 单例宏
+///------------
 
 /**
- *  生成单例接口的宏.
+ *  生成单例接口的宏。
  *
- *  单例使用 dispatch_once 函数实现,禁用了 +allocWithZone: 和 -copyWithZone: 方法.
+ *  单例使用 dispatch_once 函数实现,禁用了 +allocWithZone: 和 -copyWithZone: 方法。
  *
- *  @param methodName 单例方法名.
+ *  @param methodName 单例方法名。
  */
 #define LX_SINGLETON_INTERFACE(methodName) + (instancetype)methodName;
 
 /**
- *  生成单例实现的宏.
+ *  生成单例实现的宏。
  */
 #define LX_SINGLETON_IMPLEMENTTATION(methodName) \
 \
@@ -141,12 +158,12 @@ return sharedInstance; \
 \
 + (instancetype)allocWithZone:(__unused struct _NSZone *)zone \
 { \
-NSAssert(NO, @"使用单例方法直接获取单例,不要另行创建单例."); \
+NSAssert(NO, @"使用单例方法直接获取单例~"); \
 return [self methodName]; \
 } \
 \
 - (id)copyWithZone:(__unused NSZone *)zone \
 { \
-NSAssert(NO, @"使用单例方法直接获取单例,不要另行创建单例."); \
+NSAssert(NO, @"使用单例方法直接获取单例~"); \
 return self; \
 }

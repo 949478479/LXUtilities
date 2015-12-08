@@ -7,28 +7,31 @@
 
 #import "NSUserDefaults+LXExtension.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSUserDefaults (LXExtension)
 
-#pragma mark - 同步
+#pragma mark - 同步 -
 
 + (BOOL)lx_synchronize
 {
-    return [[self standardUserDefaults] synchronize];
+    return [self.standardUserDefaults synchronize];
 }
 
-#pragma mark - 写入
+#pragma mark - 写入 -
 
 + (void)lx_setObject:(nullable id)value forKey:(NSString *)defaultName
 {
-    [[self standardUserDefaults] setObject:value forKey:defaultName];
+    [self.standardUserDefaults setObject:value forKey:defaultName];
 }
 
-#pragma mark - 读取
+#pragma mark - 读取 -
 
 + (nullable NSString *)lx_stringForKey:(NSString *)defaultName
 {
-    return [[self standardUserDefaults] stringForKey:defaultName];
+    return [self.standardUserDefaults stringForKey:defaultName];
 }
 
-
 @end
+
+NS_ASSUME_NONNULL_END

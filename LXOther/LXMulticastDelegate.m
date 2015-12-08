@@ -12,23 +12,28 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LXMulticastDelegate ()
-@property (nonatomic) Protocol    *protocol;
-@property (nonatomic) NSHashTable *delegates;
-@end
-
-@implementation LXMulticastDelegate
+@implementation LXMulticastDelegate {
+    Protocol    *_protocol;
+    NSHashTable *_delegates;
+}
 
 #pragma mark - 初始化 -
+
++ (LXMulticastDelegate *)multicastDelegateWithProtocol:(Protocol *)protocol
+                                              delegate:(nullable id)delegate
+{
+    return [[self alloc] initWithProtocol:protocol delegate:delegate];
+}
 
 - (instancetype)initWithProtocol:(Protocol *)protocol delegate:(nullable id)delegate
 {
     NSParameterAssert(protocol != nil);
     NSParameterAssert([delegate conformsToProtocol:protocol]);
 
-    _protocol  = protocol;
-    _delegates = [NSHashTable weakObjectsHashTable];
-    
+    _protocol = protocol;
+    _delegates = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory |
+                  NSPointerFunctionsOpaquePersonality];
+
     if (delegate) {
         [_delegates addObject:delegate];
     }
