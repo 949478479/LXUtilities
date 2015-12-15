@@ -17,6 +17,7 @@
 #import "UITextView+LXExtension.h"
 #import "UITextField+LXExtension.h"
 #import "UIStoryboard+LXExtension.h"
+#import "UIBezierPath+LXExtension.h"
 #import "UIViewController+LXExtension.h"
 
 #import "NSDate+LXExtension.h"
@@ -34,7 +35,7 @@
 #import "LXPathUtilities.h"
 #import "LXUIKitUtilities.h"
 #import "LXRuntimeUtilities.h"
-#import "LXCGAffineTransformUtilities.h"
+#import "LXCGGeometryUtilities.h"
 
 #import "LXTimer.h"
 #import "LXImagePicker.h"

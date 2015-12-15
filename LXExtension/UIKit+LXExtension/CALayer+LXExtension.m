@@ -10,10 +10,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface _LXAnimationDelegate : NSObject
-@end
-@implementation _LXAnimationDelegate {
+{
     void (^_completion)(BOOL finished);
 }
+@end
+@implementation _LXAnimationDelegate
 
 - (instancetype)initWithCompletion:(void (^)(BOOL finished))completion
 {
@@ -26,7 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
 {
-    _completion(flag);
+    if (_completion) {
+        _completion(flag);
+        _completion = nil;
+    }
 }
 
 @end
@@ -139,61 +143,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 动画 -
 
-- (void)lx_addAnimationWithDuration:(NSTimeInterval)duration
-                            keyPath:(nullable NSString *)keyPath
-                         animations:(void (^)(CABasicAnimation *animation))animations
+- (void)lx_addAnimation:(CAAnimation *)anim
+                 forKey:(nullable NSString *)key
+             completion:(nullable void(^)(BOOL finished))completion
 {
-    [self lx_addAnimationWithDuration:duration
-                                delay:0
-                              keyPath:keyPath
-                                  key:nil
-                           animations:animations
-                           completion:nil];
-}
-
-- (void)lx_addAnimationWithDuration:(NSTimeInterval)duration
-                            keyPath:(nullable NSString *)keyPath
-                         animations:(void (^)(CABasicAnimation *animation))animations
-                         completion:(nullable void (^)(BOOL finished))completion
-{
-    [self lx_addAnimationWithDuration:duration
-                                delay:0
-                              keyPath:keyPath
-                                  key:nil
-                           animations:animations
-                           completion:completion];
-}
-
-- (void)lx_addAnimationWithDuration:(NSTimeInterval)duration
-                              delay:(NSTimeInterval)delay
-                            keyPath:(nullable NSString *)keyPath
-                         animations:(void (^)(CABasicAnimation *animation))animations
-                         completion:(nullable void (^)(BOOL finished))completion
-{
-    [self lx_addAnimationWithDuration:duration
-                                delay:delay
-                              keyPath:keyPath
-                                  key:nil
-                           animations:animations
-                           completion:completion];
-}
-
-- (void)lx_addAnimationWithDuration:(NSTimeInterval)duration
-                              delay:(NSTimeInterval)delay
-                            keyPath:(nullable NSString *)keyPath
-                                key:(nullable NSString *)key
-                         animations:(void (^)(CABasicAnimation *animation))animations
-                         completion:(nullable void (^)(BOOL finished))completion
-{
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
-    animation.duration  = duration;
-    animation.beginTime = CACurrentMediaTime() + delay;
-    animation.fillMode  = kCAFillModeBackwards;
-    animations(animation);
     if (completion) {
-        animation.delegate = [[_LXAnimationDelegate alloc] initWithCompletion:completion];
+        anim.delegate = [[_LXAnimationDelegate alloc] initWithCompletion:completion];
     }
-    [self addAnimation:animation forKey:key];
+
+    [self addAnimation:anim forKey:key];
 }
 
 @end

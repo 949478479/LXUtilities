@@ -20,14 +20,11 @@ void LXMethodSwizzling(Class cls, SEL originalSelector, SEL swizzledSelector)
 
     const char *swizzledTypes = method_getTypeEncoding(swizzledMethod);
 
-    // 避免当前类未重写父类方法实现时覆盖掉父类的实现.
     BOOL didAddMethod = class_addMethod(cls, originalSelector, swizzledIMP, swizzledTypes);
 
     if (didAddMethod) {
-        // 根据 class_replaceMethod 函数的说明,在此情况下应该是和 method_setImplementation 函数等效的.
         method_setImplementation(swizzledMethod, originalIMP);
     } else {
-        // 若子类已经实现原始方法,class_addMethod 函数没有效果,且函数返回值为 NO ,这时候直接交换即可.
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }

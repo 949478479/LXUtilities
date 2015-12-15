@@ -154,7 +154,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_addSublayer:(CALayer *)layer
 {
-    NSParameterAssert(layer != nil);
     [self.layer addSublayer:layer];
 }
 
