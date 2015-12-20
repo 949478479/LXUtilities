@@ -8,19 +8,16 @@
 @import AVFoundation.AVUtilities;
 #import "UIImage+LXExtension.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation UIImage (LXExtension)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 图片缩放
+#pragma mark - 图片缩放 -
 
 - (UIImage *)lx_resizedImageWithTargetSize:(CGSize)targetSize
                                contentMode:(UIViewContentMode)contentMode
 {
-    NSAssert(targetSize.width && targetSize.height,
-             @"参数 targetSize 的宽高必须大于 0. => %@", NSStringFromCGSize(targetSize));
-
-    CGRect drawingRect = { .size = targetSize }; // 默认为 UIViewContentModeScaleToFill.
+    CGRect drawingRect = { .size = targetSize }; // 默认为 UIViewContentModeScaleToFill
 
     if (contentMode == UIViewContentModeScaleAspectFit)
     {
@@ -65,23 +62,13 @@
     return AVMakeRectWithAspectRatioInsideRect(self.size, boundingRect);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 图片裁剪
+#pragma mark - 图片裁剪 -
 
 - (UIImage *)lx_roundedImageWithBounds:(CGRect)bounds
                            borderWidth:(CGFloat)borderWidth
-                           borderColor:(UIColor *)borderColor
+                           borderColor:(nullable UIColor *)borderColor
 {
-    NSAssert(bounds.size.width > 0 && bounds.size.height > 0,
-             @"参数 bounds 的宽高必须大于 0. => %@", NSStringFromCGRect(bounds));
-
-    NSAssert(bounds.size.width == bounds.size.height,
-             @"参数 bounds 的宽高必须相等. => %@", NSStringFromCGRect(bounds));
-
-    NSAssert(borderWidth >= 0, @"参数 borderWidth 不能为负数.");
-
-    // 上下文尺寸需算上 borderWidth.
+    // 上下文尺寸需算上 borderWidth
     CGSize contextSize = { bounds.size.width + 2 * borderWidth, bounds.size.height + 2 * borderWidth };
 
     UIGraphicsBeginImageContextWithOptions(contextSize, NO, 0);
@@ -115,9 +102,7 @@
     return image;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 图片渲染
+#pragma mark - 图片渲染 -
 
 + (instancetype)lx_originalRenderingImageNamed:(NSString *)name
 {
@@ -126,10 +111,7 @@
 
 + (instancetype)lx_imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius
 {
-    NSAssert(color, @"参数 color 为 nil.");
-    NSAssert(size.height > 0 && size.width > 0,
-             @"参数 size 的宽高必须大于 0. => %@", NSStringFromCGSize(size));
-    NSAssert(cornerRadius >= 0, @"参数 cornerRadius 不能为负数.");
+    NSParameterAssert(color != nil);
 
     CGColorRef cg_color = color.CGColor;
 
@@ -146,4 +128,49 @@
     return UIGraphicsGetImageFromCurrentImageContext();
 }
 
+#pragma mark - 获取像素颜色 -
+
+- (UIColor *)lx_colorAtPosition:(CGPoint)position
+{
+    size_t pixelsWide = 1;
+    size_t pixelsHigh = 1;
+    size_t bitsPerComponent = 8;
+    size_t bytesPerRow = pixelsWide * 4;
+    size_t bitmapByteCount = bytesPerRow * pixelsHigh;
+
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    unsigned char *bitmapData  = calloc(bitmapByteCount, sizeof(unsigned char));
+    CGBitmapInfo bitmapInfo    = (CGBitmapInfo)kCGImageAlphaPremultipliedLast;
+
+    CGContextRef bitmapContext = CGBitmapContextCreate(bitmapData,
+                                                       pixelsWide,
+                                                       pixelsHigh,
+                                                       bitsPerComponent,
+                                                       bytesPerRow,
+                                                       colorSpace,
+                                                       bitmapInfo);
+
+    CGRect rect = CGRectMake(position.x * self.scale, position.y * self.scale, pixelsWide, pixelsHigh);
+    CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, rect);
+
+    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, pixelsWide, pixelsHigh), imageRef);
+
+    CGFloat alpha = bitmapData[3] / 255.0;
+    CGFloat red   = bitmapData[0] / 255.0 / alpha;
+    CGFloat green = bitmapData[1] / 255.0 / alpha;
+    CGFloat blue  = bitmapData[2] / 255.0 / alpha;
+
+//    NSLog(@"%d %d %d %d", bitmapData[0], bitmapData[1], bitmapData[2], bitmapData[3]);
+//    NSLog(@"%f %f %f %f", red, green, blue, alpha);
+
+    free(bitmapData);
+    CGImageRelease(imageRef);
+    CGContextRelease(bitmapContext);
+    CGColorSpaceRelease(colorSpace);
+
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 @end
+
+NS_ASSUME_NONNULL_END
