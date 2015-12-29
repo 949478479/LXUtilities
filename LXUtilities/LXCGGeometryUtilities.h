@@ -18,7 +18,12 @@ static inline CGRect LXRectAdjust(CGRect rect, CGFloat dx, CGFloat dy, CGFloat d
     return (CGRect){ {rect.origin.x + dx, rect.origin.y + dy}, {rect.size.width + dw, rect.size.height + dh} };
 }
 
-static inline CGPoint LXPointOffset(CGPoint point, CGFloat dx, CGFloat dy)
+static inline CGSize LXSizeAdjust(CGSize size, CGFloat dw, CGFloat dh)
+{
+    return (CGSize){ size.width + dw, size.height + dh };
+}
+
+static inline CGPoint LXPointAdjust(CGPoint point, CGFloat dx, CGFloat dy)
 {
     return (CGPoint){ point.x + dx, point.y + dy };
 }

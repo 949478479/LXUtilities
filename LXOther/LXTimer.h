@@ -12,11 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LXTimer : NSObject
 
 /**
- *  在定时器有效的情况下挂起或恢复定时器。
- */
-@property (nonatomic, getter=isPaused) BOOL paused;
-
-/**
  *  定时器是否有效。
  */
 @property (nonatomic, readonly, getter=isValid) BOOL valid;

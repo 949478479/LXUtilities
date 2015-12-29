@@ -9,13 +9,39 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LXTimer ()
-@property (nonatomic) dispatch_source_t timerSource;
-@end
-
 @implementation LXTimer
+{
+    dispatch_source_t _timerSource;
+}
 
-#pragma mark - 工厂方法 -
+#pragma mark - 私有 -
+
+- (void)dealloc
+{
+    [self invalidate];
+}
+
+- (instancetype)initWithInterval:(NSTimeInterval)timeInterval
+                       tolerance:(NSTimeInterval)tolerance
+{
+    self = [super init];
+    if (self) {
+        _valid = YES;
+        _tolerance = tolerance;
+        _timeInterval = timeInterval;
+        _timerSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    }
+    return self;
+}
+
+- (void)_configureTimerSourceWithHandler:(dispatch_block_t)handler
+{
+    dispatch_source_set_timer(_timerSource, DISPATCH_TIME_NOW, _timeInterval * NSEC_PER_SEC, _tolerance * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(_timerSource, handler);
+    dispatch_resume(_timerSource);
+}
+
+#pragma mark - 公共 -
 
 + (LXTimer *)timerWithInterval:(NSTimeInterval)timeInterval
                      tolerance:(NSTimeInterval)tolerance
@@ -55,56 +81,13 @@ NS_ASSUME_NONNULL_BEGIN
     return timer;
 }
 
-#pragma mark - 公共接口 -
-
-- (void)setPaused:(BOOL)paused
-{
-    NSAssert(_valid, @"定时器已失效！");
-
-    if (paused == _paused) return;
-
-    _paused = paused;
-
-    paused ? dispatch_suspend(_timerSource) : dispatch_resume(_timerSource);
-}
-
 - (void)invalidate
 {
     if (!_valid) return;
 
     _valid = NO;
 
-    if (_paused) {
-        dispatch_resume(_timerSource);
-    }
     dispatch_source_cancel(_timerSource);
-}
-
-#pragma mark - 私有 -
-
-- (void)dealloc
-{
-    [self invalidate];
-}
-
-- (instancetype)initWithInterval:(NSTimeInterval)timeInterval
-                       tolerance:(NSTimeInterval)tolerance
-{
-    self = [super init];
-    if (self) {
-        _valid = YES;
-        _tolerance = tolerance;
-        _timeInterval = timeInterval;
-        _timerSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    }
-    return self;
-}
-
-- (void)_configureTimerSourceWithHandler:(dispatch_block_t)handler
-{
-    dispatch_source_set_timer(_timerSource, DISPATCH_TIME_NOW, _timeInterval * NSEC_PER_SEC, _tolerance * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(_timerSource, handler);
-    dispatch_resume(_timerSource);
 }
 
 @end
