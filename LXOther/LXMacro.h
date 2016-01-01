@@ -5,6 +5,10 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
+#pragma mark - 执行 block 的宏 -
+
+#define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); };
+
 #pragma mark - 忽略警告宏 -
 
 ///----------------

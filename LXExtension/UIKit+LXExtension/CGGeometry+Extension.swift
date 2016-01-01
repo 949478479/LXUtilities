@@ -31,6 +31,17 @@ extension CGSize {
     }
 }
 
+extension CGRect {
+
+    func transformBy(t: CGAffineTransform) -> CGRect {
+        return CGRectApplyAffineTransform(self, t)
+    }
+
+    mutating func transformInPlace(t: CGAffineTransform) {
+        self = CGRectApplyAffineTransform(self, t)
+    }
+}
+
 extension CGAffineTransform {
 
     func CGAffineTransformMakeScaleTranslate(sx: CGFloat, _ sy: CGFloat, _ tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform {

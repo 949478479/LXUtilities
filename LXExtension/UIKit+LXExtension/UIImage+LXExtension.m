@@ -102,14 +102,20 @@ NS_ASSUME_NONNULL_BEGIN
     return image;
 }
 
-#pragma mark - 图片渲染 -
+#pragma mark - 创建图片 -
 
-+ (instancetype)lx_originalRenderingImageNamed:(NSString *)name
++ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path
+{
+    return [self imageWithContentsOfFile:
+            [[NSBundle mainBundle] pathForResource:path ofType:nil]];
+}
+
++ (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name
 {
     return [[self imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 
-+ (instancetype)lx_imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius
 {
     NSParameterAssert(color != nil);
 

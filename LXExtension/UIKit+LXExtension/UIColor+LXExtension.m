@@ -30,17 +30,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 十六进制颜色
 
-+ (UIColor *)lx_colorWithHex:(NSUInteger)hex alpha:(CGFloat)alpha
++ (UIColor *)lx_colorWithHex:(uint)hex alpha:(CGFloat)alpha
 {
     NSParameterAssert(hex >= 0x000000 && hex <= 0xFFFFFF);
 
-    return [self colorWithRed:(CGFloat)((hex & 0xFF0000) >> 16) / 0xFF
-                        green:(CGFloat)((hex & 0xFF00)    >> 8) / 0xFF
-                         blue:(CGFloat) (hex & 0xFF)            / 0xFF
+    return [self colorWithRed:(CGFloat)((hex >> 16) & 0xFF) / 0xFF
+                        green:(CGFloat)((hex >>  8) & 0xFF) / 0xFF
+                         blue:(CGFloat)((hex >>  0) & 0xFF) / 0xFF
                         alpha:alpha];
 }
 
-+ (UIColor *)lx_colorWithHex:(NSUInteger)hex
++ (UIColor *)lx_colorWithHex:(uint)hex
 {
     return [self lx_colorWithHex:hex alpha:1.0];
 }
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSAssert([hexString rangeOfString:@"^[0-9A-Fa-f]{6}$"
                               options:NSRegularExpressionSearch].location != NSNotFound,
-             @"参数 hexString 格式必须为 #FFFFFF 或 FFFFFF 。");
+             @"参数 hexString 格式必须为 #FFFFFF 或 FFFFFF。");
 
     NSString *redHexString   = [hexString substringToIndex:2];
     NSString *greenHexString = [hexString substringWithRange:(NSRange){2,2}];

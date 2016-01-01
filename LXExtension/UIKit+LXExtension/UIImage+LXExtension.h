@@ -49,9 +49,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///--------------
 
 /**
+ *  使用 @c [UIImage imageWithContentsOfFile:] 创建图片。
+ *
+ *  @param path 图片相对于 @c mainBundle 的路径，须包含扩展名。
+ */
++ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path NS_SWIFT_NAME(init(lx_contentsOfFile:));
+
+/**
  *  使用 @c [UIImage imageNamed:] 创建 @c UIImageRenderingModeAlwaysOriginal 模式的图片。
  */
-+ (instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
++ (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
 
 /**
  *  生成纯色图片。若 @c color 的 @c alpha 为 @c 1.0 且 @c cornerRadius 为 @c 0，则图片是完全不透明的。
@@ -60,9 +67,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param size         图片尺寸。
  *  @param cornerRadius 图片圆角。指定为 @c 0 则无圆角。
  */
-+ (instancetype)lx_imageWithColor:(UIColor *)color
-                             size:(CGSize)size
-                     cornerRadius:(CGFloat)cornerRadius NS_SWIFT_NAME(init(color:size:cornerRadius:));
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color
+                                      size:(CGSize)size
+                              cornerRadius:(CGFloat)cornerRadius NS_SWIFT_NAME(init(color:size:cornerRadius:));
 
 ///-----------------
 /// @name 获取像素颜色
