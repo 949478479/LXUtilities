@@ -7,6 +7,9 @@
 
 #import "LXMacro.h"
 
+#import "CGGeometry+LXExtension.h"
+#import "MKGeometry+LXExtension.h"
+
 #import "CALayer+LXExtension.h"
 #import "CATransaction+LXExtension.h"
 
@@ -31,11 +34,11 @@
 #import "NSAttributedString+LXExtension.h"
 #import "NSNotificationCenter+LXExtension.h"
 
+#import "LXWeakWrapper.h"
 #import "LXGCDUtilities.h"
 #import "LXPathUtilities.h"
 #import "LXUIKitUtilities.h"
 #import "LXRuntimeUtilities.h"
-#import "LXCGGeometryUtilities.h"
 
 #import "LXTimer.h"
 #import "LXImagePicker.h"

@@ -1,5 +1,5 @@
 //
-//  LXWeakObjectContainter.h
+//  LXWeakWrapper.h
 //
 //  Created by 从今以后 on 16/1/1.
 //  Copyright © 2016年 apple. All rights reserved.
@@ -9,11 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LXWeakObjectContainter : NSObject
+@interface LXWeakWrapper<ObjectType> : NSObject
 
-@property (nonatomic, weak, readonly) id obj;
+@property (nonatomic, weak, readonly) ObjectType object;
 
-+ (instancetype)containterWithObject:(id)obj;
++ (instancetype)wrapperWithObject:(ObjectType)object;
 
 @end
 

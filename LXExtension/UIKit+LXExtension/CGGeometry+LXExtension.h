@@ -1,9 +1,12 @@
 //
-//  LXCGGeometryUtilities.h
+//  CGGeometry+LXExtension.h
 //
 //  Created by 从今以后 on 15/11/20.
 //  Copyright © 2015年 apple. All rights reserved.
 //
+
+@import CoreGraphics.CGGeometry;
+@import CoreGraphics.CGAffineTransform;
 
 static inline CGAffineTransform LXAffineTransformMakeScaleTranslate(CGFloat sx,
                                                                     CGFloat sy,

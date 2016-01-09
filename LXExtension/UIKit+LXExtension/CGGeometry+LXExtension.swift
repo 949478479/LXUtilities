@@ -1,5 +1,5 @@
 //
-//  CGGeometry+Extension.swift
+//  CGGeometry+LXExtension.swift
 //
 //  Created by 从今以后 on 15/12/21.
 //  Copyright © 2015年 apple. All rights reserved.
