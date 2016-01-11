@@ -6,15 +6,6 @@
 //
 
 @import CoreGraphics.CGGeometry;
-@import CoreGraphics.CGAffineTransform;
-
-static inline CGAffineTransform LXAffineTransformMakeScaleTranslate(CGFloat sx,
-                                                                    CGFloat sy,
-                                                                    CGFloat tx,
-                                                                    CGFloat ty)
-{
-    return CGAffineTransformMake(sx, 0, 0, sy, tx, ty);
-}
 
 static inline CGRect LXRectAdjust(CGRect rect, CGFloat dx, CGFloat dy, CGFloat dw, CGFloat dh)
 {

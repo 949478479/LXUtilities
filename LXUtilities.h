@@ -9,6 +9,7 @@
 
 #import "CGGeometry+LXExtension.h"
 #import "MKGeometry+LXExtension.h"
+#import "CGAffineTransform+LXExtension.h"
 
 #import "CALayer+LXExtension.h"
 #import "CATransaction+LXExtension.h"

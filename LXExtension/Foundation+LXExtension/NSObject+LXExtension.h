@@ -6,7 +6,7 @@
 //
 
 @import Foundation;
-#import "NSObject+DLIntrospection.h"
+#import "NSObject+LXIntrospection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,28 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface NSObject (LXExtension)
-
-///---------------------------
-/// @name 获取属性和实例变量名数组
-///---------------------------
-
-/**
- *  获取实例变量名数组.
- */
-+ (NSArray<NSString *> *)lx_ivarList;
-/**
- *  获取实例变量名数组.
- */
-- (NSArray<NSString *> *)lx_ivarList;
-
-/**
- *  获取属性名数组.
- */
-+ (NSArray<NSString *> *)lx_propertyList;
-/**
- *  获取属性名数组.
- */
-- (NSArray<NSString *> *)lx_propertyList;
 
 ///--------------
 /// @name 关联对象

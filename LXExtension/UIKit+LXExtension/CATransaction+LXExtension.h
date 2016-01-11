@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  禁用隐式动画。
  *
- *  @param block 在此 block 内修改图层属性。
+ *  @param actionsWithoutAnimation 在 block 内修改图层属性不会触发隐式动画。
  */
-+ (void)lx_disableActions:(void (^)(void))block;
++ (void)lx_performWithoutAnimation:(void (^)(void))actionsWithoutAnimation;
 
 /**
  *  定制隐式动画。

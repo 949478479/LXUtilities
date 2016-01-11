@@ -34,15 +34,39 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 动画
 ///-----------
 
+/// 暂停、恢复动画
+@property (nonatomic) BOOL lx_paused;
+
 /**
- *  为图层添加 @c CABasicAnimation 动画。
+ *  为图层添加动画。
  *
- *  @param key        动画的 key。
- *  @param completion 动画停止时调用此 block。若正常结束，则 @c finished 为 @c YES，否则为 @c NO。
+ *  @param key               动画的 key。
+ *  @param modelLayerUpdater 在此 block 中更新图层属性不会触发隐式动画。
+ *  @param completion        动画停止时调用此 block，不要设置动画代理。
+ */
+- (void)lx_addAnimation:(CAAnimation *)anim
+                 forKey:(nullable NSString *)key
+      modelLayerUpdater:(void (^)(void))modelLayerUpdater
+             completion:(nullable void(^)(BOOL finished))completion;
+/**
+ *  为图层添加动画。
+ *
+ *  @param key               动画的 key。
+ *  @param modelLayerUpdater 在此 block 中更新图层属性不会触发隐式动画。
+ */
+- (void)lx_addAnimation:(CAAnimation *)anim
+                 forKey:(nullable NSString *)key
+      modelLayerUpdater:(void (^)(void))modelLayerUpdater;
+/**
+ *  为图层添加动画。
+ *
+ *  @param key               动画的 key。
+ *  @param completion        动画停止时调用此 block，不要设置动画代理。
  */
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
              completion:(nullable void(^)(BOOL finished))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

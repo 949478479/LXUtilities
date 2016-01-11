@@ -5,9 +5,16 @@
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
-import CoreGraphics
+import Foundation.NSValue
+import CoreGraphics.CGGeometry
+
+typealias NSValueType = NSValue
 
 extension CGPoint {
+
+    var NSValue: NSValueType {
+        return NSValueType(CGPoint: self)
+    }
 
     func adjustBy(dx dx: CGFloat, dy: CGFloat) -> CGPoint {
         return CGPoint(x: x + dx, y: y + dy)
@@ -21,6 +28,10 @@ extension CGPoint {
 
 extension CGSize {
 
+    var NSValue: NSValueType {
+        return NSValueType(CGSize: self)
+    }
+
     func adjustBy(dw dw: CGFloat, dh: CGFloat) -> CGSize {
         return CGSize(width: width + dw, height: height + dh)
     }
@@ -33,30 +44,15 @@ extension CGSize {
 
 extension CGRect {
 
+    var NSValue: NSValueType {
+        return NSValueType(CGRect: self)
+    }
+
     func transformBy(t: CGAffineTransform) -> CGRect {
         return CGRectApplyAffineTransform(self, t)
     }
 
     mutating func transformInPlace(t: CGAffineTransform) {
         self = CGRectApplyAffineTransform(self, t)
-    }
-}
-
-extension CGAffineTransform {
-
-    func CGAffineTransformMakeScaleTranslate(sx: CGFloat, _ sy: CGFloat, _ tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform {
-        return CGAffineTransformMake(sx, 0, 0, sy, tx, ty)
-    }
-
-    mutating func scaleInPlace(sx sx: CGFloat, sy: CGFloat) {
-        self = CGAffineTransformScale(self, sx, sy)
-    }
-
-    mutating func rotateInPlace(angle angle: CGFloat) {
-        self = CGAffineTransformRotate(self, angle)
-    }
-
-    mutating func translateInPlace(tx tx: CGFloat, ty: CGFloat) {
-        self = CGAffineTransformTranslate(self, tx, ty)
     }
 }

@@ -145,13 +145,62 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
+      modelLayerUpdater:(void (^)(void))modelLayerUpdater
+{
+    [self lx_addAnimation:anim
+                   forKey:key
+        modelLayerUpdater:modelLayerUpdater
+               completion:(void (^_Nonnull)(BOOL))nil];
+}
+
+- (void)lx_addAnimation:(CAAnimation *)anim
+                 forKey:(nullable NSString *)key
+             completion:(nullable void(^)(BOOL finished))completion
+{
+    [self lx_addAnimation:anim
+                   forKey:key
+        modelLayerUpdater:(void (^_Nonnull)())nil
+               completion:completion];
+}
+
+- (void)lx_addAnimation:(CAAnimation *)anim
+                 forKey:(nullable NSString *)key
+      modelLayerUpdater:(void (^)(void))modelLayerUpdater
              completion:(nullable void(^)(BOOL finished))completion
 {
     if (completion) {
         anim.delegate = [[_LXAnimationDelegate alloc] initWithCompletion:completion];
     }
 
+    if (modelLayerUpdater) modelLayerUpdater();
+
     [self addAnimation:anim forKey:key];
+}
+
+- (void)setLx_paused:(BOOL)lx_paused
+{
+    if (lx_paused == self.lx_paused) return;
+
+    if (lx_paused) {
+        /* speed 设置为 0.0 将导致图层本地时间变为 0.0，而无论 beginTime 和 timeOffset 之前的值是多少，
+           将 timeOffset 设置为图层本地时间，就可以在 speed 设置为 0.0 后保持图层本地时间不变，
+           此时 speed 为 0.0，动画停止，且图层本地时间未变，因此动画会停止在原处。*/
+        self.timeOffset = [self convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.speed = 0.0;
+    } else {
+        /* speed 设置为 1.0 后，图层本地时间会恢复正常。此时若将 timeOffset 重置为 0.0，即 timeOffset = 0.0，
+           图层本地时间将等于绝对时间 CACurrentMediaTime()。但是暂停的这段时间内图层本地时间并未增长，
+           应该减去这段时间，这个时间增量刚好是 CACurrentMediaTime() - timeOffset。若 beginTime 不为 0.0，
+           还应加上该值。因此最终结果为 timeOffset = 0 - (CACurrentMediaTime() - timeOffset) + beginTime。
+           这样图层的本地时间就会等于暂停前的值，此时 speed 恢复为 1.0，且图层本地时间未变，因此动画会从原处恢复。*/
+        self.speed = 1.0;
+        self.timeOffset += self.beginTime - CACurrentMediaTime();
+    }
+}
+
+- (BOOL)lx_paused
+{
+    return self.speed == 0.0;
 }
 
 @end

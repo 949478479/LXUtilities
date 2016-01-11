@@ -11,11 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CATransaction (LXExtension)
 
-+ (void)lx_disableActions:(void (^)(void))block
++ (void)lx_performWithoutAnimation:(void (^)(void))actionsWithoutAnimation
 {
     [self begin];
     [self setDisableActions:YES];
-    block();
+    actionsWithoutAnimation();
     [self commit];
 }
 
