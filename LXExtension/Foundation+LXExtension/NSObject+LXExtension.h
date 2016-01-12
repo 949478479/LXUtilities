@@ -23,19 +23,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///--------------
 
 /**
- *  使用 @c objc_setAssociatedObject 函数根据指定 @c key 关联对象.
+ *  使用 @c objc_setAssociatedObject 函数根据指定 @c key 关联对象。
  *
- *  @param value 关联的对象.
- *  @param key   关联对象对应的 @c key.
+ *  @param value 关联的对象。
+ *  @param key   关联对象对应的 @c key。
  */
 - (void)lx_setValue:(nullable id)value forKey:(NSString *)key;
 
 /**
- *  使用 @c objc_getAssociatedObject 函数获取 @c key 对应的关联对象.
+ *  使用 @c objc_getAssociatedObject 函数获取指定 @c key 对应的关联对象。
  *
- *  @param key 关联对象的 @c key.
+ *  @param key 关联对象的 @c key。
  *
- *  @return @c key 对应的关联对象.
+ *  @return @c key 对应的关联对象。
  */
 - (nullable id)lx_valueForKey:(NSString *)key;
 

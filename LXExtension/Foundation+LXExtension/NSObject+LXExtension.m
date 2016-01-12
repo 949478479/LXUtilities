@@ -28,15 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_setValue:(nullable id)value forKey:(NSString *)key
 {
-    NSParameterAssert(key.length > 0);
-
     objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (nullable id)lx_valueForKey:(NSString *)key
 {
-    NSParameterAssert(key.length > 0);
-
     return objc_getAssociatedObject(self, NSSelectorFromString(key));
 }
 
