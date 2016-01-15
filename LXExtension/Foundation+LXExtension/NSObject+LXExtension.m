@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     NSMutableDictionary *varInfo = [NSMutableDictionary new];
-    for (NSString *varName in self.lx_ivarNameList) {
+    for (NSString *varName in [self.class lx_ivarNameList]) {
         id value = [self valueForKey:varName] ?: @"nil";
         if ([value class] == objc_lookUpClass("__NSCFBoolean")) {
             value = [value boolValue] ? @"YES" : @"NO";

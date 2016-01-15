@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     } else if ([other class] != [self class]) {
         return NO;
     } else {
-        return [self object] == [other object];
+        return [[self object] isEqual:[other object]];
     }
 }
 
