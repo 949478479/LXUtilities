@@ -21,9 +21,11 @@
 
 #define STRINGIFY(S) #S
 
-#define LX_DIAGNOSTIC_PUSH             _Pragma("clang diagnostic push")
-#define LX_DIAGNOSTIC_IGNORED(warning) _Pragma(STRINGIFY(clang diagnostic ignored #warning))
-#define LX_DIAGNOSTIC_POP              _Pragma("clang diagnostic pop")
+#define LX_DIAGNOSTIC_PUSH_IGNORED(warning) \
+_Pragma("clang diagnostic push") \
+_Pragma(STRINGIFY(clang diagnostic ignored #warning))
+
+#define LX_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
 
 #pragma mark - 日志打印 -
 

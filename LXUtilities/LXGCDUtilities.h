@@ -10,12 +10,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  创建一个基于 @c dispatch_source_t 的在主线程工作的定时器，
+ *  创建一个基于 @c dispatch_source_t 的在主线程工作的定时器。
  *
- *  @param interval      触发时间间隔.
- *  @param leeway        可容忍的触发时间偏差.
- *  @param handler       定时器触发时执行的 block.
- *  @param cancelHandler 定时器取消时执行的 block.
+ *  @param interval      触发时间间隔。
+ *  @param leeway        可容忍的触发时间偏差。
+ *  @param handler       定时器触发时执行的 block。
+ *  @param cancelHandler 定时器取消时执行的 block。
  *
  *  @return 未激活的 @c dispatch_source_t，需手动调用 @c dispatch_resume() 函数激活.
  */
