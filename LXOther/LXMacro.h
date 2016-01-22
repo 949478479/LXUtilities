@@ -83,7 +83,7 @@ LX_DIAGNOSTIC_POP
 /// @name 单例
 ///-----------
 
-/// 使用 dispatch_once 函数实现，重写了 +allocWithZone: 和 -copyWithZone:
+/// 使用 dispatch_once 函数实现，重写了 +allocWithZone:。
 #define LX_SINGLETON_INTERFACE(methodName) + (instancetype)methodName;
 #define LX_SINGLETON_IMPLEMENTTATION(methodName) \
 \
@@ -99,12 +99,5 @@ LX_DIAGNOSTIC_POP
 \
 + (instancetype)allocWithZone:(__unused struct _NSZone *)zone \
 { \
-    NSAssert(NO, @"使用单例方法直接获取单例~"); \
     return [self methodName]; \
-} \
-\
-- (id)copyWithZone:(__unused NSZone *)zone \
-{ \
-    NSAssert(NO, @"使用单例方法直接获取单例~"); \
-    return self; \
 }

@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
     dispatch_source_t _timerSource;
 }
 
-#pragma mark - 私有 -
-
 - (void)dealloc
 {
     [self invalidate];
@@ -34,24 +32,24 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)_configureTimerSourceWithHandler:(dispatch_block_t)handler
+- (void)__configureTimerSourceWithHandler:(dispatch_block_t)handler
 {
     dispatch_source_set_timer(_timerSource, DISPATCH_TIME_NOW, _timeInterval * NSEC_PER_SEC, _tolerance * NSEC_PER_SEC);
     dispatch_source_set_event_handler(_timerSource, handler);
     dispatch_resume(_timerSource);
 }
 
-#pragma mark - 公共 -
-
 + (LXTimer *)timerWithInterval:(NSTimeInterval)timeInterval
                      tolerance:(NSTimeInterval)tolerance
                        handler:(void (^)(void))handler
 {
+    NSParameterAssert(timeInterval >= 0);
+    NSParameterAssert(tolerance >= 0);
     NSParameterAssert(handler != nil);
 
     LXTimer *timer = [[LXTimer alloc] initWithInterval:timeInterval tolerance:tolerance];
 
-    [timer _configureTimerSourceWithHandler:handler];
+    [timer __configureTimerSourceWithHandler:handler];
 
     return timer;
 }
@@ -61,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
                             target:(id)target
                           selector:(SEL)selector
 {
+    NSParameterAssert(timeInterval >= 0);
+    NSParameterAssert(tolerance >= 0);
     NSParameterAssert(target != nil);
     NSParameterAssert(selector != nil);
 
@@ -74,8 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     __weak id weakTarget = target;
-    [timer _configureTimerSourceWithHandler:^{
-        [invocation invokeWithTarget:weakTarget];
+    [timer __configureTimerSourceWithHandler:^{
+        __strong id strongTarget = weakTarget;
+        [invocation invokeWithTarget:strongTarget];
     }];
 
     return timer;

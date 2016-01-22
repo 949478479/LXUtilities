@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// 创建一个基于 @c dispatch_source_t 的挂起状态的主线程定时器。
+/// 创建基于 @c dispatch_source_t 的挂起状态的主线程定时器。
 dispatch_source_t lx_dispatch_source_timer(NSTimeInterval secondInterval,
                                            NSTimeInterval secondLeeway,
                                            dispatch_block_t handler);
