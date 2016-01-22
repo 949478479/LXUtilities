@@ -33,7 +33,7 @@ func dispatch_after(delay: NSTimeInterval, _ block: dispatch_block_t) {
     dispatch_after(when, dispatch_get_main_queue(), block)
 }
 
-/// 创建一个基于 `dispatch_source_t` 的主线程定时器。
+/// 创建一个基于 `dispatch_source_t` 的挂起状态的主线程定时器。
 func dispatch_source_timer(interval: NSTimeInterval, leeway: NSTimeInterval,
     _ handler: dispatch_block_t) -> dispatch_source_t {
 
@@ -57,6 +57,14 @@ extension dispatch_object_t {
     /// 恢复。
     final func resume() {
         dispatch_resume(self)
+    }
+}
+
+extension dispatch_source_t {
+    
+    /// 取消。
+    final func cancel() {
+        dispatch_source_cancel(self)
     }
 }
 

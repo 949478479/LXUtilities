@@ -36,7 +36,7 @@
 #import "NSNotificationCenter+LXExtension.h"
 
 #import "LXWeakWrapper.h"
-#import "LXGCDUtilities.h"
+#import "GCD+LXExtension.h"
 #import "LXPathUtilities.h"
 #import "LXUIKitUtilities.h"
 #import "LXRuntimeUtilities.h"

@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSFileManager (LXExtension)
 
 /**
- *  计算文件或目录所占字节数.
+ *  计算文件或目录所占字节数。
  *
- *  @param path 文件路径或者目录路径.
+ *  @param path 文件路径或者目录路径。
  */
 + (uint64_t)lx_sizeOfItemAtPath:(NSString *)path;
 

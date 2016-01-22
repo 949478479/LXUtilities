@@ -36,11 +36,13 @@ _Pragma(STRINGIFY(clang diagnostic ignored #warning))
 #ifdef DEBUG
 
 #define LXLog(format, ...) \
+LX_DIAGNOSTIC_PUSH_IGNORED(-Wformat-security) \
 printf("%s[%d] %s\n%s\n", \
 (strrchr(__FILE__, '/') ?: __FILE__ - 1) + 1, \
 __LINE__, \
 __FUNCTION__, \
-[[NSString stringWithFormat:(format), ##__VA_ARGS__] UTF8String])
+[[NSString stringWithFormat:(format), ##__VA_ARGS__] UTF8String]) \
+LX_DIAGNOSTIC_POP
 
 #define LXLogRect(rect)           LXLog(@"%s => %@", #rect, NSStringFromCGRect(rect))
 #define LXLogSize(size)           LXLog(@"%s => %@", #size, NSStringFromCGSize(size))

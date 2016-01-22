@@ -7,33 +7,33 @@
 
 #import "NSFileManager+LXExtension.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation NSFileManager (LXExtension)
 
 + (uint64_t)lx_sizeOfItemAtPath:(NSString *)path
 {
-    NSAssert(path, @"参数 path 不能为 nil.");
-
-    NSFileManager *fileManager   = [self defaultManager];
+    NSParameterAssert(path != nil);
+    
+    NSFileManager *fileManager   = [NSFileManager defaultManager];
     NSDictionary *itemAttributes = [fileManager attributesOfItemAtPath:path error:NULL];
 
-    uint64_t size = 0;
-
-    if (itemAttributes[NSFileType] == NSFileTypeDirectory) { // 文件夹.
-
-        NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:path];
-
-        while (enumerator.nextObject) {
-            itemAttributes = enumerator.fileAttributes;
-            if (itemAttributes[NSFileType] == NSFileTypeRegular) { // 只统计文件.
-                size += [itemAttributes[NSFileSize] unsignedLongLongValue];
-            }
-        }
-
-    } else { // 文件.
-        size = [itemAttributes[NSFileSize] unsignedLongLongValue];
+    if (itemAttributes[NSFileType] != NSFileTypeDirectory) { // 文件
+        return [itemAttributes[NSFileSize] unsignedLongLongValue];
     }
 
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:path];
+
+    uint64_t size = 0;
+    while ([enumerator nextObject]) {
+        itemAttributes = [enumerator fileAttributes];
+        if (itemAttributes[NSFileType] == NSFileTypeRegular) {
+            size += [itemAttributes[NSFileSize] unsignedLongLongValue];
+        }
+    }
     return size;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

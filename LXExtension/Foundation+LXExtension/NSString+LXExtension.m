@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSString (LXExtension)
 
-#pragma mark - 文本范围
+#pragma mark - 文本范围 -
 
 - (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font
 {
@@ -23,13 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
                                              context:nil]).size;
 }
 
-#pragma mark - 表单验证
+#pragma mark - 表单验证 -
 
 - (BOOL)lx_evaluateWithRegularExpression:(NSString *)regularExpression
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularExpression];
-
-    return [predicate evaluateWithObject:self];
+    return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularExpression] evaluateWithObject:self];
 }
 
 - (BOOL)lx_isPhoneNumber
@@ -71,22 +69,22 @@ NS_ASSUME_NONNULL_BEGIN
     return [self lx_evaluateWithRegularExpression:@"^([a-zA-Z0-9\\.\\-_]+)@([a-zA-Z0-9]+)\\.(com|cn)$"];
 }
 
-#pragma mark - 加密处理
+#pragma mark - 加密处理 -
 
-typedef unsigned char *LXDigestFunction(const void *data, CC_LONG len, unsigned char *md);
+typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigned char *md);
 
 - (NSString *)lx_hashStringWithDigestLength:(CC_LONG)digestLength
-                             digestFunction:(LXDigestFunction)digestFunction
+                             digestFunction:(__LXDigestFunction)digestFunction
 {
-    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    const char *string = self.UTF8String;
 
-    uint8_t digest[digestLength];
+    unsigned char digest[digestLength];
 
-    digestFunction(data.bytes, (CC_LONG)data.length, digest);
+    digestFunction(string, (CC_LONG)strlen(string), digest);
 
-    NSMutableString *hashedString = [NSMutableString new];
+    NSMutableString *hashedString = [NSMutableString stringWithCapacity:digestLength*2];
 
-    for(CC_LONG i = 0; i < digestLength; ++i) {
+    for (CC_LONG i = 0; i < digestLength; ++i) {
         [hashedString appendFormat:@"%02x", digest[i]];
     }
 
@@ -123,7 +121,7 @@ typedef unsigned char *LXDigestFunction(const void *data, CC_LONG len, unsigned 
     return [self lx_hashStringWithDigestLength:CC_SHA512_DIGEST_LENGTH digestFunction:CC_SHA512];
 }
 
-#pragma mark - 
+#pragma mark - 替换非字母数字下划线的字符为下划线 -
 
 - (NSString *)lx_alphanumericString
 {
