@@ -11,28 +11,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LXDynamicTypeManager
 
-static NSMutableArray<void (^)(void)> *LXRegisteredBlocks;
-static NSMapTable<UIView *, void (^)(void)> *LXRegisteredViewsAndBlocks;
+static NSMapTable<id, void (^)(void)> *LXObserverAndBlocks;
 
 + (void)initialize
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
-        LXRegisteredBlocks = [NSMutableArray new];
-
         NSPointerFunctionsOptions keyOptions = NSPointerFunctionsWeakMemory | NSPointerFunctionsObjectPointerPersonality;
         NSPointerFunctionsOptions valueOptions = NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPointerPersonality;
-
-        LXRegisteredViewsAndBlocks = [NSMapTable mapTableWithKeyOptions:keyOptions valueOptions:valueOptions];
+        LXObserverAndBlocks = [NSMapTable mapTableWithKeyOptions:keyOptions valueOptions:valueOptions];
 
         void (^usingBlock)(NSNotification * _Nonnull) = ^(NSNotification * _Nonnull note) {
-
-            for (void (^block)(void) in LXRegisteredViewsAndBlocks.objectEnumerator) {
-                block();
-            }
-
-            for (void (^block)(void) in LXRegisteredBlocks) {
+            for (void (^block)(void) in LXObserverAndBlocks.objectEnumerator) {
                 block();
             }
         };
@@ -44,19 +35,14 @@ static NSMapTable<UIView *, void (^)(void)> *LXRegisteredViewsAndBlocks;
     });
 }
 
-+ (void)registerBlock:(void (^)(void))block
++ (void)addObserver:(id)observer usingBlock:(void (^)(void))block
 {
-    [LXRegisteredBlocks addObject:block];
+    [LXObserverAndBlocks setObject:block forKey:observer];
 }
 
-+ (void)registerView:(UIView *)view usingBlock:(void (^)(void))block
++ (void)removeObserver:(id)observer
 {
-    [LXRegisteredViewsAndBlocks setObject:block forKey:view];
-}
-
-+ (void)removeView:(UIView *)view
-{
-    [LXRegisteredViewsAndBlocks removeObjectForKey:view];
+    [LXObserverAndBlocks removeObjectForKey:observer];
 }
 
 @end

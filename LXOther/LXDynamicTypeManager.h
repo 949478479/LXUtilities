@@ -11,11 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXDynamicTypeManager : NSObject
 
-+ (void)registerBlock:(void (^)(void))block;
-
-+ (void)registerView:(UIView *)view usingBlock:(void (^)(void))block;
-
-+ (void)removeView:(UIView *)view;
++ (void)addObserver:(id)observer usingBlock:(void (^)(void))block;
++ (void)removeObserver:(id)observer;
 
 @end
 
