@@ -31,9 +31,9 @@
 #import "NSString+LXExtension.h"
 #import "NSDictionary+LXExtension.h"
 #import "NSFileManager+LXExtension.h"
-#import "NSUserDefaults+LXExtension.h"
 #import "NSAttributedString+LXExtension.h"
 #import "NSNotificationCenter+LXExtension.h"
+#import "NSManagedObjectModel+LXExtension.h"
 
 #import "LXWeakWrapper.h"
 #import "GCD+LXExtension.h"

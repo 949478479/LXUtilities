@@ -9,13 +9,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * LXDocumentDirectory();
-NSString * LXDocumentDirectoryByAppendingPathComponent(NSString *pathComponent);
+NSString *LXDocumentDirectory();
+NSString *LXDocumentDirectoryByAppendingPathComponent(NSString *pathComponent);
 
-NSString * LXLibraryDirectory();
-NSString * LXLibraryDirectoryByAppendingPathComponent(NSString *pathComponent);
+NSString *LXLibraryDirectory();
+NSString *LXLibraryDirectoryByAppendingPathComponent(NSString *pathComponent);
 
-NSString * LXCachesDirectory();
-NSString * LXCachesDirectoryByAppendingPathComponent(NSString *pathComponent);
+NSString *LXCachesDirectory();
+NSString *LXCachesDirectoryByAppendingPathComponent(NSString *pathComponent);
+
+NSString *LXTemporaryDirectoryByAppendingPathComponent(NSString *pathComponent);
 
 NS_ASSUME_NONNULL_END

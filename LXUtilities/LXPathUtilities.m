@@ -9,34 +9,39 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * LXDocumentDirectory()
+NSString *LXDocumentDirectory()
 {
     return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 }
 
-NSString * LXDocumentDirectoryByAppendingPathComponent(NSString *pathComponent)
+NSString *LXDocumentDirectoryByAppendingPathComponent(NSString *pathComponent)
 {
     return [LXDocumentDirectory() stringByAppendingPathComponent:pathComponent];
 }
 
-NSString * LXLibraryDirectory()
+NSString *LXLibraryDirectory()
 {
     return NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
 }
 
-NSString * LXLibraryDirectoryByAppendingPathComponent(NSString *pathComponent)
+NSString *LXLibraryDirectoryByAppendingPathComponent(NSString *pathComponent)
 {
     return [LXLibraryDirectory() stringByAppendingPathComponent:pathComponent];
 }
 
-NSString * LXCachesDirectory()
+NSString *LXCachesDirectory()
 {
     return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
 }
 
-NSString * LXCachesDirectoryByAppendingPathComponent(NSString *pathComponent)
+NSString *LXCachesDirectoryByAppendingPathComponent(NSString *pathComponent)
 {
     return [LXCachesDirectory() stringByAppendingPathComponent:pathComponent];
+}
+
+NSString *LXTemporaryDirectoryByAppendingPathComponent(NSString *pathComponent)
+{
+	return [NSTemporaryDirectory() stringByAppendingPathComponent:pathComponent];
 }
 
 NS_ASSUME_NONNULL_END

@@ -11,11 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSFileManager (LXExtension)
 
-/**
- *  计算文件或目录所占字节数。
- *
- *  @param path 文件路径或者目录路径。
- */
+/// Application Support 文件夹路径，若尚未存在则进行创建。
++ (NSString *)lx_pathToApplicationSupportDirectory;
+
+/// 计算文件或目录所占字节数。
 + (uint64_t)lx_sizeOfItemAtPath:(NSString *)path;
 
 @end
