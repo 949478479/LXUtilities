@@ -51,19 +51,29 @@ NS_ASSUME_NONNULL_BEGIN
 #ifdef DEBUG
 - (NSString *)lx_description
 {
+	if ([self lx_valueForKey:@"lx_description"]) {
+		return @"..."; // 防止 description 或 debugDescription 方法死循环
+	}
+	[self lx_setValue:@YES forKey:@"lx_description"];
+
     if (![self conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
         return [self lx_description];
     }
 
     NSMutableDictionary *varInfo = [NSMutableDictionary new];
-    for (NSString *varName in [self.class lx_ivarNameList]) {
-        id value = [self valueForKey:varName] ?: @"nil";
-        if ([value class] == objc_lookUpClass("__NSCFBoolean")) {
+    for (NSString *propertyName in [self.class lx_propertyNameList]) {
+        id value = [self valueForKey:propertyName] ?: @"nil";
+        if (!strcmp(class_getName(object_getClass(value)), "__NSCFBoolean")) {
             value = [value boolValue] ? @"YES" : @"NO";
         }
-        varInfo[varName] = value;
+        varInfo[propertyName] = value;
     }
-    return [NSString stringWithFormat:@"<%@: %p>\n%@", self.class, self, varInfo];
+
+	NSString *description = [NSString stringWithFormat:@"<%@: %p>\n%@", self.class, self, varInfo];
+
+	[self lx_setValue:nil forKey:@"lx_description"];
+
+    return description;
 }
 #endif
 

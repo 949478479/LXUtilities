@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXCoreDataController : NSObject
 
-- (LXCoreDataController *)initWithModelName:(NSString *)modelName storeName:(NSString *)storeName;
+- (LXCoreDataController *)initWithModelName:(NSString *)modelName
+								  storeName:(NSString *)storeName NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)migrate:(NSError **)error;
 - (BOOL)saveIfNeed:(NSError **)error;

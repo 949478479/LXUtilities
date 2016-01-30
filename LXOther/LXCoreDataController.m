@@ -11,6 +11,8 @@
 #import "LXCoreDataController.h"
 #import "NSFileManager+LXExtension.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LXCoreDataController	()
 @property (nonatomic, readwrite) NSURL *storeURL;
 @property (nonatomic, readwrite) NSManagedObjectModel *managedObjectModel;
@@ -19,6 +21,12 @@
 @end
 
 @implementation LXCoreDataController
+
+- (instancetype)init
+{
+	NSAssert(NO, @"使用指定构造器 -[LXCoreDataController initWithModelName:storeName:]");
+	return [self initWithModelName:@"" storeName:@""];
+}
 
 - (instancetype)initWithModelName:(NSString *)modelName storeName:(NSString *)storeName
 {
@@ -54,16 +62,13 @@
 	if (_persistentStoreCoordinator == nil) {
 
 		NSError *error = nil;
-		NSDictionary *options = @{ NSMigratePersistentStoresAutomaticallyOption : @YES,
-								   NSInferMappingModelAutomaticallyOption : @YES, };
-
 		_persistentStoreCoordinator =
 		[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
 
 		[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 												  configuration:nil
 															URL:self.storeURL
-														options:options
+														options:nil
 														  error:&error];
 		if (error != nil) {
 			LXLog(error.localizedDescription);
@@ -112,11 +117,9 @@
 		[[UIApplication sharedApplication] endBackgroundTask:bgTask];
 	}];
 
-	LXMigrationManager *migrationManager = [LXMigrationManager new];
-
-	BOOL success = [migrationManager progressivelyMigrateStoreFromURL:self.storeURL
-														 toFinalModel:self.managedObjectModel
-																error:error];
+	BOOL success = [LXMigrationManager progressivelyMigrateStoreFromURL:self.storeURL
+														  withModelName:self.modelName
+																  error:error];
 	success ? LXLog(@"迁移完成!~") : LXLog(@"迁移失败。。");
 
 	[[UIApplication sharedApplication] endBackgroundTask:bgTask];
@@ -138,3 +141,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -6,22 +6,20 @@
 //
 
 @import CoreData;
-#import "LXMacro.h"
 #import "LXMigrationManager.h"
-#import "NSManagedObjectModel+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LXMigrationManager ()
-@property (nonatomic) NSMutableArray<NSString *> *modelPaths;
-@end
-
 @implementation LXMigrationManager
 
-- (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
-							toFinalModel:(NSManagedObjectModel *)finalModel
+static NSManagedObjectModel *_finalModel;
+static NSMutableArray<NSString *> *_modelPaths;
+
++ (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
+						   withModelName:(NSString *)modelName
 								   error:(NSError **)error
 {
+	// 获取当前数据库的元数据，用于判断兼容性
 	NSDictionary *sourceMetadata =
 	[NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
 															   URL:sourceStoreURL
@@ -31,38 +29,36 @@ NS_ASSUME_NONNULL_BEGIN
 		return NO;
 	}
 
+	if (_finalModel == nil) {
+		_finalModel = [self __modelForModelName:modelName];
+	}
+
 	// 检查当前版本和最终版本是否兼容，若不兼容则需要迁移
-	if ([finalModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata]) {
+	if ([_finalModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata]) {
 		if (error != NULL) {
 			*error = nil;
 		}
 		return YES;
 	}
 
+	// 遍历应用程序包中各版本的模型文件，并尝试匹配包中的迁移映射文件
 	NSMappingModel *mappingModel = nil;
 	NSManagedObjectModel *destinationModel = nil;
 	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil
 																	forStoreMetadata:sourceMetadata];
 	if (![self __getDestinationModel:&destinationModel
 						mappingModel:&mappingModel
-					  forSourceModel:sourceModel]) {
-
-		// 未找到对应的映射文件，尝试直接根据最终模型推断一个映射文件
-		mappingModel = [NSMappingModel inferredMappingModelForSourceModel:sourceModel
-														 destinationModel:finalModel
-																	error:error];
-		if (mappingModel == nil) {
-			return NO;
-		}
-
-		destinationModel = finalModel;
+					  forSourceModel:sourceModel
+					   withModelName:modelName
+							   error:error]) {
+		return NO; // 未找到对应的映射文件，判定为迁移失败，停止迁移
 	}
 
 	// 迁移前先创建临时存储路径
 	NSURL *destinationStoreURL = [self __destinationStoreURLWithSourceStoreURL:sourceStoreURL];
 	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
 																 destinationModel:destinationModel];
-	// 执行迁移
+	// 执行迁移过程
 	if (![manager migrateStoreFromURL:sourceStoreURL
 								 type:NSSQLiteStoreType
 							  options:nil
@@ -74,6 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return NO;
 	}
 
+	// 用临时数据库替换旧数据库
 	if (![self __replaceSourceStoreAtURL:sourceStoreURL
 			   withDestinationStoreAtURL:destinationStoreURL
 								   error:error]) {
@@ -81,33 +78,37 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	// 已经迁移到最终版本，迁移结束
-	if ([destinationModel isEqual:finalModel]) {
+	if ([destinationModel isEqual:_finalModel]) {
+		_finalModel = nil;
 		_modelPaths = nil;
 		return YES;
 	}
 
 	// 只往后迁移了一个版本，继续递归
 	return [self progressivelyMigrateStoreFromURL:sourceStoreURL
-									 toFinalModel:finalModel
+									withModelName:modelName
 											error:error];
 }
 
-- (NSMutableArray<NSString *> *)modelPaths
-{
-	if (!_modelPaths) {
-		_modelPaths = (NSMutableArray *)[NSManagedObjectModel lx_allModelPaths];
-	}
-	return _modelPaths;
-}
-
-- (BOOL)__getDestinationModel:(NSManagedObjectModel * _Nonnull *)destinationModel
++ (BOOL)__getDestinationModel:(NSManagedObjectModel * _Nonnull *)destinationModel
 				 mappingModel:(NSMappingModel * _Nonnull *)mappingModel
 			   forSourceModel:(NSManagedObjectModel *)sourceModel
+				withModelName:(NSString *)modelName
+						error:(NSError **)error
 {
 	*mappingModel = nil;
 	*destinationModel = nil;
 
+	if (_modelPaths == nil) {
+		_modelPaths = [[self __modelPathsForModelName:modelName] mutableCopy];
+	}
+
 	if (_modelPaths.count == 0) {
+		if (error != NULL) {
+			*error = [NSError errorWithDomain:@"LXMigrationDomain"
+										 code:233
+									 userInfo:@{NSLocalizedDescriptionKey : @"未找到匹配的映射模型!"}];
+		}
 		return NO;
 	}
 
@@ -119,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 											  NSUInteger idx,
 											  BOOL * _Nonnull stop) {
 
-		// 根据应用程序包中的某个 .mom 文件（即 .xcdatamodeld 文件）创建 NSManagedObjectModel
+		// 根据应用程序包中的某个 .mom 文件（即 .xcdatamodel 文件）创建 NSManagedObjectModel
 		model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
 
 		// 根据当前模型和目标模型在应用程序包内查找对应的迁移映射文件
@@ -139,10 +140,28 @@ NS_ASSUME_NONNULL_BEGIN
 		return YES;
 	}
 
+	if (error != NULL) {
+		*error = [NSError errorWithDomain:@"LXMigrationDomain"
+									 code:233
+								 userInfo:@{NSLocalizedDescriptionKey : @"未找到匹配的映射模型!"}];
+	}
 	return NO;
 }
 
-- (NSURL *)__destinationStoreURLWithSourceStoreURL:(NSURL *)sourceStoreURL
++ (NSManagedObjectModel *)__modelForModelName:(NSString *)modelName
+{
+	NSString *modelPath = [[NSBundle mainBundle] pathForResource:modelName ofType:@"momd"];
+	return [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+}
+
++ (NSArray<NSString *> *)__modelPathsForModelName:(NSString *)modelName
+{
+	// 各版本的 .xcdatamodel 文件均位于应用程序包的 .momd 文件夹内，扩展名 .xcdatamodel 会变为 .mom
+	return [[NSBundle mainBundle] pathsForResourcesOfType:@"mom"
+											  inDirectory:[modelName stringByAppendingPathExtension:@"momd"]];
+}
+
++ (NSURL *)__destinationStoreURLWithSourceStoreURL:(NSURL *)sourceStoreURL
 {
 	// xxx.sqlite => xxx_temp.sqlite
 	NSString *absoluteString = sourceStoreURL.absoluteString;
@@ -151,7 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return [NSURL URLWithString:absoluteString];
 }
 
-- (BOOL)__replaceSourceStoreAtURL:(NSURL *)sourceStoreURL
++ (BOOL)__replaceSourceStoreAtURL:(NSURL *)sourceStoreURL
 		withDestinationStoreAtURL:(NSURL *)destinationStoreURL
 							error:(NSError **)error
 {

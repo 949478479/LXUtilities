@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<NSString *> *)lx_modelPathsForModelName:(NSString *)modelName
 {
-	// 各版本的 .xcdatamodeld 文件均位于应用程序包的 .momd 文件夹内，扩展名 .xcdatamodeld 会变为 .mom
+	// 各版本的 .xcdatamodel 文件均位于应用程序包的 .momd 文件夹内，扩展名 .xcdatamodel 会变为 .mom
 	return [[NSBundle mainBundle] pathsForResourcesOfType:@"mom"
 											  inDirectory:[modelName stringByAppendingPathExtension:@"momd"]];
 }

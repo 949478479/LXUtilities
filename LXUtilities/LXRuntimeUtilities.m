@@ -10,17 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-void LXMethodSwizzling(Class cls, SEL originalSelector, SEL swizzledSelector)
+void LXMethodSwizzling(Class cls, SEL originalSel, SEL swizzledSel)
 {
-    Method originalMethod = class_getInstanceMethod(cls, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(cls, swizzledSelector);
+    Method originalMethod = class_getInstanceMethod(cls, originalSel);
+    Method swizzledMethod = class_getInstanceMethod(cls, swizzledSel);
 
     IMP originalIMP = method_getImplementation(originalMethod);
     IMP swizzledIMP = method_getImplementation(swizzledMethod);
 
     const char *swizzledTypes = method_getTypeEncoding(swizzledMethod);
 
-    BOOL didAddMethod = class_addMethod(cls, originalSelector, swizzledIMP, swizzledTypes);
+    BOOL didAddMethod = class_addMethod(cls, originalSel, swizzledIMP, swizzledTypes);
 
     if (didAddMethod) {
         method_setImplementation(swizzledMethod, originalIMP);
@@ -29,7 +29,7 @@ void LXMethodSwizzling(Class cls, SEL originalSelector, SEL swizzledSelector)
     }
 }
 
-NSArray<NSString *> * lx_protocol_propertyList(Protocol *protocol)
+NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
 {
     NSMutableArray *propertyList = [NSMutableArray new];
     {
@@ -38,7 +38,7 @@ NSArray<NSString *> * lx_protocol_propertyList(Protocol *protocol)
         for (uint i = 0; i< outCount; ++i) {
             [propertyList addObject:[NSString stringWithUTF8String:property_getName(properties[i])]];
         }
-        free(properties);
+		if (properties) free(properties);
     }
     return propertyList;
 }

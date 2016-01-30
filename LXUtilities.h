@@ -41,6 +41,7 @@
 #import "LXUIKitUtilities.h"
 #import "LXRuntimeUtilities.h"
 #import "LXDynamicTypeManager.h"
+#import "LXCoreDataController.h"
 
 #import "LXTimer.h"
 #import "LXImagePicker.h"

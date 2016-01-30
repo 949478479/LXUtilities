@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXMigrationManager : NSObject
 
-/// 迁移当前数据库，使之兼容指定数据模型。此方法优先查找 `mainBundle` 中的映射文件，再尝试自动生成映射文件。
-- (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
-							toFinalModel:(NSManagedObjectModel *)finalModel
+/// 查找 `mainBundle` 中的映射文件，迁移当前数据库，使之兼容最新模型。若成功返回 `YES`，否则返回 `NO`。
++ (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
+						   withModelName:(NSString *)modelName
 								   error:(NSError **)error;
 
 @end

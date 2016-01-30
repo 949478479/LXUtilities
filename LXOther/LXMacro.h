@@ -7,11 +7,12 @@
 
 #pragma mark - 安全调用闭包 -
 
-///-----------------
-/// @name 安全调用闭包
-///-----------------
+///------------
+/// @name 便捷宏
+///------------
 
-#define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); };
+#define LXFree(ptr) if (ptr != NULL) { free(ptr); }
+#define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); }
 
 #pragma mark - 忽略警告 -
 
