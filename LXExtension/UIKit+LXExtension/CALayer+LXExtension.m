@@ -37,15 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CALayer (LXExtension)
 
-#pragma mark - Bounds|Frame -
+#pragma mark - 几何布局 -
 
 #pragma mark size
 
 - (void)setLx_size:(CGSize)lx_size
 {
     CGRect frame = self.frame;
-    frame.size   = lx_size;
-    self.frame   = frame;
+    frame.size = lx_size;
+    self.frame = frame;
 }
 
 - (CGSize)lx_size
@@ -55,26 +55,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setLx_width:(CGFloat)lx_width
 {
-    CGRect frame     = self.frame;
+    CGRect frame = self.frame;
     frame.size.width = lx_width;
-    self.frame       = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_width
 {
-    return CGRectGetWidth(self.frame);
+    return self.frame.size.width;
 }
 
 - (void)setLx_height:(CGFloat)lx_height
 {
-    CGRect frame      = self.frame;
+    CGRect frame = self.frame;
     frame.size.height = lx_height;
-    self.frame        = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_height
 {
-    return CGRectGetHeight(self.frame);
+    return self.frame.size.height;
 }
 
 #pragma mark origin
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     CGRect frame = self.frame;
     frame.origin = lx_origin;
-    self.frame   = frame;
+    self.frame = frame;
 }
 
 - (CGPoint)lx_origin
@@ -93,26 +93,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setLx_originX:(CGFloat)lx_originX
 {
-    CGRect frame   = self.frame;
+    CGRect frame = self.frame;
     frame.origin.x = lx_originX;
-    self.frame     = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_originX
 {
-    return CGRectGetMinX(self.frame);
+    return self.frame.origin.x;
 }
 
 - (void)setLx_originY:(CGFloat)lx_originY
 {
-    CGRect frame   = self.frame;
+    CGRect frame = self.frame;
     frame.origin.y = lx_originY;
-    self.frame     = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_originY
 {
-    return CGRectGetMinY(self.frame);
+    return self.frame.origin.y;
 }
 
 #pragma mark position
@@ -120,8 +120,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setLx_positionX:(CGFloat)lx_positionX
 {
     CGPoint position = self.position;
-    position.x       = lx_positionX;
-    self.position    = position;
+    position.x = lx_positionX;
+    self.position = position;
 }
 
 - (CGFloat)lx_positionX
@@ -132,8 +132,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setLx_positionY:(CGFloat)lx_positionY
 {
     CGPoint position = self.position;
-    position.y       = lx_positionY;
-    self.position    = position;
+    position.y = lx_positionY;
+    self.position = position;
 }
 
 - (CGFloat)lx_positionY
@@ -155,31 +155,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
-             completion:(nullable void(^)(BOOL finished))completion
+             completion:(void(^)(BOOL finished))completion
 {
     [self lx_addAnimation:anim
                    forKey:key
-        modelLayerUpdater:(void (^_Nonnull)())nil
+        modelLayerUpdater:(void (^_Nonnull)(void))nil
                completion:completion];
 }
 
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
       modelLayerUpdater:(void (^)(void))modelLayerUpdater
-             completion:(nullable void(^)(BOOL finished))completion
+             completion:(void (^)(BOOL finished))completion
 {
     if (completion) {
         anim.delegate = [[_LXAnimationDelegate alloc] initWithCompletion:completion];
     }
 
-    if (modelLayerUpdater) modelLayerUpdater();
+	if (modelLayerUpdater) {
+		modelLayerUpdater();
+	}
 
     [self addAnimation:anim forKey:key];
 }
 
 - (void)setLx_paused:(BOOL)lx_paused
 {
-    if (lx_paused == self.lx_paused) return;
+	if (lx_paused == self.lx_paused) {
+		return;
+	}
 
     if (lx_paused) {
         /* speed 设置为 0.0 将导致图层本地时间变为 0.0，而无论 beginTime 和 timeOffset 之前的值是多少，

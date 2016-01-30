@@ -16,12 +16,13 @@ static NSManagedObjectModel *_finalModel;
 static NSMutableArray<NSString *> *_modelPaths;
 
 + (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
-						   withModelName:(NSString *)modelName
+							   storeType:(NSString *)storeType
+							   modelName:(NSString *)modelName
 								   error:(NSError **)error
 {
 	// 获取当前数据库的元数据，用于判断兼容性
 	NSDictionary *sourceMetadata =
-	[NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+	[NSPersistentStoreCoordinator metadataForPersistentStoreOfType:storeType
 															   URL:sourceStoreURL
 														   options:nil
 															 error:error];
@@ -60,11 +61,11 @@ static NSMutableArray<NSString *> *_modelPaths;
 																 destinationModel:destinationModel];
 	// 执行迁移过程
 	if (![manager migrateStoreFromURL:sourceStoreURL
-								 type:NSSQLiteStoreType
+								 type:storeType
 							  options:nil
 					 withMappingModel:mappingModel
 					 toDestinationURL:destinationStoreURL
-					  destinationType:NSSQLiteStoreType
+					  destinationType:storeType
 				   destinationOptions:nil
 								error:error]) {
 		return NO;
@@ -86,7 +87,8 @@ static NSMutableArray<NSString *> *_modelPaths;
 
 	// 只往后迁移了一个版本，继续递归
 	return [self progressivelyMigrateStoreFromURL:sourceStoreURL
-									withModelName:modelName
+										storeType:storeType
+										modelName:modelName
 											error:error];
 }
 

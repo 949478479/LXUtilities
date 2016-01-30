@@ -11,11 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CALayer (LXExtension)
 
-#pragma mark - Bounds|Frame -
+#pragma mark - 几何布局 -
 
-///-------------------
-/// @name Bounds|Frame
-///-------------------
+///-------------------------------------
+/// @name 几何布局（基于 frame 而非 bounds）
+///-------------------------------------
+
+///
 
 @property (nonatomic) CGSize  lx_size;
 @property (nonatomic) CGFloat lx_width;
@@ -34,39 +36,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 动画
 ///-----------
 
-/// 暂停、恢复动画
+/// 暂停、恢复动画。
 @property (nonatomic) BOOL lx_paused;
 
-/**
- *  为图层添加动画。
- *
- *  @param key               动画的 key。
- *  @param modelLayerUpdater 在此 block 中更新图层属性不会触发隐式动画。
- *  @param completion        动画停止时调用此 block，不要设置动画代理。
- */
-- (void)lx_addAnimation:(CAAnimation *)anim
-                 forKey:(nullable NSString *)key
-      modelLayerUpdater:(void (^)(void))modelLayerUpdater
-             completion:(nullable void(^)(BOOL finished))completion;
-/**
- *  为图层添加动画。
- *
- *  @param key               动画的 key。
- *  @param modelLayerUpdater 在此 block 中更新图层属性不会触发隐式动画。
- */
+/// 添加动画。在闭包中更新图层属性不会触发隐式动画。
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
       modelLayerUpdater:(void (^)(void))modelLayerUpdater;
-/**
- *  为图层添加动画。
- *
- *  @param key               动画的 key。
- *  @param completion        动画停止时调用此 block，不要设置动画代理。
- */
+
+/// 添加动画。注意不要设置动画代理。
 - (void)lx_addAnimation:(CAAnimation *)anim
                  forKey:(nullable NSString *)key
-             completion:(nullable void(^)(BOOL finished))completion;
+             completion:(void (^)(BOOL finished))completion;
 
+/// 添加动画。在 `modelLayerUpdater` 闭包中更新图层属性不会触发隐式动画。注意不要设置动画代理。
+- (void)lx_addAnimation:(CAAnimation *)anim
+				 forKey:(nullable NSString *)key
+	  modelLayerUpdater:(void (^)(void))modelLayerUpdater
+			 completion:(void (^)(BOOL finished))completion;
 @end
 
 NS_ASSUME_NONNULL_END

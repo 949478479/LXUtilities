@@ -11,11 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (LXExtension)
 
-#pragma mark - Bounds|Frame -
+#pragma mark - 几何布局 -
 
-///-------------------
-/// @name Bounds|Frame
-///-------------------
+///--------------------------
+/// @name 几何布局（基于 frame）
+///--------------------------
+
+///
 
 @property (nonatomic) CGSize  lx_size;
 @property (nonatomic) CGFloat lx_width;
@@ -28,87 +30,65 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat lx_centerX;
 @property (nonatomic) CGFloat lx_centerY;
 
-#pragma mark - CALyer -
+#pragma mark - 图层 -
 
-///-------------
-/// @name CALyer
-///-------------
+///-----------
+/// @name 图层
+///-----------
 
-/**
- *  @c layer.cornerRadius
- */
+/// 图层圆角。
 @property (nonatomic) IBInspectable CGFloat cornerRadius;
-/**
- *  @c layer.borderWidth
- */
+/// 图层边框宽度。
 @property (nonatomic) IBInspectable CGFloat borderWidth;
-/**
- *  @c layer.borderColor
- */
+/// 图层边框颜色。
 @property (nullable, nonatomic) IBInspectable UIColor *borderColor;
 
-/**
- *  为 @c layer 添加子图层。
- *
- *  @param layer 要添加的子图层。
- */
+/// 添加图层到附属图层上。
 - (void)lx_addSublayer:(CALayer *)layer;
 
-#pragma mark - UIViewController -
+#pragma mark - 视图控制器 -
 
-///-----------------------
-/// @name UIViewController
-///-----------------------
+///----------------
+/// @name 视图控制器
+///----------------
 
-/**
- *  获取视图所属的视图控制器，即响应链上最近的 @c UIViewController。
- */
+/// 视图或祖先视图所属的 `UIViewController`。
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_viewController;
-/**
- *  获取视图所属的导航控制器，即响应链上最近的 @c UINavigationController。
- */
+/// 视图或祖先视图所属的 `UITabBarController`。
 @property (nullable, nonatomic, readonly) __kindof UITabBarController *lx_tabBarController;
-/**
- *  获取视图所属的选项卡控制器，即响应链上最近的 @c UITabBarController。
- */
+/// 视图或祖先视图所属的 `UISplitViewController`。
+@property (nullable, nonatomic, readonly) __kindof UISplitViewController *lx_splitViewController;
+/// 视图或祖先视图所属的 `UINavigationController`。
 @property (nullable, nonatomic, readonly) __kindof UINavigationController *lx_navigationController;
 
 #pragma mark - UINib -
 
-///------------
-/// @name UINib
-///------------
+///----------
+/// @name xib
+///----------
 
-/**
- *  根据和类名同名的 xib 文件创建 @c UINib 对象。
- */
+/// 根据和类名同名的 `xib` 文件创建 `UINib` 对象。
 + (UINib *)lx_nib;
 
-/**
- *  返回 xib 文件名，即类名。
- */
+/// 类名字符串。
 + (NSString *)lx_nibName;
 
-/**
- *  使用和类名同名的 xib 文件实例化视图。
- */
+/// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNib NS_SWIFT_UNAVAILABLE("使用 instantiateFromNib() 方法。");
 
-/**
- *  使用和类名同名的 xib 文件实例化视图。
- */
+/// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
                                        options:(nullable NSDictionary *)optionsOrNil NS_SWIFT_UNAVAILABLE("使用 instantiateFromNibWithOwner(_:options:) 方法。");
-
 #pragma mark - 动画 -
 
 ///-----------
 /// @name 动画
 ///-----------
 
-/**
- *  执行晃动动画。
- */
+/// 暂停、恢复动画。
+@property (nonatomic) BOOL lx_paused;
+
+/// 执行水平晃动动画。
 - (void)lx_performShakeAnimation;
 
 @end

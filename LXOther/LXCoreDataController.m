@@ -24,16 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-	NSAssert(NO, @"使用指定构造器 -[LXCoreDataController initWithModelName:storeName:]");
-	return [self initWithModelName:@"" storeName:@""];
+	NSAssert(NO, @"使用指定构造器 -[LXCoreDataController initWithModelName:storeName:storeType:]");
+	return [self initWithModelName:@"" storeName:@"" storeType:@""];
 }
 
-- (instancetype)initWithModelName:(NSString *)modelName storeName:(NSString *)storeName
+- (instancetype)initWithModelName:(NSString *)modelName
+						storeName:(NSString *)storeName
+						storeType:(NSString *)storeType
 {
 	self = [super init];
 	if (self) {
 		_modelName = modelName.copy;
 		_storeName = storeName.copy;
+		_storeType = storeType.copy;
 	}
 	return self;
 }
@@ -65,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 		_persistentStoreCoordinator =
 		[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
 
-		[_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+		[_persistentStoreCoordinator addPersistentStoreWithType:self.storeType
 												  configuration:nil
 															URL:self.storeURL
 														options:nil
@@ -94,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	NSError *error = nil;
 	NSDictionary *sourceMetadata =
-	[NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+	[NSPersistentStoreCoordinator metadataForPersistentStoreOfType:self.storeType
 															   URL:self.storeURL
 														   options:nil
 															 error:&error];
@@ -118,7 +121,8 @@ NS_ASSUME_NONNULL_BEGIN
 	}];
 
 	BOOL success = [LXMigrationManager progressivelyMigrateStoreFromURL:self.storeURL
-														  withModelName:self.modelName
+															  storeType:self.storeType
+															  modelName:self.modelName
 																  error:error];
 	success ? LXLog(@"迁移完成!~") : LXLog(@"迁移失败。。");
 

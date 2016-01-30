@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 查找 `mainBundle` 中的映射文件，迁移当前数据库，使之兼容最新模型。若成功返回 `YES`，否则返回 `NO`。
 + (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
-						   withModelName:(NSString *)modelName
+							   storeType:(NSString *)storeType
+							   modelName:(NSString *)modelName
 								   error:(NSError **)error;
 
 @end

@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LXCoreDataController : NSObject
 
 - (LXCoreDataController *)initWithModelName:(NSString *)modelName
-								  storeName:(NSString *)storeName NS_DESIGNATED_INITIALIZER;
+								  storeName:(NSString *)storeName
+								  storeType:(NSString *)storeType NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)migrate:(NSError **)error;
 - (BOOL)saveIfNeed:(NSError **)error;
@@ -23,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSURL *storeURL;
 @property (nonatomic, readonly) NSString *modelName;
 @property (nonatomic, readonly) NSString *storeName;
+@property (nonatomic, readonly) NSString *storeType;
 
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;

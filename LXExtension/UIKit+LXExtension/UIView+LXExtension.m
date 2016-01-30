@@ -6,20 +6,21 @@
 //
 
 #import "UIView+LXExtension.h"
+#import "CALayer+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (LXExtension)
 
-#pragma mark - Bounds|Frame -
+#pragma mark - 几何布局 -
 
 #pragma mark size
 
 - (void)setLx_size:(CGSize)lx_size
 {
     CGRect frame = self.frame;
-    frame.size   = lx_size;
-    self.frame   = frame;
+    frame.size = lx_size;
+    self.frame = frame;
 }
 
 - (CGSize)lx_size
@@ -29,26 +30,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setLx_width:(CGFloat)lx_width
 {
-    CGRect frame     = self.frame;
+    CGRect frame = self.frame;
     frame.size.width = lx_width;
-    self.frame       = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_width
 {
-    return CGRectGetWidth(self.frame);
+    return self.frame.size.height;
 }
 
 - (void)setLx_height:(CGFloat)lx_height
 {
-    CGRect frame      = self.frame;
+    CGRect frame = self.frame;
     frame.size.height = lx_height;
-    self.frame        = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_height
 {
-    return CGRectGetHeight(self.frame);
+    return self.frame.size.height;
 }
 
 #pragma mark origin
@@ -57,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     CGRect frame = self.frame;
     frame.origin = lx_origin;
-    self.frame   = frame;
+    self.frame = frame;
 }
 
 - (CGPoint)lx_origin
@@ -67,33 +68,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setLx_originX:(CGFloat)lx_originX
 {
-    CGRect frame   = self.frame;
+    CGRect frame = self.frame;
     frame.origin.x = lx_originX;
-    self.frame     = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_originX
 {
-    return CGRectGetMinX(self.frame);
+    return self.frame.origin.x;
 }
 
 - (void)setLx_originY:(CGFloat)lx_originY
 {
-    CGRect frame   = self.frame;
+    CGRect frame = self.frame;
     frame.origin.y = lx_originY;
-    self.frame     = frame;
+    self.frame = frame;
 }
 
 - (CGFloat)lx_originY
 {
-    return CGRectGetMinY(self.frame);
+    return self.frame.origin.y;
 }
 
 #pragma mark center
 
 - (void)setLx_centerX:(CGFloat)lx_centerX
 {
-    self.center = CGPointMake(lx_centerX, self.center.y);
+	self.center = (CGPoint){lx_centerX, self.center.y};
 }
 
 - (CGFloat)lx_centerX
@@ -103,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setLx_centerY:(CGFloat)lx_centerY
 {
-    self.center = CGPointMake(self.center.x, lx_centerY);
+	self.center = (CGPoint){self.center.x, lx_centerY};
 }
 
 - (CGFloat)lx_centerY
@@ -111,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.center.y;
 }
 
-#pragma mark - CALayer -
+#pragma mark - 图层 -
 
 #pragma mark 图层圆角
 
@@ -157,42 +158,50 @@ NS_ASSUME_NONNULL_BEGIN
     [self.layer addSublayer:layer];
 }
 
-#pragma mark - UIViewController -
+#pragma mark - 视图控制器 -
 
 - (nullable __kindof UIViewController *)lx_viewController
 {
-    UIResponder *nextResponder = self.nextResponder;
+	UIResponder *responder = self.nextResponder;
 
-    while (nextResponder && ![nextResponder isKindOfClass:UIViewController.class]) {
-        nextResponder = nextResponder.nextResponder;
-    }
+	for (Class cls = [UIViewController class]; responder && ![responder isKindOfClass:cls];) {
+		responder = responder.nextResponder;
+	}
 
-    return (UIViewController *)nextResponder;
-}
-
-- (nullable __kindof UINavigationController *)lx_navigationController
-{
-    UIResponder *nextResponder = self.nextResponder;
-
-    while (nextResponder && ![nextResponder isKindOfClass:UINavigationController.class]) {
-        nextResponder = nextResponder.nextResponder;
-    }
-
-    return (UINavigationController *)nextResponder;
+	return (UIViewController * _Nullable)responder;
 }
 
 - (nullable __kindof UITabBarController *)lx_tabBarController
 {
-    UIResponder *nextResponder = self.nextResponder;
+	UIViewController *vc = self.lx_viewController;
 
-    while (nextResponder && ![nextResponder isKindOfClass:UITabBarController.class]) {
-        nextResponder = nextResponder.nextResponder;
-    }
-
-    return (UITabBarController *)nextResponder;
+	if ([vc isKindOfClass:[UITabBarController class]]) {
+		return (UITabBarController * _Nullable)vc;
+	}
+	return vc.tabBarController;
 }
 
-#pragma mark - UINib -
+- (nullable __kindof UISplitViewController *)lx_splitViewController
+{
+	UIViewController *vc = self.lx_viewController;
+
+	if ([vc isKindOfClass:[UISplitViewController class]]) {
+		return (UISplitViewController * _Nullable)vc;
+	}
+	return vc.splitViewController;
+}
+
+- (nullable __kindof UINavigationController *)lx_navigationController
+{
+	UIViewController *vc = self.lx_viewController;
+
+	if ([vc isKindOfClass:[UINavigationController class]]) {
+		return (UINavigationController * _Nullable)vc;
+	}
+	return vc.navigationController;
+}
+
+#pragma mark - xib -
 
 + (UINib *)lx_nib
 {
@@ -212,7 +221,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
                                        options:(nullable NSDictionary *)optionsOrNil
 {
-    NSArray *views = [[self lx_nib] instantiateWithOwner:ownerOrNil options:optionsOrNil];
+    NSArray *views = [self.lx_nib instantiateWithOwner:ownerOrNil options:optionsOrNil];
     for (UIView *view in views) {
         if ([view isMemberOfClass:self]) {
             return view;
@@ -223,6 +232,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - 动画 -
+
+- (void)setLx_paused:(BOOL)lx_paused
+{
+	self.layer.lx_paused = lx_paused;
+}
+
+- (BOOL)lx_paused
+{
+	return self.layer.lx_paused;
+}
 
 - (void)lx_performShakeAnimation
 {
