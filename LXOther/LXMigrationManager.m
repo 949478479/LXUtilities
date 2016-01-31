@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation LXMigrationManager
 
 static NSManagedObjectModel *_finalModel;
-static NSMutableArray<NSString *> *_modelPaths;
+static NSMutableArray<NSURL *> *_modelURLs;
 
 + (BOOL)progressivelyMigrateStoreFromURL:(NSURL *)sourceStoreURL
 							   storeType:(NSString *)storeType
@@ -81,7 +81,7 @@ static NSMutableArray<NSString *> *_modelPaths;
 	// 已经迁移到最终版本，迁移结束
 	if ([destinationModel isEqual:_finalModel]) {
 		_finalModel = nil;
-		_modelPaths = nil;
+		_modelURLs  = nil;
 		return YES;
 	}
 
@@ -101,11 +101,11 @@ static NSMutableArray<NSString *> *_modelPaths;
 	*mappingModel = nil;
 	*destinationModel = nil;
 
-	if (_modelPaths == nil) {
-		_modelPaths = [[self __modelPathsForModelName:modelName] mutableCopy];
+	if (_modelURLs == nil) {
+		_modelURLs = [[self __modelPathsForModelName:modelName] mutableCopy];
 	}
 
-	if (_modelPaths.count == 0) {
+	if (_modelURLs.count == 0) {
 		if (error != NULL) {
 			*error = [NSError errorWithDomain:@"LXMigrationDomain"
 										 code:233
@@ -118,12 +118,12 @@ static NSMutableArray<NSString *> *_modelPaths;
 	__block NSMappingModel *mapping = nil;
 	__block NSManagedObjectModel *model = nil;
 
-	[_modelPaths enumerateObjectsUsingBlock:^(NSString * _Nonnull modelPath,
+	[_modelURLs enumerateObjectsUsingBlock:^(NSURL * _Nonnull modelURL,
 											  NSUInteger idx,
 											  BOOL * _Nonnull stop) {
 
 		// 根据应用程序包中的某个 .mom 文件（即 .xcdatamodel 文件）创建 NSManagedObjectModel
-		model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+		model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 
 		// 根据当前模型和目标模型在应用程序包内查找对应的迁移映射文件
 		mapping = [NSMappingModel mappingModelFromBundles:nil
@@ -138,7 +138,7 @@ static NSMutableArray<NSString *> *_modelPaths;
 	if (index != NSNotFound) {
 		*mappingModel = mapping;
 		*destinationModel = model;
-		[_modelPaths removeObjectAtIndex:index]; // 移除该路径避免下次递归时重复判断
+		[_modelURLs removeObjectAtIndex:index]; // 移除该路径避免下次递归时重复判断
 		return YES;
 	}
 
@@ -152,15 +152,15 @@ static NSMutableArray<NSString *> *_modelPaths;
 
 + (NSManagedObjectModel *)__modelForModelName:(NSString *)modelName
 {
-	NSString *modelPath = [[NSBundle mainBundle] pathForResource:modelName ofType:@"momd"];
-	return [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"momd"];
+	return [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 }
 
-+ (NSArray<NSString *> *)__modelPathsForModelName:(NSString *)modelName
++ (NSArray<NSURL *> *)__modelPathsForModelName:(NSString *)modelName
 {
 	// 各版本的 .xcdatamodel 文件均位于应用程序包的 .momd 文件夹内，扩展名 .xcdatamodel 会变为 .mom
-	return [[NSBundle mainBundle] pathsForResourcesOfType:@"mom"
-											  inDirectory:[modelName stringByAppendingPathExtension:@"momd"]];
+	NSString *directory = [modelName stringByAppendingPathExtension:@"momd"];
+	return [[NSBundle mainBundle] URLsForResourcesWithExtension:@"mom" subdirectory:directory];
 }
 
 + (NSURL *)__destinationStoreURLWithSourceStoreURL:(NSURL *)sourceStoreURL

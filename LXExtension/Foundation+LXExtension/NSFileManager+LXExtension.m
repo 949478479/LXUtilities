@@ -14,9 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)lx_pathToApplicationSupportDirectory
 {
-	NSString *applicationSupportDirectory = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-																				NSUserDomainMask,
-																				YES)[0];
+	NSString *applicationSupportDirectory =
+	NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+										NSUserDomainMask,
+										YES)[0];
 	BOOL isDir = NO;
 	NSError *error = nil;
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -24,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 	// Application Support 存在
 	if ([fileManager fileExistsAtPath:applicationSupportDirectory
 						  isDirectory:&isDir]) {
-		if (isDir == NO) { // 但是个文件而不是文件夹，移除该文件
+		if (isDir == NO) { // Application Support 是个文件而不是文件夹，移除该文件
 			[fileManager removeItemAtPath:applicationSupportDirectory error:&error];
 			if (error != nil) {
 				LXLog(error.localizedDescription);

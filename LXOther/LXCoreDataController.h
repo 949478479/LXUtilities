@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) BOOL isMigrationNeeded;
 
-@property (nonatomic, readonly) NSURL *storeURL;
+@property (nonatomic, readonly) NSURL	 *storeURL;
 @property (nonatomic, readonly) NSString *modelName;
 @property (nonatomic, readonly) NSString *storeName;
 @property (nonatomic, readonly) NSString *storeType;

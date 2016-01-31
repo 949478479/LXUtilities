@@ -11,45 +11,40 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSManagedObjectModel (LXExtension)
 
-+ (NSArray<NSString *> *)lx_modelPathsForModelName:(NSString *)modelName
++ (nullable NSArray<NSURL *> *)lx_modelURLsForModelName:(NSString *)modelName
 {
 	// 各版本的 .xcdatamodel 文件均位于应用程序包的 .momd 文件夹内，扩展名 .xcdatamodel 会变为 .mom
-	return [[NSBundle mainBundle] pathsForResourcesOfType:@"mom"
-											  inDirectory:[modelName stringByAppendingPathExtension:@"momd"]];
+	NSString *directory = [modelName stringByAppendingPathExtension:@"momd"];
+	return [[NSBundle mainBundle] URLsForResourcesWithExtension:@"mom" subdirectory:directory];
 }
 
-+ (NSArray<NSString *> *)lx_allModelPaths
++ (nullable NSArray<NSURL *> *)lx_allModelURLs
 {
-	NSMutableArray *modelPaths = [NSMutableArray new];
-	{
-        NSArray  *paths          = nil;
-        NSString *modelDirectory = nil;
-        NSBundle *mainBundle     = [NSBundle mainBundle];
-        NSArray  *momdArray      = [mainBundle pathsForResourcesOfType:@"momd" inDirectory:nil];
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSArray *momdURLs = [mainBundle URLsForResourcesWithExtension:@"momd" subdirectory:nil];
 
-		for (NSString *momdPath in momdArray) {
-			modelDirectory = [momdPath lastPathComponent];
-			paths = [mainBundle pathsForResourcesOfType:@"mom" inDirectory:modelDirectory];
-			[modelPaths addObjectsFromArray:paths];
-		}
+	if (momdURLs.count == 0) {
+		return nil;
 	}
+
+	NSMutableArray *modelPaths = [NSMutableArray new];
+
+	for (NSURL *momdURL in momdURLs) {
+		NSString *directory = [momdURL lastPathComponent];
+		NSArray *paths = [mainBundle URLsForResourcesWithExtension:@"mom" subdirectory:directory];
+		[modelPaths addObjectsFromArray:paths];
+	}
+
 	return modelPaths;
 }
 
-- (NSString *)lx_modelName
+- (nullable NSString *)lx_modelName
 {
-    NSURL *modelURL = nil;
-	NSManagedObjectModel *model = nil;
-    NSArray *modelPaths = [[self class] lx_allModelPaths];
-
-	for (NSString *modelPath in modelPaths) {
-		modelURL = [NSURL fileURLWithPath:modelPath];
-		model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-		if ([model isEqual:self]) {
+	for (NSURL *modelURL in [self.class lx_allModelURLs]) {
+		if ([[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] isEqual:self]) {
 			return modelURL.lastPathComponent.stringByDeletingPathExtension;
 		}
 	}
-
 	return nil;
 }
 

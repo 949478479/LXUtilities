@@ -13,14 +13,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LXCoreDataController	()
-@property (nonatomic, readwrite) NSURL *storeURL;
-@property (nonatomic, readwrite) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readwrite) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@end
-
 @implementation LXCoreDataController
+
+@synthesize storeURL = _storeURL;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (instancetype)init
 {
@@ -44,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSManagedObjectContext *)managedObjectContext
 {
 	if (_managedObjectContext == nil) {
-		_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+		_managedObjectContext =
+		[[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 		_managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
 	}
 	return _managedObjectContext;
@@ -53,8 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSManagedObjectModel *)managedObjectModel
 {
 	if (_managedObjectModel == nil) {
-		NSString *modelPath = [[NSBundle mainBundle] pathForResource:_modelName ofType:@"momd"];
-		NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
+		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:_modelName withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 	}
 	return _managedObjectModel;
