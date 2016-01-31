@@ -84,9 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	if (_storeURL == nil) {
 		NSString *storeName = [NSString stringWithFormat:@"%@.sqlite", _storeName];
-		NSString *applicationSupportDirectoryPath = [NSFileManager lx_pathToApplicationSupportDirectory];
-		NSString *storePath = [applicationSupportDirectoryPath stringByAppendingPathComponent:storeName];
-		_storeURL = [NSURL fileURLWithPath:storePath];
+		NSURL *directoryURL = [NSFileManager lx_URLForApplicationSupportDirectory];
+		_storeURL = [directoryURL URLByAppendingPathComponent:storeName];
 	}
 	return _storeURL;
 }

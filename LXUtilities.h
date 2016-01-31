@@ -37,7 +37,6 @@
 
 #import "LXWeakWrapper.h"
 #import "GCD+LXExtension.h"
-#import "LXPathUtilities.h"
 #import "LXUIKitUtilities.h"
 #import "LXRuntimeUtilities.h"
 #import "LXDynamicTypeManager.h"

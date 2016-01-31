@@ -12,32 +12,63 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSFileManager (LXExtension)
 
-+ (NSString *)lx_pathToApplicationSupportDirectory
+#pragma mark - 路径 & URL -
+
++ (NSString *)lx_pathForDocumentDirectory
 {
-	NSString *applicationSupportDirectory =
-	NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
-										NSUserDomainMask,
-										YES)[0];
+	return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+}
+
++ (NSURL *)lx_URLForDocumentDirectory
+{
+	return [NSURL fileURLWithPath:[self lx_pathForDocumentDirectory]];
+}
+
++ (NSString *)lx_pathForLibraryDirectory
+{
+	return NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+}
+
++ (NSURL *)lx_URLForLibraryDirectory
+{
+	return [NSURL fileURLWithPath:[self lx_pathForLibraryDirectory]];
+}
+
++ (NSString *)lx_pathForCachesDirectory
+{
+	return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+}
+
++ (NSURL *)lx_URLForCachesDirectory
+{
+	return [NSURL fileURLWithPath:[self lx_pathForCachesDirectory]];
+}
+
++ (NSString *)lx_pathForApplicationSupportDirectory
+{
+	NSString *directoryPath = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+																  NSUserDomainMask,
+																  YES)[0];
 	BOOL isDir = NO;
 	NSError *error = nil;
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
 	// Application Support 存在
-	if ([fileManager fileExistsAtPath:applicationSupportDirectory
+	if ([fileManager fileExistsAtPath:directoryPath
 						  isDirectory:&isDir]) {
 		if (isDir == NO) { // Application Support 是个文件而不是文件夹，移除该文件
-			[fileManager removeItemAtPath:applicationSupportDirectory error:&error];
+			[fileManager removeItemAtPath:directoryPath error:&error];
 			if (error != nil) {
 				LXLog(error.localizedDescription);
 				error = nil;
 			}
 		} else { // Application Support 文件夹已存在，直接返回路径
-			return applicationSupportDirectory;
+			return directoryPath;
 		}
 	}
 
 	// Application Support 不存在，创建该文件夹
-	[fileManager createDirectoryAtPath:applicationSupportDirectory
+	[fileManager createDirectoryAtPath:directoryPath
 		   withIntermediateDirectories:YES
 							attributes:nil
 								 error:&error];
@@ -45,8 +76,15 @@ NS_ASSUME_NONNULL_BEGIN
 		LXLog(error.localizedDescription);
 	}
 
-	return applicationSupportDirectory;
+	return directoryPath;
 }
+
++ (NSURL *)lx_URLForApplicationSupportDirectory
+{
+	return [NSURL fileURLWithPath:[self lx_pathForApplicationSupportDirectory]];
+}
+
+#pragma mark - 文件 -
 
 + (uint64_t)lx_sizeOfItemAtPath:(NSString *)path
 {
