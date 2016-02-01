@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 	return [self currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone;
 }
 
++ (uint64_t)lx_physicalMemory
+{
+	return [NSProcessInfo processInfo].physicalMemory;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

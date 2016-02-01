@@ -11,13 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (LXExtension)
 
-#pragma mark - 几何布局 -
-
 ///--------------------------
 /// @name 几何布局（基于 frame）
 ///--------------------------
 
-///
+#pragma mark - 几何布局 -
 
 @property (nonatomic) CGSize  lx_size;
 @property (nonatomic) CGFloat lx_width;
@@ -30,11 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat lx_centerX;
 @property (nonatomic) CGFloat lx_centerY;
 
-#pragma mark - 图层 -
-
 ///-----------
 /// @name 图层
 ///-----------
+
+#pragma mark - 图层 -
 
 /// 图层圆角。
 @property (nonatomic) IBInspectable CGFloat cornerRadius;
@@ -46,11 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加图层到附属图层上。
 - (void)lx_addSublayer:(CALayer *)layer;
 
-#pragma mark - 视图控制器 -
-
 ///----------------
 /// @name 视图控制器
 ///----------------
+
+#pragma mark - 视图控制器 -
 
 /// 视图或祖先视图所属的 `UIViewController`。
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_viewController;
@@ -61,17 +59,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// 视图或祖先视图所属的 `UINavigationController`。
 @property (nullable, nonatomic, readonly) __kindof UINavigationController *lx_navigationController;
 
-#pragma mark - UINib -
+///--------------
+/// @name xib 支持
+///--------------
 
-///----------
-/// @name xib
-///----------
+#pragma mark - xib 支持 -
 
-/// 根据和类名同名的 `xib` 文件创建 `UINib` 对象。
+/// 使用类名同名 `xib` 文件创建 `UINib` 实例。
 + (UINib *)lx_nib;
 
 /// 类名字符串。
 + (NSString *)lx_nibName;
+
+///---------------
+/// @name 实例化方法
+///---------------
+
+#pragma mark - 实例化方法 -
 
 /// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNib NS_SWIFT_UNAVAILABLE("使用 instantiateFromNib() 方法。");
@@ -79,11 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
                                        options:(nullable NSDictionary *)optionsOrNil NS_SWIFT_UNAVAILABLE("使用 instantiateFromNibWithOwner(_:options:) 方法。");
-#pragma mark - 动画 -
-
 ///-----------
 /// @name 动画
 ///-----------
+
+#pragma mark - 动画 -
 
 /// 暂停、恢复动画。
 @property (nonatomic) BOOL lx_paused;

@@ -12,38 +12,30 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIViewController (LXExtension)
 
 ///--------------
-/// @name 便捷属性
+/// @name 各种条栏
 ///--------------
 
-/**
- *  获取控制器的选项卡。
- */
-@property (nullable, nonatomic, readonly) UITabBar *lx_tabBar;
+#pragma mark - 各种条栏 -
 
-/**
- *  获取控制器的导航栏。
- */
+/// 控制器所属 `UITabBarController` 的 `tabBar`。
+@property (nullable, nonatomic, readonly) UITabBar *lx_tabBar;
+/// 控制器所属 `UINavigationController` 的 `toolBar`。
+@property (nullable, nonatomic, readonly) UIToolbar *lx_toolBar;
+/// 控制器所属 `UINavigationController` 的 `navigationBar`。
 @property (nullable, nonatomic, readonly) UINavigationBar *lx_navigationBar;
 
 ///---------------
 /// @name 实例化方法
 ///---------------
 
-/**
- *  使用和类名同名的 @c xib 文件实例化控制器。
- */
-+ (instancetype)lx_instantiateFromNib;
+#pragma mark - 实例化方法 -
 
-/**
- *  实例化指定故事板中的初始控制器。
- */
+/// 实例化指定故事板中的初始控制器。
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName;
 
-/**
- *  实例化指定故事板中的指定控制器。
- */
+/// 实例化指定故事板中的指定控制器。
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-                                      identifier:(NSString *)identifier;
+									  identifier:(NSString *)identifier;
 @end
 
 NS_ASSUME_NONNULL_END

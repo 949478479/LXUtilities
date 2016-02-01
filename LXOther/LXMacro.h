@@ -38,7 +38,7 @@ _Pragma(STRINGIFY(clang diagnostic ignored #warning))
 
 #define LXLog(format, ...) \
 LX_DIAGNOSTIC_PUSH_IGNORED(-Wformat-security) \
-printf("%s[%d] %s\n%s\n", \
+printf("%s[%d] %s %s\n", \
 (strrchr(__FILE__, '/') ?: __FILE__ - 1) + 1, \
 __LINE__, \
 __FUNCTION__, \

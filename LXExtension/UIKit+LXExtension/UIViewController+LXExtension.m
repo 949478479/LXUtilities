@@ -11,11 +11,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIViewController (LXExtension)
 
-#pragma mark - 便捷属性 -
+#pragma mark - 各种条栏 -
 
 - (nullable UITabBar *)lx_tabBar
 {
     return self.tabBarController.tabBar;
+}
+
+- (nullable UIToolbar *)lx_toolBar
+{
+	return self.navigationController.toolbar;
 }
 
 - (nullable UINavigationBar *)lx_navigationBar
@@ -25,14 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 实例化方法 -
 
-+ (instancetype)lx_instantiateFromNib
-{
-    return [[self alloc] initWithNibName:NSStringFromClass(self) bundle:nil];
-}
-
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
 {
-    return [self lx_instantiateWithStoryboardName:storyboardName identifier:(NSString * _Nonnull)nil];
+    return [self lx_instantiateWithStoryboardName:storyboardName identifier:(NSString *_Nonnull)nil];
 }
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName

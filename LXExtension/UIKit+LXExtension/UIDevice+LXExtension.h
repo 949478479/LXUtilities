@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设备是否是 `iPhone`。
 + (BOOL)lx_isPhone;
 
+/// 以字节为单位的设备内存大小。
++ (uint64_t)lx_physicalMemory;
+
 @end
 
 NS_ASSUME_NONNULL_END
