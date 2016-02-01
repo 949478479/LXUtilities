@@ -7,20 +7,9 @@
 
 @import UIKit;
 
-NS_ASSUME_NONNULL_BEGIN
-
+/// 该视图的高度会随键盘高度变化，键盘收回时为零，键盘弹出时为键盘高度。
+/// 在 IB 中将高度约束的值设置为零，并连接 heightConstraint 属性即可。注意不要设置其他会影响高度的约束。
 @interface LXKeyboardSpacingView : UIView
-
-/**
- *  是否自动添加 @c H:|-0-[self]-0-| 和 @c V:[self]-0-| 的约束到父视图.
- */
-@property (nonatomic) IBInspectable BOOL autoSetupConstraint;
-
-/**
- *  随键盘高度变化的高度约束.键盘收回时为 @c 0, 键盘弹出时为键盘高度.
- */
-@property (nonatomic, readonly) IBOutlet NSLayoutConstraint *heightConstraint;
-
+@property (nonnull, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;
 @end
 
-NS_ASSUME_NONNULL_END

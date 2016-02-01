@@ -5,129 +5,129 @@
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
-#import "LXUtilities.h"
+#import "UIWindow+LXExtension.h"
+#import "UIDevice+LXExtension.h"
 #import "LXImagePicker.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LXImagePicker () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
-
-@property (nonatomic, assign) BOOL isBlockMode;
-
-@property (nonatomic, strong) LXImagePickCompletionHandler    completionHandler;
-@property (nonatomic, strong) LXImagePickCancelHandler        cancelHandler;
-@property (nonatomic, strong) LXSourceTypeNotAvailableHandler notAvailableHandler;
-
+@property (nullable, nonatomic, copy) LXImagePickerSourceTypeUnAvailableHandler unAvailableHandler;
+@property (nullable, nonatomic, copy) LXImagePickerCompletionHandler completionHandler;
+@property (nullable, nonatomic, copy) LXImagePickerCancelHandler cancelHandler;
 @end
 
 @implementation LXImagePicker
 
-#pragma mark - *** 公共方法 ***
+#pragma mark - 公共方法 -
 
 - (void)showActionSheet
 {
-    NSAssert(self.delegate || self.completionHandler, @"若不使用 block 则需设置 delegate.");
+	NSParameterAssert(self.delegate != nil);
 
-    UIAlertControllerStyle style = LXDeviceIsPad() ?
-        UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
-
-    UIAlertController *alertController =
-        [UIAlertController alertControllerWithTitle:nil
-                                            message:nil
-                                     preferredStyle:style];
-
-    UIAlertAction *photoAction =
-        [UIAlertAction actionWithTitle:@"相册"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {
-                                   [self p_presentImagePickerControllerWithSourceType:
-                                    UIImagePickerControllerSourceTypePhotoLibrary];
-                               }];
-
-    UIAlertAction *cameraAction =
-        [UIAlertAction actionWithTitle:@"相机"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {
-                                   [self p_presentImagePickerControllerWithSourceType:
-                                    UIImagePickerControllerSourceTypeCamera];
-                               }];
-
-    UIAlertAction *cancelAction =
-        [UIAlertAction actionWithTitle:@"取消"
-                                 style:UIAlertActionStyleCancel
-                               handler:nil];
-
-    [alertController addAction:photoAction];
-    [alertController addAction:cameraAction];
-    [alertController addAction:cancelAction];
-
-    [LXTopViewController() presentViewController:alertController animated:YES completion:nil];
+	[self __showActionSheet];
 }
 
-- (void)showActionSheetWithImagePickCompletionHandler:(LXImagePickCompletionHandler)completionHandler
-                                        cancelHandler:(LXImagePickCancelHandler)cancelHandler
-                        sourceTypeNotAvailableHandler:(LXSourceTypeNotAvailableHandler)notAvailableHandler
+- (void)showActionSheetWithCompletionHandler:(LXImagePickerCompletionHandler)completionHandler
+							   cancelHandler:(nullable LXImagePickerCancelHandler)cancelHandler
+						  unAvailableHandler:(nullable LXImagePickerSourceTypeUnAvailableHandler)unAvailableHandler
 {
-    self.isBlockMode = YES;
+	NSParameterAssert(completionHandler != nil);
 
-    self.completionHandler   = completionHandler;
-    self.cancelHandler       = cancelHandler;
-    self.notAvailableHandler = notAvailableHandler;
+	self.cancelHandler = cancelHandler;
+	self.completionHandler = completionHandler;
+	self.unAvailableHandler = unAvailableHandler;
 
-    [self showActionSheet];
+    [self __showActionSheet];
 }
 
-- (BOOL)presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
+- (BOOL)presentImagePickerControllerForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
-    return [self p_presentImagePickerControllerWithSourceType:sourceType];
+	NSParameterAssert(self.delegate != nil);
+
+    return [self __presentImagePickerControllerWithSourceType:sourceType];
 }
 
-- (BOOL)presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
-                                 completionHandler:(LXImagePickCompletionHandler)completionHandler
-                                     cancelHandler:(LXImagePickCancelHandler)cancelHandler
+- (BOOL)presentImagePickerControllerForSourceType:(UIImagePickerControllerSourceType)sourceType
+								completionHandler:(LXImagePickerCompletionHandler)completionHandler
+									cancelHandler:(nullable LXImagePickerCancelHandler)cancelHandler
 {
-    self.isBlockMode = YES;
+	NSParameterAssert(completionHandler != nil);
 
-    self.cancelHandler     = cancelHandler;
+    self.cancelHandler = cancelHandler;
     self.completionHandler = completionHandler;
 
-    return [self p_presentImagePickerControllerWithSourceType:sourceType];
+    return [self __presentImagePickerControllerWithSourceType:sourceType];
 }
 
-#pragma mark - *** 私有方法 ***
+#pragma mark - 私有方法 -
 
-#pragma mark - 辅助方法
-
-- (BOOL)p_presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
+- (void)__showActionSheet
 {
-    NSAssert((self.delegate && !self.isBlockMode) || (self.completionHandler && self.isBlockMode),
-             @"若不使用 block 则需设置 delegate.");
+	UIAlertControllerStyle style = [UIDevice lx_isPad] ?
+	UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
 
+	UIAlertController *alertController =
+	[UIAlertController alertControllerWithTitle:self.title
+										message:self.message
+								 preferredStyle:style];
+
+	UIAlertAction *photoAction =
+	[UIAlertAction actionWithTitle:@"相册"
+							 style:UIAlertActionStyleDefault
+						   handler:^(UIAlertAction *action) {
+							   [self __presentImagePickerControllerWithSourceType:
+								UIImagePickerControllerSourceTypePhotoLibrary];
+						   }];
+
+	UIAlertAction *cameraAction =
+	[UIAlertAction actionWithTitle:@"拍照"
+							 style:UIAlertActionStyleDefault
+						   handler:^(UIAlertAction *action) {
+							   [self __presentImagePickerControllerWithSourceType:
+								UIImagePickerControllerSourceTypeCamera];
+						   }];
+
+	UIAlertAction *cancelAction =
+	[UIAlertAction actionWithTitle:@"取消"
+							 style:UIAlertActionStyleCancel
+						   handler:^(UIAlertAction *action) {
+							   if (self.actionCancelHandler) {
+								   self.actionCancelHandler();
+							   }
+						   }];
+
+	[alertController addAction:photoAction];
+	[alertController addAction:cameraAction];
+	[alertController addAction:cancelAction];
+
+	[[UIWindow lx_topViewController] presentViewController:alertController
+												  animated:YES
+												completion:nil];
+}
+
+- (BOOL)__presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
+{
     if (![UIImagePickerController isSourceTypeAvailable:sourceType]) {
 
-        if (self.isBlockMode) {
-
-            if (self.notAvailableHandler) {
-                self.notAvailableHandler();
+        if (self.completionHandler) {
+            if (self.unAvailableHandler) {
+                self.unAvailableHandler();
             }
-
-            self.cancelHandler       = nil;
-            self.completionHandler   = nil;
-            self.notAvailableHandler = nil;
-
-        } else if ([self.delegate respondsToSelector:@selector(imagePickerSourceTypeNotAvailable:)]) {
-            [self.delegate imagePickerSourceTypeNotAvailable:self];
+        } else if ([self.delegate respondsToSelector:@selector(imagePickerSourceTypeUnAvailable:)]) {
+            [self.delegate imagePickerSourceTypeUnAvailable:self];
         }
 
         return NO;
     }
 
     UIImagePickerController *ipc = [UIImagePickerController new];
-    {
-        ipc.delegate      = self;
-        ipc.sourceType    = sourceType;
-        ipc.allowsEditing = self.allowsEditing;
-    }
-    
-    [LXTopViewController() presentViewController:ipc animated:YES completion:nil];
+
+	ipc.delegate = self;
+	ipc.sourceType = sourceType;
+	ipc.allowsEditing = self.allowsEditing;
+
+    [[UIWindow lx_topViewController] presentViewController:ipc animated:YES completion:nil];
 
     return YES;
 }
@@ -142,40 +142,28 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage   = info[UIImagePickerControllerEditedImage];
 
-    if (self.isBlockMode) {
-
+    if (self.completionHandler) {
         self.completionHandler(originalImage, editedImage);
-        
-        self.cancelHandler       = nil;
-        self.completionHandler   = nil;
-        self.notAvailableHandler = nil;
-
-        return;
-    }
-
-    [self.delegate imagePicker:self didFinishPickingOriginalImage:originalImage editedImage:editedImage];
+	} else {
+		[self.delegate imagePicker:self
+	 didFinishPickingOriginalImage:originalImage
+					   editedImage:editedImage];
+	}
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
-    if (self.isBlockMode) {
-
+    if (self.completionHandler) {
         if (self.cancelHandler) {
             self.cancelHandler();
         }
-
-        self.cancelHandler       = nil;
-        self.completionHandler   = nil;
-        self.notAvailableHandler = nil;
-
-        return;
-    }
-
-    if ([self.delegate respondsToSelector:@selector(imagePickerDidCancel:)]) {
+    } else if ([self.delegate respondsToSelector:@selector(imagePickerDidCancel:)]) {
         [self.delegate imagePickerDidCancel:self];
     }
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

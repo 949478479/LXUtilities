@@ -10,9 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^LXImagePickCompletionHandler)(UIImage *originalImage, UIImage * _Nullable editedImage);
-typedef void (^LXImagePickCancelHandler)(void);
-typedef void (^LXSourceTypeNotAvailableHandler)(void);
+typedef void (^LXImagePickerCancelHandler)(void);
+typedef void (^LXImagePickerActionCancelHandler)(void);
+typedef void (^LXImagePickerSourceTypeUnAvailableHandler)(void);
+typedef void (^LXImagePickerCompletionHandler)(UIImage *originalImage, UIImage * _Nullable editedImage);
 
 @protocol LXImagePickerDelegate <NSObject>
 
@@ -23,61 +24,48 @@ typedef void (^LXSourceTypeNotAvailableHandler)(void);
 
 @optional
 - (void)imagePickerDidCancel:(LXImagePicker *)imagePicker;
-- (void)imagePickerSourceTypeNotAvailable:(LXImagePicker *)imagePicker;
+- (void)imagePickerSourceTypeUnAvailable:(LXImagePicker *)imagePicker;
 
 @end
 
 @interface LXImagePicker : NSObject
 
-@property (nonatomic, assign) BOOL allowsEditing;
+/// `ActionSheet` 的标题。
+@property (nullable, nonatomic, copy) NSString *title;
+/// `ActionSheet` 的标题。
+@property (nullable, nonatomic, copy) NSString *message;
+/// `ActionSheet` 的取消回调。
+@property (nullable, nonatomic, copy) LXImagePickerActionCancelHandler actionCancelHandler;
 
+/// 是否允许编辑照片。
+@property (nonatomic) BOOL allowsEditing;
+
+/// 不使用闭包方法时必须设置代理。若设置了代理却使用闭包方法，代理方法会被忽略。
 @property (nullable, nonatomic, weak) id<LXImagePickerDelegate> delegate;
 
-///------------------------------------------------------------------------------------------------
+///-----------------------
 /// @name 弹出 ActionSheet
-///------------------------------------------------------------------------------------------------
+///-----------------------
 
-/**
- *  弹出选择相册或相机的 @c ActionSheet. 必须设置代理.
- */
+/// 弹出选择相册或拍照的 `ActionSheet`，在 `iPad` 设备上会弹出 `ActionAlert`。此方法必须设置代理。
 - (void)showActionSheet;
 
-/**
- *  弹出选择相册或相机的 @c ActionSheet. 不用设置代理.
- *
- *  @param completionHandler   选中照片后的回调 @c block.
- *  @param cancelHandler       取消后的回调 @c block.
- *  @param notAvailableHandler 对应来源不可用的回调 @c block.
- */
-- (void)showActionSheetWithImagePickCompletionHandler:(LXImagePickCompletionHandler)completionHandler
-                                        cancelHandler:(nullable LXImagePickCancelHandler)cancelHandler
-                        sourceTypeNotAvailableHandler:(nullable LXSourceTypeNotAvailableHandler)notAvailableHandler;
+/// 弹出选择相册或拍照的 `ActionSheet`，在 `iPad` 设备上会弹出 `ActionAlert`。此方法无需设置代理。
+- (void)showActionSheetWithCompletionHandler:(LXImagePickerCompletionHandler)completionHandler
+							   cancelHandler:(nullable LXImagePickerCancelHandler)cancelHandler
+						  unAvailableHandler:(nullable LXImagePickerSourceTypeUnAvailableHandler)unAvailableHandler;
 
-///------------------------------------------------------------------------------------------------
+///--------------------------------------
 /// @name 直接打开 UIImagePickerController
-///------------------------------------------------------------------------------------------------
+///--------------------------------------
 
-/**
- *  直接打开 @c UIImagePickerController.
- *
- *  @param sourceType 来源.
- *
- *  @return 若来源可用则弹出 @c UIImagePickerController 并返回 @c YES, 否则直接返回 @c NO.
- */
-- (BOOL)presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType;
+/// 直接打开 `UIImagePickerController`。若成功则返回 `YES`，若来源类型不可用则返回 `NO`。此方法必须设置代理。
+- (BOOL)presentImagePickerControllerForSourceType:(UIImagePickerControllerSourceType)sourceType;
 
-/**
- *  直接打开 @c UIImagePickerController.
- *
- *  @param sourceType        来源.
- *  @param completionHandler 选中照片后的回调 @c block.
- *  @param cancelHandler     取消后的回调 @c block.
- *
- *  @return 若来源可用则弹出 @c UIImagePickerController 并返回 @c YES, 否则直接返回 @c NO.
- */
-- (BOOL)presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
-                                 completionHandler:(LXImagePickCompletionHandler)completionHandler
-                                     cancelHandler:(nullable LXImagePickCancelHandler)cancelHandler;
+/// 直接打开 `UIImagePickerController`。若成功则返回 `YES`，若来源类型不可用则返回 `NO`。此方法无需设置代理。
+- (BOOL)presentImagePickerControllerForSourceType:(UIImagePickerControllerSourceType)sourceType
+								completionHandler:(LXImagePickerCompletionHandler)completionHandler
+									cancelHandler:(nullable LXImagePickerCancelHandler)cancelHandler;
 @end
 
 NS_ASSUME_NONNULL_END
