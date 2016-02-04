@@ -12,36 +12,39 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIImage (LXExtension)
 
+- (CGFloat)lx_aspectRatio
+{
+	CGSize size = self.size;
+	return size.height / size.width;
+}
+
 #pragma mark - 图片缩放 -
 
-- (UIImage *)lx_resizedImageWithTargetSize:(CGSize)targetSize
-                               contentMode:(UIViewContentMode)contentMode
+- (UIImage *)lx_resizedImageForTargetSize:(CGSize)targetSize
+							  contentMode:(UIViewContentMode)contentMode
 {
     CGRect drawingRect = { .size = targetSize }; // 默认为 UIViewContentModeScaleToFill
 
-    if (contentMode == UIViewContentModeScaleAspectFit)
-    {
-        CGRect boundingRect = { .size = targetSize };
-        targetSize  = [self lx_rectForScaleAspectFitInsideBoundingRect:boundingRect].size;
-        drawingRect = CGRectMake(0, 0, targetSize.width, targetSize.height);
-    }
-    else if (contentMode == UIViewContentModeScaleAspectFill)
-    {
-        CGFloat radio = self.size.height / self.size.width;
+    if (contentMode == UIViewContentModeScaleAspectFit) {
+		
+        drawingRect.size = [self lx_rectForScaleAspectFitInsideBoundingRect:drawingRect].size;
 
-        // 先优先满足宽度,根据纵横比算出高度.
-        drawingRect = CGRectMake(0, 0, targetSize.width, targetSize.width * radio);
+    } else if (contentMode == UIViewContentModeScaleAspectFill) {
 
-        if (drawingRect.size.height < targetSize.height) // 若高度不足期望值,说明应优先满足高度.
-        {
-            // 优先满足高度,根据纵横比计算宽度.
-            drawingRect.size = CGSizeMake(targetSize.height / radio, targetSize.height);
-            // 绘制区域的原点 x 坐标需向左平移,从而使裁剪区域居中.
+        CGFloat ratio = self.size.height / self.size.width;
+
+        // 先尝试以宽度为准，根据纵横比求出高度
+		drawingRect.size.height = targetSize.width * ratio;
+
+		// 若高度不足期望值，说明应以高度为准
+        if (drawingRect.size.height < targetSize.height) {
+            // 以高度为准，根据纵横比计算宽度
+            drawingRect.size = CGSizeMake(targetSize.height / ratio, targetSize.height);
+            // 绘制区域的原点 x 坐标需向左平移，从而使裁剪区域居中
             drawingRect.origin.x = -(drawingRect.size.width - targetSize.width) / 2;
         }
-        else
-        {
-            // 在宽度满足期望值的情况下,高度大于等于期望高度.绘制区域原点 y 坐标应向上平移,从而使裁剪区域居中.
+		// 在宽度满足期望值的情况下，高度大于等于期望高度。绘制区域原点 y 坐标应向上平移，从而使裁剪区域居中。
+        else {
             drawingRect.origin.y = -(drawingRect.size.height - targetSize.height) / 2;
         }
     }
@@ -64,34 +67,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 图片裁剪 -
 
-- (UIImage *)lx_roundedImageWithBounds:(CGRect)bounds
-                           borderWidth:(CGFloat)borderWidth
-                           borderColor:(nullable UIColor *)borderColor
+- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
+							borderWidth:(CGFloat)borderWidth
+							borderColor:(nullable UIColor *)borderColor
 {
-    // 上下文尺寸需算上 borderWidth
-    CGSize contextSize = { bounds.size.width + 2 * borderWidth, bounds.size.height + 2 * borderWidth };
+    CGSize contextSize = { cropArea.size.width + 2 * borderWidth, cropArea.size.height + 2 * borderWidth };
 
-    UIGraphicsBeginImageContextWithOptions(contextSize, NO, 0);
+	UIGraphicsBeginImageContextWithOptions(contextSize, NO, 0);
 
-    if (borderWidth > 0)
-    {
-        CGRect outerBoundaryRect = { .size = contextSize }; // 外边框区域即上下文区域.
-
-        UIBezierPath *outerBoundary = [UIBezierPath bezierPathWithOvalInRect:outerBoundaryRect];
-
+	// 将外边框路径以内的圆形区域填充为边框颜色
+    if (borderWidth > 0) {
         [borderColor setFill];
-        [outerBoundary fill];
+		[[UIBezierPath bezierPathWithOvalInRect:(CGRect){.size = contextSize}] fill];
     }
 
-    // 内边框原点需在上下文原点基础上向内调整 borderWidth. 尺寸即为图片裁剪尺寸.
-    CGRect innerBoundaryRect = { .origin = { borderWidth, borderWidth }, .size = bounds.size };
+    // 内边框原点相对于上下文原点向内偏移 borderWidth，尺寸为图片裁剪尺寸
+	CGRect innerBoundaryRect = { .origin = { borderWidth, borderWidth }, .size = cropArea.size };
 
-    UIBezierPath *innerBoundary = [UIBezierPath bezierPathWithOvalInRect:innerBoundaryRect];
+	// 设置内边框路径以内的圆形区域为裁剪范围
+    [[UIBezierPath bezierPathWithOvalInRect:innerBoundaryRect] addClip];
 
-    [innerBoundary addClip];
-
-    // 若裁剪区域原点不在图片左上角,需在内边框原点基础上进行调整,从而使裁剪区域左上角位于内边框原点.
-    CGPoint drawingPoint = { borderWidth - bounds.origin.x, borderWidth - bounds.origin.y };
+    // 调整图片绘制原点，使裁剪区部分正好对应内边框区域
+    CGPoint drawingPoint = { -cropArea.origin.x + borderWidth, -cropArea.origin.y + borderWidth };
 
     [self drawAtPoint:drawingPoint];
 
@@ -106,8 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path
 {
-    return [self imageWithContentsOfFile:
-            [[NSBundle mainBundle] pathForResource:path ofType:nil]];
+    return [self imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
 }
 
 + (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name
@@ -115,10 +111,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [[self imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 
-+ (nullable instancetype)lx_imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color
+									  size:(CGSize)size
+							  cornerRadius:(CGFloat)cornerRadius
 {
-    NSParameterAssert(color != nil);
-
     CGColorRef cg_color = color.CGColor;
 
     CGFloat alpha = CGColorGetAlpha(cg_color);
@@ -131,12 +127,16 @@ NS_ASSUME_NONNULL_BEGIN
 
     [[UIBezierPath bezierPathWithRoundedRect:(CGRect){.size = size} cornerRadius:cornerRadius] fill];
 
-    return UIGraphicsGetImageFromCurrentImageContext();
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+	UIGraphicsEndImageContext();
+	
+	return image;
 }
 
 #pragma mark - 获取像素颜色 -
 
-- (UIColor *)lx_colorAtPosition:(CGPoint)position
+- (UIColor *)lx_pixelColorAtPosition:(CGPoint)position
 {
     size_t pixelsWide = 1;
     size_t pixelsHigh = 1;
@@ -157,6 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                        bitmapInfo);
 
     CGRect rect = CGRectMake(position.x * self.scale, position.y * self.scale, pixelsWide, pixelsHigh);
+
     CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, rect);
 
     CGContextDrawImage(bitmapContext, CGRectMake(0, 0, pixelsWide, pixelsHigh), imageRef);
