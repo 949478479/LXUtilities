@@ -6,71 +6,113 @@
 //
 
 @protocol LXDescriptionProtocol;
-#import "LXMacro.h"
 #import "NSDictionary+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark -
+
 @implementation NSDictionary (LXExtension)
+
+#pragma mark - 实例化方法 -
+
++ (nullable NSDictionary *)lx_dictionaryWithResourcePath:(NSString *)path
+{
+	return [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
+}
 
 #pragma mark - 函数式便捷方法 -
 
-- (NSArray *)lx_map:(id _Nullable (^)(id _Nonnull, id _Nonnull))map
+- (NSMutableArray *)lx_map:(id _Nullable (^)(id _Nonnull, id _Nonnull))map
 {
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.count];
+	NSUInteger count = self.count;
 
-    if (self.count == 0) return array;
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
+
+	if (count == 0) {
+		return array;
+	}
 
     [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
                                               id _Nonnull obj,
-                                              BOOL * _Nonnull stop) {
+                                              BOOL *_Nonnull stop) {
         id result = map(key, obj);
-        if (result) [array addObject:result];
+		if (result) {
+			[array addObject:result];
+		}
     }];
 
-    return array; // 出于性能考虑就不 copy 了。
+    return array;
 }
 
-- (instancetype)lx_filter:(BOOL (^)(id _Nonnull, id _Nonnull))filter
+- (NSMutableDictionary *)lx_filter:(BOOL (^)(id _Nonnull, id _Nonnull))filter
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.count];
+	NSUInteger count = self.count;
 
-    if (self.count == 0) return dict;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:count];
+
+	if (count == 0) {
+		return dict;
+	}
 
     [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
                                               id _Nonnull obj,
-                                              BOOL * _Nonnull stop) {
-        if (filter(key, obj)) dict[key] = obj;
+                                              BOOL *_Nonnull stop) {
+		if (filter(key, obj)) {
+			dict[key] = obj;
+		}
     }];
 
-    return dict; // 出于性能考虑就不 copy 了。
+    return dict;
 }
 
 #pragma mark - 打印对齐 -
 
-LX_DIAGNOSTIC_PUSH_IGNORED(-Wat-protocol)
+#ifdef DEBUG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wat-protocol"
 - (NSString *)descriptionWithLocale:(nullable id)locale
 {
     NSMutableString *description = [NSMutableString stringWithString:@"{\n"];
 
-    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL * _Nonnull stop) {
-        NSMutableString *subDescription = [NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
+    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
+											  id _Nonnull obj,
+											  BOOL *_Nonnull stop) {
+        NSMutableString *subDescription =
+		[NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
+
         if ([obj isKindOfClass:NSArray.self] ||
             [obj isKindOfClass:NSDictionary.self] ||
             [obj conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
+
             [subDescription replaceOccurrencesOfString:@"\n"
                                             withString:@"\n    "
                                                options:(NSStringCompareOptions)0
                                                  range:(NSRange){0,subDescription.length - 1}];
         }
+
         [description appendString:subDescription];
     }];
 
     [description appendString:@"}"];
 
-    return description;
+    return description.copy;
 }
-LX_DIAGNOSTIC_POP
+#pragma clang diagnostic pop
+#endif
+
+@end
+
+#pragma mark -
+
+@implementation NSMutableDictionary (LXExtension)
+
+#pragma mark - 实例化方法 -
+
++ (NSMutableDictionary *)dictionaryWithSharedKeys:(NSArray<id<NSCopying>> *)keys
+{
+	return [NSMutableDictionary dictionaryWithSharedKeySet:[NSDictionary sharedKeySetForKeys:keys]];
+}
 
 @end
 

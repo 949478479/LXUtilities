@@ -6,72 +6,85 @@
 //
 
 @protocol LXDescriptionProtocol;
-#import "LXMacro.h"
 #import "NSArray+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSArray (LXExtension)
 
-#pragma mark - 常用方法 -
+#pragma mark - 实例化方法 -
 
-+ (nullable instancetype)lx_arrayWithResourcePath:(NSString *)path
++ (nullable NSArray *)lx_arrayWithResourcePath:(NSString *)path
 {
-    NSParameterAssert(path.length > 0);
-
-    NSString *filePath = [NSBundle.mainBundle pathForResource:path ofType:nil];
-
-    return [NSArray arrayWithContentsOfFile:filePath];
+    return [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
 }
 
 #pragma mark - 函数式便捷方法 -
 
-- (instancetype)lx_map:(id _Nullable (^)(id _Nonnull, BOOL * _Nonnull))map
+- (NSMutableArray *)lx_map:(id _Nullable (^)(id _Nonnull, NSUInteger))map
 {
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.count];
+	NSUInteger count = self.count;
 
-    if (self.count == 0) return array;
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
 
-    BOOL stop;
+	if (count == 0) {
+		return array;
+	}
+
+	NSUInteger idx = 0;
     for (id obj in self) {
-        id result = map(obj, &stop);
-        if (result) [array addObject:result];
-        if (stop) return array;
+        id result = map(obj, idx++);
+		if (result) {
+			[array addObject:result];
+		}
     }
 
-    return array; // 出于性能考虑就不 copy 了。
+    return array;
 }
 
-- (instancetype)lx_filter:(BOOL (^)(id _Nonnull))filter
+- (NSMutableArray *)lx_filter:(BOOL (^)(id _Nonnull, NSUInteger idx))filter
 {
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.count];
+	NSUInteger count = self.count;
 
-    if (self.count == 0) return array;
+	NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
 
-    for (id obj in self) {
-        if (filter(obj)) [array addObject:obj];
-    }
-    
-    return array; // 出于性能考虑就不 copy 了。
+	if (count == 0) {
+		return array;
+	}
+
+	NSUInteger idx = 0;
+	for (id obj in self) {
+		if (filter(obj, idx++)) {
+			[array addObject:obj];
+		}
+	}
+
+	return array;
 }
 
 #pragma mark - 打印对齐 -
 
-LX_DIAGNOSTIC_PUSH_IGNORED(-Wat-protocol)
+#ifdef DEBUG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wat-protocol"
 - (NSString *)descriptionWithLocale:(nullable id)locale
 {
     NSMutableString *description = [NSMutableString stringWithString:@"(\n"];
 
     for (id obj in self) {
+
         NSMutableString *subDescription = [NSMutableString stringWithFormat:@"    %@,\n", obj];
+
         if ([obj isKindOfClass:NSArray.self] ||
             [obj isKindOfClass:NSDictionary.self] ||
             [obj conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
+
             [subDescription replaceOccurrencesOfString:@"\n"
                                             withString:@"\n    "
                                                options:(NSStringCompareOptions)0
                                                  range:(NSRange){0,subDescription.length - 1}];
         }
+
         [description appendString:subDescription];
     }
 
@@ -79,7 +92,8 @@ LX_DIAGNOSTIC_PUSH_IGNORED(-Wat-protocol)
 
     return description;
 }
-LX_DIAGNOSTIC_POP
+#pragma clang diagnostic pop
+#endif
 
 @end
 

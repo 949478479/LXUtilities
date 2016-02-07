@@ -11,22 +11,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSArray<ObjectType> (LXExtension)
 
-///--------------
-/// @name 常用方法
-///--------------
+///----------------
+/// @name 实例化方法
+///----------------
 
-/**
- *  根据资源相对 `mainBundle` 的路径创建数组，资源名须带拓展名。
- */
-+ (nullable instancetype)lx_arrayWithResourcePath:(NSString *)path;
+/// 根据资源相对 @c mainBundle 的路径创建数组，资源名须带拓展名。
++ (nullable NSArray<ObjectType> *)lx_arrayWithResourcePath:(NSString *)path;
 
 ///-------------------
 /// @name 函数式便捷方法
 ///-------------------
 
-- (instancetype)lx_filter:(BOOL (^)(ObjectType obj))filter;
+- (NSMutableArray *)lx_map:(id _Nullable (^)(ObjectType obj, NSUInteger idx))map;
 
-- (instancetype)lx_map:(id _Nullable (^)(ObjectType obj, BOOL *stop))map;
+- (NSMutableArray<ObjectType> *)lx_filter:(BOOL (^)(ObjectType obj, NSUInteger idx))filter;
 
 @end
 
