@@ -501,26 +501,34 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 
 + (NSArray<NSString *> *)lx_ivarNameList
 {
-	uint outCount;
-	Ivar *ivars = class_copyIvarList(self, &outCount);
-	NSMutableArray *ivarArray = [NSMutableArray arrayWithCapacity:outCount];
-	for (uint i = 0; i < outCount; ++i) {
-		[ivarArray addObject:[NSString stringWithUTF8String:ivar_getName(ivars[i])]];
-	}
-	LXFree(ivars);
-	return ivarArray;
+    NSMutableArray *ivarNameList = [NSMutableArray new];
+
+    for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
+        uint outCount = 0;
+        Ivar *ivars = class_copyIvarList(class, &outCount);
+        for (uint i = 0; i < outCount; ++i) {
+            [ivarNameList addObject:@(ivar_getName(ivars[i]))];
+        }
+        LXFree(ivars);
+    }
+
+	return ivarNameList;
 }
 
 + (NSArray<NSString *> *)lx_propertyNameList
 {
-	uint outCount;
-	objc_property_t *properties = class_copyPropertyList(self, &outCount);
-	NSMutableArray *propertyArray = [NSMutableArray arrayWithCapacity:outCount];
-	for (uint i = 0; i < outCount; ++i) {
-		[propertyArray addObject:[NSString stringWithUTF8String:property_getName(properties[i])]];
-	}
-	LXFree(properties);
-	return propertyArray;
+    NSMutableArray *propertyNameList = [NSMutableArray new];
+
+    for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
+        uint outCount = 0;
+        objc_property_t *properties = class_copyPropertyList(class, &outCount);
+        for (uint i = 0; i < outCount; ++i) {
+            [propertyNameList addObject:@(property_getName(properties[i]))];
+        }
+        LXFree(properties);
+    }
+
+	return propertyNameList;
 }
 
 @end
