@@ -99,6 +99,10 @@ NS_ASSUME_NONNULL_BEGIN
     return description.copy;
 }
 #pragma clang diagnostic pop
+- (NSString *)debugDescription
+{
+    return [self descriptionWithLocale:nil];
+}
 #endif
 
 @end
