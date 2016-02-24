@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGFloat)lx_width
 {
-    return self.frame.size.height;
+    return self.frame.size.width;
 }
 
 - (void)setLx_height:(CGFloat)lx_height

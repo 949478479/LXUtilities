@@ -112,6 +112,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable instancetype)lx_imageWithColor:(UIColor *)color
+{
+    return [self lx_imageWithColor:color size:CGSizeMake(1.0, 1.0) cornerRadius:0.0];
+}
+
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color
 									  size:(CGSize)size
 							  cornerRadius:(CGFloat)cornerRadius
 {

@@ -12,20 +12,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation MBProgressHUD (LXExtension)
 
-#pragma mark - 持续显示带蒙版的普通 HUD
+#pragma mark - 持续显示带蒙版的普通 HUD -
 
 + (MBProgressHUD *)lx_showMessage:(nullable NSString *)message
 {
-    UIWindow *keyWindow = LXKeyWindow();
+    UIWindow *keyWindow = [UIWindow lx_keyWindow];
 
-    NSAssert(keyWindow, @"主窗口为 nil.");
+    NSAssert(keyWindow, @"主窗口为空");
 
     return [self lx_showMessage:message toView:keyWindow];
 }
 
 + (MBProgressHUD *)lx_showMessage:(nullable NSString *)message toView:(UIView *)view
 {
-    NSAssert(view, @"参数 view 为 nil.");
+    NSParameterAssert(view != nil);
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
 
@@ -42,12 +42,12 @@ NS_ASSUME_NONNULL_BEGIN
     return hud;
 }
 
-#pragma mark - 短暂显示自定义图标的 HUD
+#pragma mark - 短暂显示自定义图标的 HUD -
 
 + (void)lx_show:(nullable NSString *)text icon:(NSString *)icon view:(UIView *)view
 {
-    NSAssert(view, @"参数 view 为 nil.");
-    NSAssert(icon.length, @"参数 icon 为 nil 或空字符串.");
+    NSParameterAssert(view != nil);
+    NSParameterAssert(icon.length > 0);
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
 
@@ -59,11 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
 
     UIImage *image = [UIImage imageNamed:icon];
 
-    NSAssert(image, @"图片不存在 => %@", icon);
+    NSAssert(image, @"图片 %@ 不存在", icon);
 
     hud.customView = [[UIImageView alloc] initWithImage:image];
 
-    hud.userInteractionEnabled = NO; // 这种类型的 HUD 没必要屏蔽触摸,显示的时候后面的 UI 最好也可以交互.
+    hud.userInteractionEnabled = NO; // 这种类型的 HUD 没必要屏蔽触摸，显示的时候后面的 UI 最好也可以交互
 
     [view addSubview:hud];
 
@@ -72,45 +72,45 @@ NS_ASSUME_NONNULL_BEGIN
     [hud hide:YES afterDelay:1];
 }
 
-#pragma mark - 短暂显示成功/失败图标的 HUD
+#pragma mark - 短暂显示成功/失败图标的 HUD -
 
 + (void)lx_showSuccess:(nullable NSString *)success
 {
-    UIWindow *keyWindow = LXKeyWindow();
+    UIWindow *keyWindow = [UIWindow lx_keyWindow];
 
-    NSAssert(keyWindow, @"主窗口为 nil.");
+    NSAssert(keyWindow, @"主窗口为空");
 
     [self lx_showSuccess:success toView:keyWindow];
 }
 
 + (void)lx_showSuccess:(nullable NSString *)success toView:(UIView *)view
 {
-    NSAssert(view, @"参数 view 为 nil.");
+    NSParameterAssert(view != nil);
 
     [self lx_show:success icon:@"MBProgressHUD.bundle/success.png" view:view];
 }
 
 + (void)lx_showError:(nullable NSString *)error
 {
-    UIWindow *keyWindow = LXKeyWindow();
+    UIWindow *keyWindow = [UIWindow lx_keyWindow];
 
-    NSAssert(keyWindow, @"主窗口为 nil.");
+    NSAssert(keyWindow, @"主窗口为空");
 
     [self lx_showError:error toView:keyWindow];
 }
 
 + (void)lx_showError:(nullable NSString *)error toView:(UIView *)view
 {
-    NSAssert(view, @"参数 view 为 nil.");
+    NSParameterAssert(view != nil);
 
     [self lx_show:error icon:@"MBProgressHUD.bundle/error.png" view:view];
 }
 
-#pragma mark - 显示进度条 HUD
+#pragma mark - 显示进度条 HUD -
 
-+ (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(NSString *)text
++ (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(nullable NSString *)text
 {
-    NSAssert(view, @"参数 view 为 nil.");
+    NSParameterAssert(view != nil);
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
 
@@ -127,22 +127,22 @@ NS_ASSUME_NONNULL_BEGIN
     return hud;
 }
 
-+ (MBProgressHUD *)lx_showProgressHUDWithText:(NSString *)text
++ (MBProgressHUD *)lx_showProgressHUDWithText:(nullable NSString *)text
 {
-    return [self lx_showProgressHUDToView:LXKeyWindow() text:text];
+    return [self lx_showProgressHUDToView:[UIWindow lx_keyWindow] text:text];
 }
 
-#pragma mark - 隐藏 HUD
+#pragma mark - 隐藏 HUD -
 
 + (void)lx_hideHUD
 {
-    [self hideHUDForView:LXKeyWindow() animated:YES];
+    [self hideHUDForView:[UIWindow lx_keyWindow] animated:YES];
 }
 
 + (void)lx_hideHUDForView:(UIView *)view
 {
-    NSAssert(view, @"参数 view 为 nil.");
-    
+    NSParameterAssert(view != nil);
+
     [self hideHUDForView:view animated:YES];
 }
 

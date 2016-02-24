@@ -68,6 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 使用 @c [UIImage imageNamed:] 创建 @c UIImageRenderingModeAlwaysOriginal 渲染模式的图片。
 + (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
 
+/// 生成尺寸为 1 * 1 的纯色图片
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color;
+
 /// 生成纯色图片。仅当 @c color 的 @c alpha 为 @c 1 且 @c cornerRadius 为 @c 0 时，图片才是完全不透明的。
 + (nullable instancetype)lx_imageWithColor:(UIColor *)color
                                       size:(CGSize)size

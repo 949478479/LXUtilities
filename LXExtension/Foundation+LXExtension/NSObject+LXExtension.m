@@ -60,8 +60,15 @@ NS_ASSUME_NONNULL_BEGIN
         return [self lx_description];
     }
 
+    uint outCount = 0;
+    objc_property_t *properties = class_copyPropertyList(self.class, &outCount);
+    NSMutableArray *propertyNameList = [NSMutableArray arrayWithCapacity:outCount];
+    for (uint i = 0; i < outCount; ++i) {
+        [propertyNameList addObject:@(property_getName(properties[i]))];
+    }
+
     NSMutableDictionary *varInfo = [NSMutableDictionary new];
-    for (NSString *propertyName in [self.class lx_propertyNameList]) {
+    for (NSString *propertyName in propertyNameList) {
         id value = [self valueForKey:propertyName] ?: @"nil";
         if (!strcmp(class_getName(object_getClass(value)), "__NSCFBoolean")) {
             value = [value boolValue] ? @"YES" : @"NO";

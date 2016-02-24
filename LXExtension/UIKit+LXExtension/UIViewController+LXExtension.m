@@ -40,11 +40,17 @@ NS_ASSUME_NONNULL_BEGIN
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
 
+    UIViewController *vc = nil;
+
     if (identifier) {
-        return [storyboard instantiateViewControllerWithIdentifier:identifier];
+        vc = [storyboard instantiateViewControllerWithIdentifier:identifier];
+        NSAssert(vc, @"视图控制器未指定故事版标识符");
+        return vc;
     }
 
-    return [storyboard instantiateInitialViewController];
+    vc = [storyboard instantiateInitialViewController];
+    NSAssert(vc, @"故事版中未指定初始视图控制器");
+    return vc;
 }
 
 @end
