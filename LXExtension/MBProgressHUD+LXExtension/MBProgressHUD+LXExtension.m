@@ -12,6 +12,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation MBProgressHUD (LXExtension)
 
++ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text
+{
+    UIWindow *keywindow = [UIWindow lx_keyWindow];
+    NSAssert(keywindow, @"主窗口为空");
+    return [self lx_showTextHUDWithText:text toView:keywindow];
+}
+
++ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text toView:(UIView *)view
+{
+    MBProgressHUD *hud = [self showHUDAddedTo:view animated:YES];
+
+    hud.labelText = text;
+    hud.mode = MBProgressHUDModeText;
+    hud.removeFromSuperViewOnHide = YES;
+
+    [hud hide:YES afterDelay:1.0];
+
+    return hud;
+}
+
 #pragma mark - 持续显示带蒙版的普通 HUD -
 
 + (MBProgressHUD *)lx_showMessage:(nullable NSString *)message

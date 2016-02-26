@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MBProgressHUD (LXExtension)
 
+/// 在主窗口上短暂显示纯文本 HUD 并自动移除
++ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text;
+/// 在指定父视图上显示纯文本 HUD 并自动移除
++ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text toView:(UIView *)view;
+
 ///----------------------------
 /// @name 持续显示带蒙版的普通 HUD
 ///----------------------------

@@ -6,6 +6,7 @@
 //
 
 #import "LXTimer.h"
+#import "LXMacro.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dealloc
 {
     [self invalidate];
+
+    LXLog(@"%@ delloc", self);
 }
 
 - (instancetype)initWithInterval:(NSTimeInterval)timeInterval
@@ -24,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     self = [super init];
     if (self) {
-        _valid = YES;
+        _isValid = YES;
         _tolerance = tolerance;
         _timeInterval = timeInterval;
         _timerSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
@@ -34,9 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)__configureTimerSourceWithHandler:(dispatch_block_t)handler
 {
-    dispatch_source_set_timer(_timerSource, DISPATCH_TIME_NOW, _timeInterval * NSEC_PER_SEC, _tolerance * NSEC_PER_SEC);
+    dispatch_source_set_timer(_timerSource,
+                              DISPATCH_TIME_NOW,
+                              _timeInterval * NSEC_PER_SEC,
+                              _tolerance * NSEC_PER_SEC);
     dispatch_source_set_event_handler(_timerSource, handler);
-    dispatch_resume(_timerSource);
 }
 
 + (LXTimer *)timerWithInterval:(NSTimeInterval)timeInterval
@@ -82,13 +87,20 @@ NS_ASSUME_NONNULL_BEGIN
     return timer;
 }
 
+- (void)start
+{
+    if (!_isStarted) {
+        _isStarted = YES;
+        dispatch_resume(_timerSource);
+    }
+}
+
 - (void)invalidate
 {
-    if (!_valid) return;
-
-    _valid = NO;
-
-    dispatch_source_cancel(_timerSource);
+    if (_isValid) {
+        _isValid = NO;
+        dispatch_source_cancel(_timerSource);
+    }
 }
 
 @end
