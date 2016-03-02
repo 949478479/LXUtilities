@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 定时器的宽容度
 @property (nonatomic, readonly) NSTimeInterval tolerance;
 
-/// 开始计时
+/// 开始计时，等待一个触发间隔后第一次触发
 - (void)start;
 
 /// 令定时器失效

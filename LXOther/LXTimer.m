@@ -91,7 +91,14 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (!_isStarted) {
         _isStarted = YES;
-        dispatch_resume(_timerSource);
+        __weak typeof(self) weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_timeInterval * NSEC_PER_SEC)),
+                       dispatch_get_main_queue(), ^{
+                           __strong typeof(weakSelf) strongSelf = weakSelf;
+                           if (strongSelf) {
+                               dispatch_resume(strongSelf->_timerSource);
+                           }
+                       });
     }
 }
 

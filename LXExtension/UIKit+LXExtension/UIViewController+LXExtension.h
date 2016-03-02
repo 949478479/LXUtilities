@@ -30,12 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 实例化方法 -
 
-/// 实例化指定故事板中的初始控制器。
+/// 实例化指定故事板中的初始控制器
 + (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName;
 
-/// 实例化指定故事板中的指定控制器。
+/// 实例化指定故事板中的指定控制器，若不指定标识符，则使用控制器类名作为标识符
 + (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-                                               identifier:(NSString *)identifier;
+                                               identifier:(nullable NSString *)identifier;
 @end
 
 NS_ASSUME_NONNULL_END

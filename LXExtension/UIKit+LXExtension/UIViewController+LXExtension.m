@@ -32,25 +32,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
 {
-    return [self lx_instantiateWithStoryboardName:storyboardName identifier:(NSString *_Nonnull)nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    UIViewController *viewController = [storyboard instantiateInitialViewController];
+    NSAssert(viewController, @"%@ 故事版中未指定初始视图控制器", storyboardName);
+    return viewController;
 }
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-                                      identifier:(NSString *)identifier
+                                      identifier:(nullable NSString *)identifier
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
 
-    UIViewController *vc = nil;
-
     if (identifier) {
-        vc = [storyboard instantiateViewControllerWithIdentifier:identifier];
-        NSAssert(vc, @"视图控制器未指定故事版标识符");
-        return vc;
+        return [storyboard instantiateViewControllerWithIdentifier:identifier];
     }
 
-    vc = [storyboard instantiateInitialViewController];
-    NSAssert(vc, @"故事版中未指定初始视图控制器");
-    return vc;
+    identifier = NSStringFromClass(self);
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    NSAssert(viewController, @"%@ 故事版中的 %@ 视图控制器未指定标识符", storyboardName, identifier);
+    return viewController;
 }
 
 @end
