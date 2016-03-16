@@ -5,6 +5,7 @@
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
+#import <CommonCrypto/CommonDigest.h>
 #import "NSFileManager+LXExtension.h"
 #import "LXMacro.h"
 
@@ -111,6 +112,43 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     return size;
+}
+
+#pragma mark - 文件校验
+
++ (nullable NSString *)lx_MD5ForFileAtPath:(NSString *)path
+{
+	NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:path];
+	if (!handle) {
+		return nil;
+	}
+
+	CC_MD5_CTX md5;
+	CC_MD5_Init(&md5);
+
+	while (1) {
+		NSData *fileData = [handle readDataOfLength:1024];
+		if (fileData.length == 0) {
+			break;
+		}
+		CC_MD5_Update(&md5, [fileData bytes], (CC_LONG)[fileData length]);
+	}
+
+	unsigned char digest[CC_MD5_DIGEST_LENGTH];
+	CC_MD5_Final(digest, &md5);
+
+	NSString *MD5String = [NSString stringWithFormat:
+						   @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+				   digest[0], digest[1],
+				   digest[2], digest[3],
+				   digest[4], digest[5],
+				   digest[6], digest[7],
+				   digest[8], digest[9],
+				   digest[10], digest[11],
+				   digest[12], digest[13],
+				   digest[14], digest[15]];
+
+	return MD5String;
 }
 
 @end

@@ -41,8 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 文件 -
 
-/// 计算文件或目录所占字节数。
+/// 计算文件或目录所占字节数
 + (uint64_t)lx_sizeOfItemAtPath:(NSString *)path;
+
+/// 获取文件 MD5 字符串
++ (nullable NSString *)lx_MD5ForFileAtPath:(NSString *)path;
 
 @end
 
