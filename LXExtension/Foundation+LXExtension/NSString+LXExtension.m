@@ -82,13 +82,18 @@ typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigne
 
     digestFunction(string, (CC_LONG)strlen(string), digest);
 
-    NSMutableString *hashedString = [NSMutableString stringWithCapacity:digestLength*2];
+	NSString *hashedString = [NSString stringWithFormat:
+						   @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+						   digest[0], digest[1],
+						   digest[2], digest[3],
+						   digest[4], digest[5],
+						   digest[6], digest[7],
+						   digest[8], digest[9],
+						   digest[10], digest[11],
+						   digest[12], digest[13],
+						   digest[14], digest[15]];
 
-    for (CC_LONG i = 0; i < digestLength; ++i) {
-        [hashedString appendFormat:@"%02x", digest[i]];
-    }
-
-    return hashedString;
+	return hashedString;
 }
 
 - (NSString *)lx_MD5

@@ -27,6 +27,7 @@
 #import "UIApplication+LXExtension.h"
 #import "UIViewController+LXExtension.h"
 
+#import "NSData+LXExtension.h"
 #import "NSDate+LXExtension.h"
 #import "NSArray+LXExtension.h"
 #import "NSBundle+LXExtension.h"
