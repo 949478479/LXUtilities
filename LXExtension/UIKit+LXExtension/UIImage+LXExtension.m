@@ -68,12 +68,27 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 图片裁剪 -
 
 - (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
+                        backgroundColor:(nullable UIColor *)backgroundColor
+{
+    return [self lx_roundedImageForCropArea:cropArea
+                                borderWidth:0.0
+                                borderColor:nil
+                            backgroundColor:backgroundColor];
+}
+
+- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
 							borderWidth:(CGFloat)borderWidth
 							borderColor:(nullable UIColor *)borderColor
+                        backgroundColor:(nullable UIColor *)backgroundColor
 {
     CGSize contextSize = { cropArea.size.width + 2 * borderWidth, cropArea.size.height + 2 * borderWidth };
 
-	UIGraphicsBeginImageContextWithOptions(contextSize, NO, 0);
+	UIGraphicsBeginImageContextWithOptions(contextSize, backgroundColor != nil, 0);
+
+    if (backgroundColor) {
+        [backgroundColor setFill];
+        UIRectFill((CGRect){.size = contextSize});
+    }
 
 	// 将外边框路径以内的圆形区域填充为边框颜色
     if (borderWidth > 0) {

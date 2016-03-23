@@ -42,15 +42,26 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 图片裁剪 -
 
 /**
+ *  生成圆形图片。
+ *
+ *  @param cropArea        相对于图片的正方形裁剪区域。
+ *  @param backgroundColor 背景颜色，传入 @c nil 则背景透明。
+ */
+- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
+                        backgroundColor:(nullable UIColor *)backgroundColor;
+
+/**
  *  生成带边框的圆形图片，图片最终尺寸为裁剪尺寸加上两倍边框宽度。
  *
- *  @param cropArea    相对于图片的正方形裁剪区域。
- *  @param borderWidth 边框宽度，传入 @c 0 则无边框。
- *  @param borderColor 边框颜色，传入 @c nil 则为不透明黑色。
+ *  @param cropArea        相对于图片的正方形裁剪区域。
+ *  @param borderWidth     边框宽度，传入 @c 0 则无边框。
+ *  @param borderColor     边框颜色，传入 @c nil 则为不透明黑色。
+ *  @param backgroundColor 背景颜色，传入 @c nil 则背景透明。
  */
 - (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
 							borderWidth:(CGFloat)borderWidth
-							borderColor:(nullable UIColor *)borderColor;
+							borderColor:(nullable UIColor *)borderColor
+                        backgroundColor:(nullable UIColor *)backgroundColor;
 
 ///--------------
 /// @name 创建图片

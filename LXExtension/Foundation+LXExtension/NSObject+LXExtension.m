@@ -51,36 +51,41 @@ NS_ASSUME_NONNULL_BEGIN
 #ifdef DEBUG
 - (NSString *)lx_description
 {
-	if ([self lx_valueForKey:@"lx_description"]) {
-		return @"..."; // 防止 description 或 debugDescription 方法死循环
-	}
-	[self lx_setValue:@YES forKey:@"lx_description"];
-
+    // 未采纳 LXDescriptionProtocol 协议则沿用默认实现
     if (![self conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
         return [self lx_description];
     }
 
+    // 获取类中所有属性名
     uint outCount = 0;
     objc_property_t *properties = class_copyPropertyList(self.class, &outCount);
     NSMutableArray *propertyNameList = [NSMutableArray arrayWithCapacity:outCount];
     for (uint i = 0; i < outCount; ++i) {
         [propertyNameList addObject:@(property_getName(properties[i]))];
     }
+    LXFree(properties);
+
+    // 如下属性也会被获取到，忽略它们
+    NSMutableSet *ignoredPropertyNames =
+    [NSMutableSet setWithObjects:@"hash", @"superclass", @"description", @"debugDescription", nil];
 
     NSMutableDictionary *varInfo = [NSMutableDictionary new];
     for (NSString *propertyName in propertyNameList) {
+        // 忽略需要忽略的属性
+        if ([ignoredPropertyNames containsObject:propertyName]) {
+            [ignoredPropertyNames removeObject:propertyName];
+            continue;
+        }
+        // 若属性值为 nil 则显示 @"nil"
         id value = [self valueForKey:propertyName] ?: @"nil";
+        // 若属性类型为布尔类型，则显示 @"YES" 或 @"NO"
         if (!strcmp(class_getName(object_getClass(value)), "__NSCFBoolean")) {
             value = [value boolValue] ? @"YES" : @"NO";
         }
         varInfo[propertyName] = value;
     }
 
-	NSString *description = [NSString stringWithFormat:@"<%@: %p>\n%@", self.class, self, varInfo];
-
-	[self lx_setValue:nil forKey:@"lx_description"];
-
-    return description;
+    return [NSString stringWithFormat:@"<%@: %p>\n%@", self.class, self, varInfo];
 }
 #endif
 
