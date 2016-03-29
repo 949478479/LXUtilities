@@ -19,10 +19,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable UIViewController *)lx_topViewController
 {
-	UIViewController *rootVC = [self lx_keyWindow].rootViewController;
-	UIViewController *topVC  = rootVC.presentedViewController;
+    UIViewController *topVC = [self lx_keyWindow].rootViewController;
 
-	return topVC ?: rootVC;
+    Class tabBarControllerClass = [UITabBarController class];
+    Class navigationControllerClass = [UINavigationController class];
+
+    while (1) {
+        if ([topVC isKindOfClass:tabBarControllerClass]) {
+            topVC = [(UITabBarController *)topVC selectedViewController];
+        } else if ([topVC isKindOfClass:navigationControllerClass]) {
+            topVC = [(UINavigationController *)topVC topViewController];
+        } else {
+            UIViewController *presentedVC = topVC.presentedViewController;
+            if (presentedVC) {
+                topVC = presentedVC;
+            } else {
+                return topVC;
+            }
+        }
+    }
 }
 
 + (nullable UIViewController *)lx_rootViewController
