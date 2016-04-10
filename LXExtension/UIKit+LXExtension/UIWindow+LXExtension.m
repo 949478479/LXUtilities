@@ -21,14 +21,17 @@ NS_ASSUME_NONNULL_BEGIN
 {
     UIViewController *topVC = [self lx_keyWindow].rootViewController;
 
-    Class tabBarControllerClass = [UITabBarController class];
     Class navigationControllerClass = [UINavigationController class];
+    Class splitViewControllerClass = [UISplitViewController class];
+    Class tabBarControllerClass = [UITabBarController class];
 
     while (1) {
-        if ([topVC isKindOfClass:tabBarControllerClass]) {
+        if ([topVC isKindOfClass:navigationControllerClass]) {
+            topVC = [(UINavigationController *)topVC visibleViewController];
+        } else if ([topVC isKindOfClass:tabBarControllerClass]) {
             topVC = [(UITabBarController *)topVC selectedViewController];
-        } else if ([topVC isKindOfClass:navigationControllerClass]) {
-            topVC = [(UINavigationController *)topVC topViewController];
+        } else if ([topVC isKindOfClass:splitViewControllerClass]) {
+            topVC = [(UISplitViewController *)topVC viewControllers][0];
         } else {
             UIViewController *presentedVC = topVC.presentedViewController;
             if (presentedVC) {

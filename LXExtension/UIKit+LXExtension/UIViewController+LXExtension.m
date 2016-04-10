@@ -32,10 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-    UIViewController *viewController = [storyboard instantiateInitialViewController];
-    NSAssert(viewController, @"%@ 故事版中未指定初始视图控制器", storyboardName);
-    return viewController;
+    return [self lx_instantiateWithStoryboardName:storyboardName identifier:nil];
 }
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName

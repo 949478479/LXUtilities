@@ -24,16 +24,28 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text toView:(UIView *)view;
 
 ///-----------------------------------------
-/// @name 持续显示带蒙版的原生活动指示器风格的 HUD
+/// @name 持续显示无蒙版的原生活动指示器风格的 HUD
 ///-----------------------------------------
 
-#pragma mark - 持续显示带蒙版的原生活动指示器风格的 HUD -
+#pragma mark - 持续显示无蒙版的原生活动指示器风格的 HUD -
+
+/// 在主窗口上持续显示原生活动指示器风格的 HUD，不会屏蔽触摸，需要手动移除
++ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text;
+
+/// 在指定父视图上持续显示原生活动指示器风格的 HUD，不会屏蔽触摸，需要手动移除
++ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view;
+
+///-----------------------------------------
+/// @name 持续显示有蒙版的原生活动指示器风格的 HUD
+///-----------------------------------------
+
+#pragma mark - 持续显示有蒙版的原生活动指示器风格的 HUD -
 
 /// 在主窗口上持续显示原生活动指示器风格的 HUD，附带蒙版效果，需要手动移除
-+ (MBProgressHUD *)lx_showActivityIndicatorWithMessage:(nullable NSString *)message;
++ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text;
 
 /// 在指定父视图上持续显示原生活动指示器风格的 HUD，附带蒙版效果，需要手动移除
-+ (MBProgressHUD *)lx_showActivityIndicatorWithMessage:(nullable NSString *)message toView:(UIView *)view;
++ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view;
 
 ///--------------------------
 /// @name 短暂显示自定义图标 HUD
@@ -62,11 +74,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 隐藏 HUD -
 
-/// 隐藏主窗口上的 HUD
+/// 隐藏主窗口上的 HUD，有动画效果
 + (void)lx_hideHUD;
+/// 隐藏主窗口上的 HUD
++ (void)lx_hideHUD:(BOOL)animated;
 
-/// 隐藏指定视图上的 HUD
+/// 隐藏指定视图上的 HUD，有动画效果
 + (void)lx_hideHUDForView:(UIView *)view;
+/// 隐藏指定视图上的 HUD
++ (void)lx_hideHUDForView:(UIView *)view animated:(BOOL)animated;
 
 @end
 
