@@ -10,6 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark - 弱引用支持
+
+@interface _LXWeakWrapper : NSObject
+@property (nullable, nonatomic, weak) id value;
+@end
+@implementation _LXWeakWrapper
+@end
+
 @implementation NSObject (LXExtension)
 
 #pragma mark - 方法交换 -
@@ -26,14 +34,74 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 关联对象 -
 
-- (void)lx_setValue:(nullable id)value forKey:(NSString *)key
+- (void)lx_associateValue:(nullable id)value forKey:(NSString *)key
 {
     objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (nullable id)lx_valueForKey:(NSString *)key
+- (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key
+{
+    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key
+{
+    _LXWeakWrapper *wrapper = objc_getAssociatedObject(self, NSSelectorFromString(key));
+    if (!wrapper) {
+        wrapper = [_LXWeakWrapper new];
+        [self lx_associateValue:wrapper forKey:key];
+    }
+    wrapper.value = value;
+}
+
+- (nullable id)lx_associatedValueForKey:(NSString *)key
 {
     return objc_getAssociatedObject(self, NSSelectorFromString(key));
+}
+
+- (nullable id)lx_weakAssociatedValueForKey:(NSString *)key
+{
+    return [(_LXWeakWrapper *)objc_getAssociatedObject(self, NSSelectorFromString(key)) value];
+}
+
+- (void)lx_removeAllAssociatedObjects
+{
+    objc_removeAssociatedObjects(self);
+}
+
++ (void)lx_associateValue:(nullable id)value forKey:(NSString *)key
+{
+    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key
+{
+    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
++ (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key
+{
+    _LXWeakWrapper *wrapper = objc_getAssociatedObject(self, NSSelectorFromString(key));
+    if (!wrapper) {
+        wrapper = [_LXWeakWrapper new];
+        [self lx_associateValue:wrapper forKey:key];
+    }
+    wrapper.value = value;
+}
+
++ (nullable id)lx_associatedValueForKey:(NSString *)key
+{
+    return objc_getAssociatedObject(self, NSSelectorFromString(key));
+}
+
++ (nullable id)lx_weakAssociatedValueForKey:(NSString *)key
+{
+    return [(_LXWeakWrapper *)objc_getAssociatedObject(self, NSSelectorFromString(key)) value];
+}
+
++ (void)lx_removeAllAssociatedObjects
+{
+    objc_removeAssociatedObjects(self);
 }
 
 #pragma mark - KVO -
