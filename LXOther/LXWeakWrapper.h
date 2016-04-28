@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXWeakWrapper<ObjectType> : NSObject
 
-@property (nonatomic, weak, readonly) ObjectType object;
+@property (nonatomic, readonly, weak) ObjectType object;
 
 + (instancetype)wrapperWithObject:(ObjectType)object;
 

@@ -25,17 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [[self alloc] initWithObject:object];
 }
 
-- (BOOL)isEqual:(id)other
-{
-    if (other == self) {
-        return YES;
-    } else if ([other class] != [self class]) {
-        return NO;
-    } else {
-        return [[self object] isEqual:[other object]];
-    }
-}
-
 @end
 
 NS_ASSUME_NONNULL_END
