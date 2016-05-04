@@ -12,15 +12,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LXTimer
 {
+    BOOL _isSuspended;
     dispatch_source_t _timerSource;
 }
 
 - (void)dealloc
 {
     [self invalidate];
-
-    LXLog(@"%@ delloc", self);
 }
+
+#pragma mark - 初始化
 
 - (instancetype)initWithInterval:(NSTimeInterval)timeInterval
                        tolerance:(NSTimeInterval)tolerance
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
     self = [super init];
     if (self) {
         _isValid = YES;
+        _isSuspended = YES;
         _tolerance = tolerance;
         _timeInterval = timeInterval;
         _timerSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
@@ -35,14 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (void)__configureTimerSourceWithHandler:(dispatch_block_t)handler
-{
-    dispatch_source_set_timer(_timerSource,
-                              DISPATCH_TIME_NOW,
-                              _timeInterval * NSEC_PER_SEC,
-                              _tolerance * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(_timerSource, handler);
-}
+#pragma mark - 工厂方法
 
 + (LXTimer *)timerWithInterval:(NSTimeInterval)timeInterval
                      tolerance:(NSTimeInterval)tolerance
@@ -54,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     LXTimer *timer = [[LXTimer alloc] initWithInterval:timeInterval tolerance:tolerance];
 
-    [timer __configureTimerSourceWithHandler:handler];
+    [timer _configureTimerSourceWithHandler:handler];
 
     return timer;
 }
@@ -79,13 +74,27 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     __weak id weakTarget = target;
-    [timer __configureTimerSourceWithHandler:^{
-        __strong id strongTarget = weakTarget;
-        [invocation invokeWithTarget:strongTarget];
+    [timer _configureTimerSourceWithHandler:^{
+        if (weakTarget) {
+            [invocation invokeWithTarget:weakTarget];
+        }
     }];
 
     return timer;
 }
+
+#pragma mark - 配置回调闭包
+
+- (void)_configureTimerSourceWithHandler:(dispatch_block_t)handler
+{
+    dispatch_source_set_timer(_timerSource,
+                              DISPATCH_TIME_NOW,
+                              _timeInterval * NSEC_PER_SEC,
+                              _tolerance * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(_timerSource, handler);
+}
+
+#pragma mark - 启动废止
 
 - (void)start
 {
@@ -97,6 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
                            __strong typeof(weakSelf) strongSelf = weakSelf;
                            if (strongSelf) {
                                dispatch_resume(strongSelf->_timerSource);
+                               strongSelf->_isSuspended = NO;
                            }
                        });
     }
@@ -104,10 +114,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)invalidate
 {
-    if (_isValid) {
-        _isValid = NO;
-        dispatch_source_cancel(_timerSource);
+    if (!_isValid) {
+        return;
     }
+    _isValid = NO;
+
+    dispatch_source_cancel(_timerSource);
+    if (_isSuspended) {
+        dispatch_resume(_timerSource);
+    }
+
+    _timerSource = nil;
 }
 
 @end
