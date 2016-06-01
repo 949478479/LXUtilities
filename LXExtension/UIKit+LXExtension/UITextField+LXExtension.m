@@ -13,8 +13,6 @@
 
 @implementation UITextField (LXExtension)
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 方法交换
 
 + (void)load
@@ -27,9 +25,7 @@
     });
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#pragma mark - 添加左视图
+#pragma mark - 设置左视图
 
 - (void)setLeftViewImage:(UIImage *)leftViewImage
 {
@@ -48,8 +44,6 @@
     }
     return nil;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 调整 frame 的辅助函数
 
@@ -77,8 +71,6 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
     };
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 设置编辑区域 frame
 
 - (void)setEditingRect:(CGRect)editingRect
@@ -104,8 +96,6 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
     return LXAdjustRectForOldRectAndNewRect(oldRect, newRect);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - 设置文本区域 frame
 
 - (void)setTextRect:(CGRect)textRect
@@ -130,8 +120,6 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
 
     return LXAdjustRectForOldRectAndNewRect(oldRect, newRect);
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - 设置左视图 frame
 
@@ -175,6 +163,18 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
             newSize.height >= 0 ? newSize.height : oldSize.height,
         },
     };
+}
+
+#pragma mark - 设置占位文字颜色
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor
+{
+    [self setValue:placeholderColor forKeyPath:@"placeholderLabel.textColor"];
+}
+
+- (UIColor *)placeholderColor
+{
+    return [self valueForKeyPath:@"placeholderLabel.textColor"];
 }
 
 @end
