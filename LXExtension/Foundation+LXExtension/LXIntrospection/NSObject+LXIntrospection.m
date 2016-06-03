@@ -189,7 +189,7 @@ static NSArray<NSString *> *__LXProtocolMethodDescriptionList(Protocol *proto, B
 				selParts[idx - 2] = [NSString stringWithFormat:@"%@:(%@)arg%lu",
 									 selParts[idx - 2],
 									 __LXTypeStringForTypeEncode(argumentType),
-									 idx - 2];
+									 (unsigned long)idx - 2];
 			}
 		}
 
@@ -220,7 +220,7 @@ NSArray<NSString *> *LXClassNameList()
 void LXPrintClassNameList()
 {
 	NSArray *classList = LXClassNameList();
-	LXLog(@"总计：%lu\n%@", classList.count, classList);
+	LXLog(@"总计：%lu\n%@", (unsigned long)classList.count, classList);
 }
 
 #pragma mark - 查看协议中的方法和属性 -

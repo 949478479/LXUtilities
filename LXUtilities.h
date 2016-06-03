@@ -23,6 +23,7 @@
 #import "UIWindow+LXExtension.h"
 #import "UITextView+LXExtension.h"
 #import "UITextField+LXExtension.h"
+#import "UIStoryboard+LXExtension.h"
 #import "UIBezierPath+LXExtension.h"
 #import "UIApplication+LXExtension.h"
 #import "UITableViewCell+LXExtension.h"
@@ -30,6 +31,7 @@
 
 #import "NSData+LXExtension.h"
 #import "NSDate+LXExtension.h"
+#import "NSTimer+LXExtension.h"
 #import "NSArray+LXExtension.h"
 #import "NSBundle+LXExtension.h"
 #import "NSObject+LXExtension.h"
