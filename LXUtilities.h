@@ -28,6 +28,7 @@
 #import "UIApplication+LXExtension.h"
 #import "UITableViewCell+LXExtension.h"
 #import "UIViewController+LXExtension.h"
+#import "UICollectionViewCell+LXExtension.h"
 
 #import "NSData+LXExtension.h"
 #import "NSDate+LXExtension.h"

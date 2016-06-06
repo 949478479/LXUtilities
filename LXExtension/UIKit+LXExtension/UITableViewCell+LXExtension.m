@@ -10,8 +10,10 @@
 @implementation UITableViewCell (LXExtension)
 
 + (instancetype)lx_cellWithTableView:(UITableView *)tableView
+                        forIndexPath:(NSIndexPath *)indexPath
 {
-    return [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(self.class)];
+    return [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(self.class)
+                                           forIndexPath:indexPath];
 }
 
 @end

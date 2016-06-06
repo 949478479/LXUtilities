@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UITableViewCell (LXExtension)
 
 /// 使用类名作为重用标识符来获取单元格
-+ (instancetype)lx_cellWithTableView:(UITableView *)tableView;
++ (instancetype)lx_cellWithTableView:(UITableView *)tableView
+                        forIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
