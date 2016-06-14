@@ -177,4 +177,17 @@
     return [self backgroundImageForState:UIControlStateHighlighted];
 }
 
+#pragma mark - 设置标签背景色
+
+- (void)setLabelBgColor:(UIColor *)labelBgColor
+{
+    self.titleLabel.clipsToBounds = YES;
+    self.titleLabel.backgroundColor = labelBgColor;
+}
+
+- (UIColor *)labelBgColor
+{
+    return self.titleLabel.backgroundColor;
+}
+
 @end
