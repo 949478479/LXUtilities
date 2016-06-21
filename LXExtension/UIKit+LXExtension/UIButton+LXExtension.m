@@ -5,7 +5,9 @@
 //  Copyright © 2015年 apple. All rights reserved.
 //
 
+#import "UIImage+LXExtension.h"
 #import "UIButton+LXExtension.h"
+#import "NSObject+LXExtension.h"
 
 @implementation UIButton (LXExtension)
 
@@ -177,7 +179,7 @@
     return [self backgroundImageForState:UIControlStateHighlighted];
 }
 
-#pragma mark - 设置标签背景色
+#pragma mark - 设置背景颜色
 
 - (void)setLabelBgColor:(UIColor *)labelBgColor
 {
@@ -188,6 +190,17 @@
 - (UIColor *)labelBgColor
 {
     return self.titleLabel.backgroundColor;
+}
+
+- (void)setHighlightedBgColor:(UIColor *)highlightedBgColor
+{
+    [self lx_associateValue:highlightedBgColor forKey:@"highlightedBgColor"];
+    [self setLx_highlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBgColor]];
+}
+
+- (UIColor *)highlightedBgColor
+{
+    return [self lx_associatedValueForKey:@"highlightedBgColor"];
 }
 
 @end

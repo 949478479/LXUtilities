@@ -5,14 +5,24 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-#pragma mark - 安全调用闭包 -
+#pragma mark - 功能宏
 
 ///------------
-/// @name 便捷宏
+/// @name 功能宏
 ///------------
 
 #define LXFree(ptr) if (ptr != NULL) { free(ptr); }
+
+#define LX_CONSTRUCTOR __attribute__((constructor))
+
+#define LX_OVERLOADABLE __attribute__((overloadable))
+
+#define LX_FINAL __attribute__((objc_subclassing_restricted))
+
 #define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); }
+
+#define LX_ONEXIT void (^block)(void) __attribute__((cleanup(LXBlockCleanUp), unused)) = ^
+__attribute__((unused)) static void LXBlockCleanUp(__strong void(^*block)(void)) { (*block)(); }
 
 #pragma mark - 忽略警告 -
 
@@ -23,6 +33,7 @@
 #define STRINGIFY(S) #S
 
 #define LX_DIAGNOSTIC_PUSH_IGNORED(warning) \
+\
 _Pragma("clang diagnostic push") \
 _Pragma(STRINGIFY(clang diagnostic ignored #warning))
 

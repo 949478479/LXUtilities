@@ -37,6 +37,7 @@
 #import "NSBundle+LXExtension.h"
 #import "NSObject+LXExtension.h"
 #import "NSString+LXExtension.h"
+#import "NSURLRequest+LXExtension.h"
 #import "NSDictionary+LXExtension.h"
 #import "NSFileManager+LXExtension.h"
 #import "NSAttributedString+LXExtension.h"
