@@ -22,6 +22,7 @@
 #import "UIScreen+LXExtension.h"
 #import "UIWindow+LXExtension.h"
 #import "UITextView+LXExtension.h"
+#import "UITableView+LXExtension.h"
 #import "UITextField+LXExtension.h"
 #import "UIStoryboard+LXExtension.h"
 #import "UIBezierPath+LXExtension.h"
