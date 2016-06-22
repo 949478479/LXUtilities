@@ -30,6 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
     [self commit];
 }
 
++ (void)lx_notifyAnimations:(void (^)(void))animations
+         whenEndsUsingBlock:(void (^)(void))block
+{
+    [self begin];
+    [self setCompletionBlock:block];
+    animations();
+    [self commit];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

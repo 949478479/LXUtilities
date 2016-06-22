@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)lx_animateWithDuration:(NSTimeInterval)duration
                     animations:(void (^)(void))animations
                     completion:(nullable void (^)(void))completion;
+
+/// 第一个块中执行的所有动画都结束时会调用第二个块
++ (void)lx_notifyAnimations:(void (^)(void))animations
+         whenEndsUsingBlock:(void (^)(void))block;
+
 @end
 
 NS_ASSUME_NONNULL_END
