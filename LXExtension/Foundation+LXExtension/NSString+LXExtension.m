@@ -30,6 +30,16 @@ NS_ASSUME_NONNULL_BEGIN
     return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularExpression] evaluateWithObject:self];
 }
 
+- (BOOL)lx_isDigit
+{
+    return [self lx_evaluateWithRegularExpression:@"^\\d+$"];
+}
+
+- (BOOL)lx_isChinese
+{
+    return [self lx_evaluateWithRegularExpression:@"^[\\u4e00-\\u9fa5]+$"];
+}
+
 - (BOOL)lx_isPhoneNumber
 {
     /*

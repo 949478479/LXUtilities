@@ -21,7 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 表单验证
 ///--------------
 
+- (BOOL)lx_isDigit;
 - (BOOL)lx_isEmail;
+- (BOOL)lx_isChinese;
 - (BOOL)lx_isPhoneNumber;
 
 ///--------------
