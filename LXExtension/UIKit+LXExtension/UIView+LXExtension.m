@@ -112,6 +112,26 @@ NS_ASSUME_NONNULL_BEGIN
     return self.center.y;
 }
 
+- (CGFloat)lx_minX
+{
+    return CGRectGetMinX(self.frame);
+}
+
+- (CGFloat)lx_minY
+{
+    return CGRectGetMinY(self.frame);
+}
+
+- (CGFloat)lx_maxX
+{
+    return CGRectGetMaxX(self.frame);
+}
+
+- (CGFloat)lx_maxY
+{
+    return CGRectGetMaxY(self.frame);
+}
+
 #pragma mark - 图层 -
 
 #pragma mark 图层圆角

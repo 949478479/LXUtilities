@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat lx_centerX;
 @property (nonatomic) CGFloat lx_centerY;
 
+@property (nonatomic, readonly) CGFloat lx_minX;
+@property (nonatomic, readonly) CGFloat lx_minY;
+@property (nonatomic, readonly) CGFloat lx_maxX;
+@property (nonatomic, readonly) CGFloat lx_maxY;
+
 ///-----------
 /// @name 图层
 ///-----------
