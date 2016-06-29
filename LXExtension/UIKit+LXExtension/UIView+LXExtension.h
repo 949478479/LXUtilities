@@ -39,11 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 图层 -
 
-/// 图层圆角。
+/// 是否光栅化
+@property (nonatomic) IBInspectable BOOL shouldRasterize;
+/// 图层圆角
 @property (nonatomic) IBInspectable CGFloat cornerRadius;
-/// 图层边框宽度。
+/// 图层边框宽度，单位是像素
 @property (nonatomic) IBInspectable CGFloat borderWidth;
-/// 图层边框颜色。
+/// 图层边框颜色
 @property (nullable, nonatomic) IBInspectable UIColor *borderColor;
 
 /// 添加图层到附属图层上。

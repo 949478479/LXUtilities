@@ -134,6 +134,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 图层 -
 
+#pragma mark 是否光栅化
+
+- (void)setShouldRasterize:(BOOL)shouldRasterize
+{
+    self.layer.shouldRasterize = shouldRasterize;
+    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
+}
+
+- (BOOL)shouldRasterize
+{
+    return self.layer.shouldRasterize;
+}
+
 #pragma mark 图层圆角
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
@@ -150,15 +163,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setBorderWidth:(CGFloat)borderWidth
 {
-    self.layer.borderWidth = borderWidth;
+    self.layer.borderWidth = borderWidth / [[UIScreen mainScreen] scale];
 }
-
-#pragma mark 边框颜色
 
 - (CGFloat)borderWidth
 {
     return self.layer.borderWidth;
 }
+
+#pragma mark 边框颜色
 
 - (void)setBorderColor:(nullable UIColor *)borderColor
 {
