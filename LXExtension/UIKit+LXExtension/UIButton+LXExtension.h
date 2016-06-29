@@ -31,8 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic) UIImage *lx_selectedBackgroundImage;
 @property (nullable, nonatomic) UIImage *lx_highlightedBackgroundImage;
 
-@property (nullable, nonatomic) IBInspectable UIColor *labelBgColor;
-@property (nullable, nonatomic) IBInspectable UIColor *highlightedBgColor;
+@property (nullable, nonatomic) IBInspectable UIColor *labelBackgroundColor;
+@property (nullable, nonatomic) IBInspectable UIColor *disabledBackgroundColor;
+@property (nullable, nonatomic) IBInspectable UIColor *selectedBackgroundColor;
+@property (nullable, nonatomic) IBInspectable UIColor *highlightedBackgroundColor;
 
 @end
 
