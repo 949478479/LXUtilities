@@ -28,7 +28,7 @@ typedef void (^LXImagePickerCompletionHandler)(UIImage *originalImage, UIImage *
 
 @end
 
-@interface LXImagePicker : NSObject
+NS_CLASS_AVAILABLE_IOS(8_0) @interface LXImagePicker : NSObject
 
 /// `ActionSheet` 的标题。
 @property (nullable, nonatomic, copy) NSString *title;

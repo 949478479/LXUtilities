@@ -13,13 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)lx_isThisMinute;
 - (BOOL)lx_isThisHour;
-- (BOOL)lx_isYesterday;
-- (BOOL)lx_isToday;
-- (BOOL)lx_isTomorrow;
-- (BOOL)lx_isThisYear;
-- (BOOL)lx_isWeekend;
+- (BOOL)lx_isYesterday NS_AVAILABLE_IOS(8_0);
+- (BOOL)lx_isToday     NS_AVAILABLE_IOS(8_0);
+- (BOOL)lx_isTomorrow  NS_AVAILABLE_IOS(8_0);
+- (BOOL)lx_isThisYear  NS_AVAILABLE_IOS(8_0);
+- (BOOL)lx_isWeekend   NS_AVAILABLE_IOS(8_0);
 
-- (BOOL)lx_isSameDayAsDate:(NSDate *)date;
+- (BOOL)lx_isSameDayAsDate:(NSDate *)date NS_AVAILABLE_IOS(8_0);
+
+- (NSInteger)lx_yearsToNow;
 
 @end
 

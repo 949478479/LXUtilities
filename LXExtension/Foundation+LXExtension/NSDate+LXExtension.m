@@ -59,4 +59,13 @@
     return [[NSCalendar currentCalendar] isDate:self inSameDayAsDate:date];
 }
 
+
+- (NSInteger)lx_yearsToNow
+{
+    return [[[NSCalendar currentCalendar] components:NSCalendarUnitYear
+                                            fromDate:self
+                                              toDate:[NSDate date]
+                                             options:0] year];
+}
+
 @end
