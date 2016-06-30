@@ -15,6 +15,7 @@
 #import "CATransaction+LXExtension.h"
 
 #import "UIView+LXExtension.h"
+#import "UILabel+LXExtension.h"
 #import "UIImage+LXExtension.h"
 #import "UIColor+LXExtension.h"
 #import "UIButton+LXExtension.h"
