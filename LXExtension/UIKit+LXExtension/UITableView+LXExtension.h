@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
 - (void)lx_updateTableHeaderViewHeight:(void (^_Nullable)(void))configuration;
+/// 根据自动布局更新 tableFooterView 的高度，可在块中更新子视图约束
+- (void)lx_updateTableFooterViewHeight:(void (^_Nullable)(void))configuration;
 
 @end
 

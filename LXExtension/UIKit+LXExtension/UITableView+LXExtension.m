@@ -40,4 +40,34 @@
     self.tableHeaderView = headerView;
 }
 
+- (void)lx_updateTableFooterViewHeight:(void (^)(void))configuration
+{
+    UIView *footerView = self.tableFooterView;
+
+    // 添加宽度约束来从而构成完整的约束来计算头视图高度
+    footerView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *widthConstraint =
+    [NSLayoutConstraint constraintWithItem:footerView
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:nil
+                                 attribute:0
+                                multiplier:1
+                                  constant:self.lx_width];
+    [footerView addConstraint:widthConstraint];
+
+    // 让调用方有机会更新子视图约束
+    !configuration ?: configuration();
+
+    // 通过自动布局计算头视图高度，然后移除刚添加的约束
+    CGFloat height = [footerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    [footerView removeConstraint:widthConstraint];
+
+    // 回归传统 frame 布局后设置高度
+    footerView.translatesAutoresizingMaskIntoConstraints = YES;
+    footerView.lx_height = height;
+
+    self.tableFooterView = footerView;
+}
+
 @end
