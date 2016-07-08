@@ -22,6 +22,7 @@
 #import "UIDevice+LXExtension.h"
 #import "UIScreen+LXExtension.h"
 #import "UIWindow+LXExtension.h"
+#import "UIWebView+LXExtension.h"
 #import "UITextView+LXExtension.h"
 #import "UITableView+LXExtension.h"
 #import "UITextField+LXExtension.h"
