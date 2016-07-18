@@ -59,12 +59,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 视图或祖先视图所属的 `UIViewController`。
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_viewController;
-/// 视图或祖先视图所属的 `UITabBarController`。
-@property (nullable, nonatomic, readonly) __kindof UITabBarController *lx_tabBarController;
-/// 视图或祖先视图所属的 `UISplitViewController`。
-@property (nullable, nonatomic, readonly) __kindof UISplitViewController *lx_splitViewController;
-/// 视图或祖先视图所属的 `UINavigationController`。
-@property (nullable, nonatomic, readonly) __kindof UINavigationController *lx_navigationController;
 
 ///--------------
 /// @name xib 支持

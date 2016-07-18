@@ -204,36 +204,6 @@ NS_ASSUME_NONNULL_BEGIN
 	return (UIViewController * _Nullable)responder;
 }
 
-- (nullable __kindof UITabBarController *)lx_tabBarController
-{
-	UIViewController *vc = self.lx_viewController;
-
-	if ([vc isKindOfClass:[UITabBarController class]]) {
-		return (UITabBarController * _Nullable)vc;
-	}
-	return vc.tabBarController;
-}
-
-- (nullable __kindof UISplitViewController *)lx_splitViewController
-{
-	UIViewController *vc = self.lx_viewController;
-
-	if ([vc isKindOfClass:[UISplitViewController class]]) {
-		return (UISplitViewController * _Nullable)vc;
-	}
-	return vc.splitViewController;
-}
-
-- (nullable __kindof UINavigationController *)lx_navigationController
-{
-	UIViewController *vc = self.lx_viewController;
-
-	if ([vc isKindOfClass:[UINavigationController class]]) {
-		return (UINavigationController * _Nullable)vc;
-	}
-	return vc.navigationController;
-}
-
 #pragma mark - xib -
 
 + (UINib *)lx_nib

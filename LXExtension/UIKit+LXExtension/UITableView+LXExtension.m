@@ -10,6 +10,20 @@
 
 @implementation UITableView (LXExtension)
 
+- (UITableViewCell *)lx_cellForSelectedRow
+{
+    return [self cellForRowAtIndexPath:[self indexPathForSelectedRow]];
+}
+
+- (NSArray<UITableViewCell *> *)lx_cellsForSelectedRows
+{
+    NSMutableArray *cells = [NSMutableArray new];
+    for (NSIndexPath *indexPath in [self indexPathsForSelectedRows]) {
+        [cells addObject:[self cellForRowAtIndexPath:indexPath]];
+    }
+    return [cells copy];
+}
+
 - (void)lx_updateTableHeaderViewHeight:(void (^)(void))configuration
 {
     UIView *headerView = self.tableHeaderView;
