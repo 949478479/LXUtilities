@@ -9,6 +9,11 @@
 
 @implementation UICollectionViewCell (LXExtension)
 
+- (NSIndexPath *)indexPath
+{
+    return [self valueForKeyPath:@"layoutAttributes.indexPath"];
+}
+
 + (instancetype)lx_cellWithCollectionView:(UICollectionView *)collectionView
                              forIndexPath:(NSIndexPath *)indexPath
 {
