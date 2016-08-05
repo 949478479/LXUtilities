@@ -49,10 +49,10 @@ _Pragma(STRINGIFY(clang diagnostic ignored #warning))
 
 #define LXLog(format, ...) \
 LX_DIAGNOSTIC_PUSH_IGNORED(-Wformat-security) \
-printf("%s[%d] %s %s\n", \
+printf("%s at %s:%d %s\n", \
+__FUNCTION__, \
 (strrchr(__FILE__, '/') ?: __FILE__ - 1) + 1, \
 __LINE__, \
-__FUNCTION__, \
 [[NSString stringWithFormat:(format), ##__VA_ARGS__] UTF8String]) \
 LX_DIAGNOSTIC_POP
 
