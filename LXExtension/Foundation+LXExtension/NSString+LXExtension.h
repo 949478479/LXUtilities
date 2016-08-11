@@ -18,9 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font;
 
 ///--------------
-/// @name 表单验证
+/// @name 文本校验
 ///--------------
 
+- (BOOL)lx_isEmpty;
 - (BOOL)lx_isDigit;
 - (BOOL)lx_isEmail;
 - (BOOL)lx_isChinese;
@@ -41,8 +42,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 其他
 ///-----------
 
+/// 根据字符串生成URL
+- (nullable NSURL *)lx_URL;
+
 /// 将非字母、数字、下划线的字符替换为下划线。开头的数字也会被替换为下划线。
 - (NSString *)lx_alphanumericString;
+
+/// 根据 JSON 对象生成 JSON字符串
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj;
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj prettyPrinted:(BOOL)prettyPrinted;
 
 @end
 

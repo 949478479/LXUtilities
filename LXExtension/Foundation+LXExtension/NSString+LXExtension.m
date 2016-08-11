@@ -71,6 +71,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [self lx_evaluateWithRegularExpression:@"^([a-zA-Z0-9\\.\\-_]+)@([a-zA-Z0-9]+)\\.(com|cn)$"];
 }
 
+- (BOOL)lx_isEmpty
+{
+    return [self isEqualToString:@""];
+}
+
 #pragma mark - 加密处理 -
 
 typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigned char *md);
@@ -128,7 +133,12 @@ typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigne
     return [self lx_hashStringWithDigestLength:CC_SHA512_DIGEST_LENGTH digestFunction:CC_SHA512];
 }
 
-#pragma mark - 替换非字母数字下划线的字符为下划线 -
+#pragma mark - 其他 -
+
+- (nullable NSURL *)lx_URL
+{
+    return [NSURL URLWithString:self];
+}
 
 - (NSString *)lx_alphanumericString
 {
@@ -146,6 +156,19 @@ typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigne
                                            options:NSRegularExpressionSearch
                                              range:(NSRange){0,1}];
     return alphanumericString;
+}
+
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj
+{
+    return [self lx_stringWithJSONObject:obj prettyPrinted:NO];
+}
+
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj prettyPrinted:(BOOL)prettyPrinted
+{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:obj
+                                                   options:prettyPrinted ? NSJSONWritingPrettyPrinted : 0
+                                                     error:NULL];
+    return [[self alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 @end
