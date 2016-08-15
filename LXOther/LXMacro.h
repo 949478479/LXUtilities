@@ -11,9 +11,11 @@
 /// @name 功能宏
 ///------------
 
-#define LXFree(ptr) if (ptr != NULL) { free(ptr); }
+#define LXFree(ptr) if (ptr) { free(ptr); ptr = NULL; }
 
 #define LX_CONSTRUCTOR __attribute__((constructor))
+
+#define LX_FATAL_ERROR() NSAssert(NO, @"fatal error")
 
 #define LX_OVERLOADABLE __attribute__((overloadable))
 
