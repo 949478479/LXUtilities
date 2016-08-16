@@ -24,6 +24,7 @@
 #import "UIWindow+LXExtension.h"
 #import "UIWebView+LXExtension.h"
 #import "UITextView+LXExtension.h"
+#import "UISearchBar+LXExtension.h"
 #import "UITableView+LXExtension.h"
 #import "UITextField+LXExtension.h"
 #import "UIStoryboard+LXExtension.h"
