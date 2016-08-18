@@ -26,6 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSMutableArray<ObjectType> *)lx_filter:(BOOL (^)(ObjectType obj, NSUInteger idx))filter;
 
+///-----------
+/// @name 其他
+///-----------
+
+/// 判断数组是否有元素
+- (BOOL)lx_hasElement;
+
+/// 生成 JSON 字符串
+- (nullable NSString *)lx_JSON;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -62,6 +62,19 @@ NS_ASSUME_NONNULL_BEGIN
 	return array;
 }
 
+#pragma mark - 其他
+
+- (BOOL)lx_hasElement
+{
+    return self.count > 0;
+}
+
+- (nullable NSString *)lx_JSON
+{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self options:0 error:NULL];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
 #pragma mark - 打印对齐 -
 
 #ifdef DEBUG

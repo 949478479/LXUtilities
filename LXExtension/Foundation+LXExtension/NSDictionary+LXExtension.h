@@ -26,6 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSMutableDictionary<KeyType, ObjectType> *)lx_filter:(BOOL (^)(KeyType key, ObjectType obj))filter;
 
+///-----------
+/// @name 其他
+///-----------
+
+/// 判断字典是否有元素
+- (BOOL)lx_hasElement;
+
+/// 生成 JSON 字符串
+- (nullable NSString *)lx_JSON;
+
 @end
 
 @interface NSMutableDictionary<KeyType, ObjectType> (LXExtension)
