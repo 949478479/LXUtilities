@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)lx_isEmail;
 - (BOOL)lx_isChinese;
 - (BOOL)lx_isPhoneNumber;
+- (BOOL)lx_isIDCardNumber;
 
 ///--------------
 /// @name 加密处理
@@ -48,9 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 将非字母、数字、下划线的字符替换为下划线。开头的数字也会被替换为下划线。
 - (NSString *)lx_alphanumericString;
 
-/// 根据 JSON 对象生成 JSON字符串
+/// 根据 JSON 对象生成 JSON 字符串
 + (nullable instancetype)lx_stringWithJSONObject:(id)obj;
 + (nullable instancetype)lx_stringWithJSONObject:(id)obj prettyPrinted:(BOOL)prettyPrinted;
+
+/// 根据 JSON 字符串生成相应的 JSON 对象
+- (nullable id)lx_JSONObject;
+- (nullable id)lx_JSONObjectWithOptions:(NSJSONReadingOptions)options;
 
 @end
 
