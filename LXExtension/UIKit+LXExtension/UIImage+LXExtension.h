@@ -96,6 +96,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取图片指定位置像素颜色，单位是点。
 - (UIColor *)lx_pixelColorAtPosition:(CGPoint)position;
 
+#pragma mark - 生成二维码图片
+
+/**
+ *  生成二维码图片
+ *
+ *  @param message     二维码内容
+ *  @param size        以点为单位的二维码尺寸
+ *  @param logo        中心的logo图案
+ *  @param transparent 是否将白色背景变为透明
+ */
++ (instancetype)lx_QRCodeImageWithMessage:(NSString *)message
+                                     size:(CGSize)size
+                                     logo:(nullable UIImage *)logo
+                              transparent:(BOOL)transparent;
 @end
 
 NS_ASSUME_NONNULL_END

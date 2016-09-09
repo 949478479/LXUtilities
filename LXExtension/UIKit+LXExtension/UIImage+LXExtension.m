@@ -198,6 +198,79 @@ NS_ASSUME_NONNULL_BEGIN
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
+#pragma mark - 生成二维码图片
+
++ (instancetype)lx_QRCodeImageWithMessage:(NSString *)message
+                                     size:(CGSize)size
+                                     logo:(nullable UIImage *)logo
+                              transparent:(BOOL)transparent
+{
+    NSData *messageData = [message dataUsingEncoding:NSISOLatin1StringEncoding];
+    CIFilter *QRCodeFilter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [QRCodeFilter setValue:messageData forKey:@"inputMessage"];
+
+    CIImage *outputImage = QRCodeFilter.outputImage;
+    CGRect extent = outputImage.extent;
+    CGImageRef outputCGImage = [[CIContext contextWithOptions:nil] createCGImage:outputImage fromRect:extent];
+
+    if (transparent) {
+        // 为了去除图片透明通道，需要重绘图片
+        size_t pixelsWide = CGImageGetWidth(outputCGImage);
+        size_t pixelsHigh = CGImageGetHeight(outputCGImage);
+        size_t bitsPerComponent = 8;
+        size_t bytesPerRow = pixelsWide * 4;
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef context = CGBitmapContextCreate(NULL,
+                                                     pixelsWide,
+                                                     pixelsHigh,
+                                                     bitsPerComponent,
+                                                     bytesPerRow,
+                                                     colorSpace,
+                                                     kCGImageAlphaNoneSkipLast);
+        CGColorSpaceRelease(colorSpace);
+
+        // 重绘图片去除透明通道，这样才能使用 CGImageCreateWithMaskingColors 函数
+        CGContextDrawImage(context, (CGRect){.size=extent.size}, outputCGImage);
+        CGImageRelease(outputCGImage);
+        CGImageRef opaqueOutputCGImage = CGBitmapContextCreateImage(context);
+        CGContextRelease(context);
+
+        // 去除白色背景
+        const CGFloat components[6] = {255,255,255,255,255,255};
+        outputCGImage = CGImageCreateWithMaskingColors(opaqueOutputCGImage, components);
+        CGImageRelease(opaqueOutputCGImage);
+    }
+
+    UIGraphicsBeginImageContextWithOptions(size, !transparent, 0);
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    // 让二维码更清晰
+    CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+
+    // 翻转，不然是上下颠倒的
+    CGContextTranslateCTM(context, 0, size.height);
+    CGContextScaleCTM(context, 1, -1);
+
+    CGContextDrawImage(context, (CGRect){.size=size}, outputCGImage);
+    CGImageRelease(outputCGImage);
+
+    if (logo) {
+        CGSize logoSize = logo.size;
+        CGRect rect = {
+            .origin = { size.width/2 - logoSize.width/2, size.height/2 - logoSize.height/2 },
+            .size = logoSize
+        };
+        CGContextDrawImage(context, rect, logo.CGImage);
+    }
+
+    UIImage *QRCodeimage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+
+    return QRCodeimage;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
