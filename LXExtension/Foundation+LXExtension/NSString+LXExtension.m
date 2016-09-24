@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularExpression] evaluateWithObject:self];
 }
 
+- (BOOL)lx_isMoney
+{
+    return [self lx_evaluateWithRegularExpression:@"^(([1-9]\\d*)|(0))(\\.\\d{1,2})?$"];
+}
+
 - (BOOL)lx_isDigit
 {
     return [self lx_evaluateWithRegularExpression:@"^\\d+$"];

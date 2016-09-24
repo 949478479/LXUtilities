@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 文本校验
 ///--------------
 
+- (BOOL)lx_isMoney;
 - (BOOL)lx_isDigit;
 - (BOOL)lx_isEmail;
 - (BOOL)lx_isChinese;
