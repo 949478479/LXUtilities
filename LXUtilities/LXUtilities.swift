@@ -7,7 +7,7 @@
 
 import Foundation
 
-func printLog(items: Any, file: String = #file, line: Int = #line, function: String = #function) {
+func printLog(_ items: Any, file: String = #file, line: Int = #line, function: String = #function) {
     #if DEBUG
         print("\((file as NSString).lastPathComponent)[\(line)] \(function)\n", items, separator: "")
     #endif

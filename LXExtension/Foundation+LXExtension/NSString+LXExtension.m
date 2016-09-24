@@ -184,9 +184,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [idCardLast intValue] == idCardY[idCardMod];
 }
 
-- (BOOL)lx_isEmpty
+- (BOOL)lx_hasCharacters
 {
-    return [self isEqualToString:@""];
+    return self.length > 0;
 }
 
 #pragma mark - 加密处理 -

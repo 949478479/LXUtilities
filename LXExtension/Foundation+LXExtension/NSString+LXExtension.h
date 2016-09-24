@@ -21,12 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 文本校验
 ///--------------
 
-- (BOOL)lx_isEmpty;
 - (BOOL)lx_isDigit;
 - (BOOL)lx_isEmail;
 - (BOOL)lx_isChinese;
 - (BOOL)lx_isPhoneNumber;
 - (BOOL)lx_isIDCardNumber;
+
+- (BOOL)lx_hasCharacters;
 
 ///--------------
 /// @name 加密处理

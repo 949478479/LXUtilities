@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 实例化指定故事板中的初始控制器
 + (__kindof UIViewController *)lx_instantiateInitialViewControllerWithStoryboardName:(NSString *)storyboardName;
 
+/// 根据标识符实例化指定故事板中的控制器
++ (__kindof UIViewController *)lx_instantiateViewControllerWithIdentifier:(NSString *)identifier inStoryBoard:(NSString *)storyboardName;
+
 @end
 
 NS_ASSUME_NONNULL_END

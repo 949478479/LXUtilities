@@ -13,14 +13,14 @@ typealias NSValueType = NSValue
 extension CGPoint {
 
     var NSValue: NSValueType {
-        return NSValueType(CGPoint: self)
+        return NSValueType(cgPoint: self)
     }
 
-    func adjustBy(dx dx: CGFloat, dy: CGFloat) -> CGPoint {
+    func adjustBy(dx: CGFloat, dy: CGFloat) -> CGPoint {
         return CGPoint(x: x + dx, y: y + dy)
     }
 
-    mutating func adjustInPlace(dx dx: CGFloat, dy: CGFloat) {
+    mutating func adjustInPlace(dx: CGFloat, dy: CGFloat) {
         x += dx
         y += dy
     }
@@ -29,14 +29,14 @@ extension CGPoint {
 extension CGSize {
 
     var NSValue: NSValueType {
-        return NSValueType(CGSize: self)
+        return NSValueType(cgSize: self)
     }
 
-    func adjustBy(dw dw: CGFloat, dh: CGFloat) -> CGSize {
+    func adjustBy(dw: CGFloat, dh: CGFloat) -> CGSize {
         return CGSize(width: width + dw, height: height + dh)
     }
 
-    mutating func adjustInPlace(dw dw: CGFloat, dh: CGFloat) {
+    mutating func adjustInPlace(dw: CGFloat, dh: CGFloat) {
         width  += dw
         height += dh
     }
@@ -45,14 +45,14 @@ extension CGSize {
 extension CGRect {
 
     var NSValue: NSValueType {
-        return NSValueType(CGRect: self)
+        return NSValueType(cgRect: self)
     }
 
-    func transformBy(t: CGAffineTransform) -> CGRect {
-        return CGRectApplyAffineTransform(self, t)
+    func transformBy(_ t: CGAffineTransform) -> CGRect {
+        return self.applying(t)
     }
 
-    mutating func transformInPlace(t: CGAffineTransform) {
-        self = CGRectApplyAffineTransform(self, t)
+    mutating func transformInPlace(_ t: CGAffineTransform) {
+        self = self.applying(t)
     }
 }

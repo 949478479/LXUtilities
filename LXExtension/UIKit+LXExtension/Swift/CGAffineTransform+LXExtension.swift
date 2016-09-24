@@ -10,22 +10,22 @@ import CoreGraphics.CGAffineTransform
 extension CGAffineTransform {
 
     var NSValue: NSValueType {
-        return NSValueType(CGAffineTransform: self)
+        return NSValueType(cgAffineTransform: self)
     }
 
-    func CGAffineTransformMakeScaleTranslate(sx: CGFloat, _ sy: CGFloat, _ tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform {
-        return CGAffineTransformMake(sx, 0, 0, sy, tx, ty)
+    func CGAffineTransformMakeScaleTranslate(_ sx: CGFloat, _ sy: CGFloat, _ tx: CGFloat, _ ty: CGFloat) -> CGAffineTransform {
+        return CGAffineTransform(a: sx, b: 0, c: 0, d: sy, tx: tx, ty: ty)
     }
 
-    mutating func scaleInPlace(sx sx: CGFloat, sy: CGFloat) {
-        self = CGAffineTransformScale(self, sx, sy)
+    mutating func scaleInPlace(sx: CGFloat, sy: CGFloat) {
+        self = self.scaledBy(x: sx, y: sy)
     }
 
-    mutating func rotateInPlace(angle angle: CGFloat) {
-        self = CGAffineTransformRotate(self, angle)
+    mutating func rotateInPlace(angle: CGFloat) {
+        self = self.rotated(by: angle)
     }
 
-    mutating func translateInPlace(tx tx: CGFloat, ty: CGFloat) {
-        self = CGAffineTransformTranslate(self, tx, ty)
+    mutating func translateInPlace(tx: CGFloat, ty: CGFloat) {
+        self = self.translatedBy(x: tx, y: ty)
     }
 }

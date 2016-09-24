@@ -10,6 +10,6 @@ import QuartzCore.CATransform3D
 extension CATransform3D {
 
     var NSValue: NSValueType {
-        return NSValueType(CATransform3D: self)
+        return NSValueType(caTransform3D: self)
     }
 }

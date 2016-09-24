@@ -14,7 +14,7 @@ extension CATransaction {
 
      - parameter actionsWithoutAnimation: 在闭包内修改图层属性不会触发隐式动画
      */
-    static func performWithoutAnimation(actionsWithoutAnimation: () -> ()) {
+    static func performWithoutAnimation(_ actionsWithoutAnimation: () -> ()) {
         begin()
         setDisableActions(true)
         actionsWithoutAnimation()
@@ -28,7 +28,7 @@ extension CATransaction {
      - parameter animations: 在此闭包内修改图层属性。
      - parameter completion: 隐式动画完成时调用此闭包。
      */
-    static func animateWithDuration(duration: CFTimeInterval, animations: () -> (),
+    static func animateWithDuration(_ duration: CFTimeInterval, animations: () -> (),
         completion: (() -> ())? = nil) {
         begin()
         setAnimationDuration(duration)

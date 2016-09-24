@@ -22,9 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 函数式便捷方法
 ///-------------------
 
-- (NSMutableArray *)lx_map:(id _Nullable (^)(KeyType key, ObjectType obj))map;
+- (NSMutableArray *)lx_map:(id _Nullable (^)(__unsafe_unretained KeyType key, __unsafe_unretained ObjectType obj))map;
 
-- (NSMutableDictionary<KeyType, ObjectType> *)lx_filter:(BOOL (^)(KeyType key, ObjectType obj))filter;
+- (NSMutableDictionary<KeyType, ObjectType> *)lx_filter:(BOOL (^)(__unsafe_unretained KeyType key, __unsafe_unretained ObjectType obj))filter;
 
 ///-----------
 /// @name 其他

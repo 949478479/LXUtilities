@@ -19,7 +19,7 @@ extension CALayer {
                 /* speed 设置为 0.0 将导致图层本地时间变为 0.0，而无论 beginTime 和 timeOffset 之前的值是多少，
                 将 timeOffset 设置为图层本地时间，就可以在 speed 设置为 0.0 后保持图层本地时间不变，
                 此时 speed 为 0.0，动画停止，且图层本地时间未变，因此动画会停止在原处。*/
-                timeOffset = convertTime(CACurrentMediaTime(), fromLayer: nil)
+                timeOffset = convertTime(CACurrentMediaTime(), from: nil)
                 speed = 0.0
             } else {
                 /* speed 设置为 1.0 后，图层本地时间会恢复正常。此时若将 timeOffset 重置为 0.0，即 timeOffset = 0.0，
@@ -44,26 +44,26 @@ extension CALayer {
      - parameter modelLayerUpdater: 在此闭包中更新图层属性不会触发隐式动画。
      - parameter completion:        动画正常完成或被移除时调用此闭包，注意不要设置动画代理。
      */
-    final func addAnimation(anim: CAAnimation, forKey key: String? = nil,
-        modelLayerUpdater: (() -> ())?, completion: (Bool -> ())?) {
+    final func addAnimation(_ anim: CAAnimation, forKey key: String? = nil,
+        modelLayerUpdater: (() -> ())?, completion: ((Bool) -> ())?) {
 
         class AnimationDelegate {
-            var completion: (Bool -> ())?
-            init(completion: Bool -> ()) {
+            var completion: ((Bool) -> ())?
+            init(completion: @escaping (Bool) -> ()) {
                 self.completion = completion
             }
-            private func animationDidStart(anim: CAAnimation) {}
-            private func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+            fileprivate func animationDidStart(_ anim: CAAnimation) {}
+            fileprivate func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
                 completion?(flag)
                 completion = nil
             }
         }
 
         if let completion = completion {
-            anim.delegate = AnimationDelegate(completion: completion)
+            anim.delegate = AnimationDelegate(completion: completion) as? CAAnimationDelegate
         }
         modelLayerUpdater?()
-        self.addAnimation(anim, forKey: key)
+        self.add(anim, forKey: key)
     }
 
     /**
@@ -73,7 +73,7 @@ extension CALayer {
      - parameter key:               动画对象的键。
      - parameter modelLayerUpdater: 在此闭包中更新图层属性不会触发隐式动画。
      */
-    final func addAnimation(anim: CAAnimation, forKey key: String? = nil, modelLayerUpdater: () -> ()) {
+    final func addAnimation(_ anim: CAAnimation, forKey key: String? = nil, modelLayerUpdater: @escaping () -> ()) {
         addAnimation(anim, forKey: key, modelLayerUpdater: modelLayerUpdater, completion: nil)
     }
 
@@ -84,7 +84,7 @@ extension CALayer {
      - parameter key:        动画对象的键。
      - parameter completion: 动画正常完成或被移除时调用此闭包，注意不要设置动画代理。
      */
-    final func addAnimation(anim: CAAnimation, forKey key: String? = nil, completion: Bool -> ()) {
+    final func addAnimation(_ anim: CAAnimation, forKey key: String? = nil, completion: @escaping (Bool) -> ()) {
         addAnimation(anim, forKey: key, modelLayerUpdater: nil, completion: completion)
     }
 }

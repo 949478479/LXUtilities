@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 函数式便捷方法 -
 
-- (NSMutableArray *)lx_map:(id _Nullable (^)(id _Nonnull, id _Nonnull))map
+- (NSMutableArray *)lx_map:(id _Nullable (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))map
 {
 	NSUInteger count = self.count;
 
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     return array;
 }
 
-- (NSMutableDictionary *)lx_filter:(BOOL (^)(id _Nonnull, id _Nonnull))filter
+- (NSMutableDictionary *)lx_filter:(BOOL (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))filter
 {
 	NSUInteger count = self.count;
 

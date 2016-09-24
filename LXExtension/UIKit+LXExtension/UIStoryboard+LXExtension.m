@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
     return viewController;
 }
 
++ (UIInputViewController *)lx_instantiateViewControllerWithIdentifier:(NSString *)identifier inStoryBoard:(NSString *)storyboardName
+{
+    return [[UIStoryboard storyboardWithName:storyboardName bundle:nil] instantiateViewControllerWithIdentifier:identifier];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
