@@ -68,4 +68,20 @@
                                              options:0] year];
 }
 
+- (dispatch_time_t)lx_dispatchTime
+{
+    /** 获取从 1970 到 date 的时间间隔,单位为秒 */
+    NSTimeInterval interval = [self timeIntervalSince1970];
+
+    /** 利用 modf 函数获取整数秒 second, 和小数秒 subSecond. */
+    double second, subSecond;
+    subSecond = modf(interval, &second);
+
+    /** 构造 timespec 结构体.第一个成员是秒,第二个是纳秒,所以要乘以 NSEC_PER_SEC. */
+    struct timespec when = { second, subSecond * NSEC_PER_SEC };
+
+    /** 利用 timespec 结构体数据生成时间并返回 */
+    return dispatch_walltime(&when, 0);
+}
+
 @end

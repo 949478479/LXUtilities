@@ -30,9 +30,7 @@
 - (void)setLeftViewImage:(UIImage *)leftViewImage
 {
     UIImageView *leftView = [[UIImageView alloc] initWithImage:leftViewImage];
-    leftView.lx_size      = CGSizeMake(self.lx_height, self.lx_height);
     leftView.contentMode  = UIViewContentModeCenter;
-
     self.leftView     = leftView;
     self.leftViewMode = UITextFieldViewModeAlways;
 }
