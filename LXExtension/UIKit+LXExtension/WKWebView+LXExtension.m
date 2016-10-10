@@ -1,18 +1,13 @@
 //
-//  UIWebView+LXExtension.m
+//  WKWebView+LXExtension.m
 //
-//  Created by 从今以后 on 16/7/7.
+//  Created by 从今以后 on 16/10/10.
 //  Copyright © 2016年 从今以后. All rights reserved.
 //
 
-#import "UIWebView+LXExtension.h"
+#import "WKWebView+LXExtension.h"
 
-@implementation UIWebView (LXExtension)
-
-- (JSContext *)lx_JSContext
-{
-    return [self valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-}
+@implementation WKWebView (LXExtension)
 
 - (void)lx_loadRequestWithURLString:(NSString *)URLString
 {

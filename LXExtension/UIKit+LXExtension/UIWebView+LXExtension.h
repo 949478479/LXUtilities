@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_loadRequestWithURLString:(NSString *)URLString;
 
+/// 对网页内容截图
+- (UIImage *)lx_snapshot;
+
 @end
 
 NS_ASSUME_NONNULL_END

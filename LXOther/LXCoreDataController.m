@@ -121,7 +121,12 @@ NS_ASSUME_NONNULL_BEGIN
 															  storeType:self.storeType
 															  modelName:self.modelName
 																  error:error];
-	success ? LXLog(@"迁移完成!~") : LXLog(@"迁移失败。。");
+    
+    if (success) {
+        LXLog(@"迁移完成!~");
+    } else {
+        LXLog(@"迁移失败。。");
+    }
 
 	[[UIApplication sharedApplication] endBackgroundTask:bgTask];
 

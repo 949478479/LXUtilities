@@ -23,6 +23,7 @@
 #import "UIScreen+LXExtension.h"
 #import "UIWindow+LXExtension.h"
 #import "UIWebView+LXExtension.h"
+#import "WKWebView+LXExtension.h"
 #import "UITextView+LXExtension.h"
 #import "UISearchBar+LXExtension.h"
 #import "UITableView+LXExtension.h"
