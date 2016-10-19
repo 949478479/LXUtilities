@@ -6,11 +6,24 @@
 //
 
 @import ObjectiveC.runtime;
-#import "LXUtilities.h"
+#import "LXMacro.h"
+#import "NSObject+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - 弱引用支持
+NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
+{
+    uint outCount = 0;
+    objc_property_t *properties = protocol_copyPropertyList(protocol, &outCount);
+    NSMutableArray *propertyList = [NSMutableArray arrayWithCapacity:outCount];
+    for (uint i = 0; i< outCount; ++i) {
+        [propertyList addObject:@(property_getName(properties[i]))];
+    }
+    LXFree(properties);
+    return propertyList;
+}
+
+/***********************************/
 
 @interface _LXWeakWrapper : NSObject
 @property (nullable, nonatomic, weak) id value;
@@ -18,21 +31,45 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation _LXWeakWrapper
 @end
 
+/*************************************/
+
 @implementation NSObject (LXExtension)
 
-#pragma mark - 方法交换 -
+#pragma mark - 方法交换
 
 #ifdef DEBUG
 + (void)load
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        LXMethodSwizzling(self, @selector(description), @selector(lx_description));
+        [self lx_exchangeOriginalImp:@selector(description) swizzledImp:@selector(lx_description)];
     });
 }
 #endif
 
-#pragma mark - 关联对象 -
++ (void)lx_exchangeOriginalImp:(SEL)originalSel swizzledImp:(SEL)swizzledSel
+{
+    NSParameterAssert(originalSel);
+    NSParameterAssert(swizzledSel);
+
+    Method originalMethod = class_getInstanceMethod(self, originalSel);
+    Method swizzledMethod = class_getInstanceMethod(self, swizzledSel);
+
+    IMP originalIMP = method_getImplementation(originalMethod);
+    IMP swizzledIMP = method_getImplementation(swizzledMethod);
+
+    const char *swizzledTypes = method_getTypeEncoding(swizzledMethod);
+
+    BOOL didAddMethod = class_addMethod(self, originalSel, swizzledIMP, swizzledTypes);
+
+    if (didAddMethod) {
+        method_setImplementation(swizzledMethod, originalIMP);
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
+#pragma mark - 关联对象
 
 - (void)lx_associateValue:(nullable id)value forKey:(NSString *)key
 {
@@ -104,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
     objc_removeAssociatedObjects(self);
 }
 
-#pragma mark - KVO -
+#pragma mark - KVO
 
 - (void)lx_removeAllObservers
 {
@@ -114,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-#pragma mark - 调试增强 -
+#pragma mark - 调试增强
 
 #ifdef DEBUG
 - (NSString *)lx_description

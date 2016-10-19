@@ -2,7 +2,7 @@
 //  GCD+LXExtension.h
 //
 //  Created by 从今以后 on 15/11/20.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Copyright © 2015年 从今以后. All rights reserved.
 //
 
 @import Foundation;

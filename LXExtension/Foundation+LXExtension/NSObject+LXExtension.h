@@ -10,11 +10,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// 获取协议中声明的所有属性名称
+NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol);
+
 /// NSObject 的直接子类采纳此协议将会覆盖 -[NSObject description] 方法，在默认实现上附带实例变量名和值
 @protocol LXDescriptionProtocol <NSObject>
 @end
 
 @interface NSObject (LXExtension)
+
+///--------------
+/// @name 方法交换
+///--------------
+
++ (void)lx_exchangeOriginalImp:(SEL)originalSel swizzledImp:(SEL)swizzledSel;
 
 ///--------------
 /// @name 关联对象

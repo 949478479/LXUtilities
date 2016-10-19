@@ -6,7 +6,7 @@
 //
 
 @import ObjectiveC.runtime;
-#import "LXUtilities.h"
+#import "NSObject+LXExtension.h"
 #import "UITextField+LXExtension.h"
 
 #pragma clang diagnostic ignored "-Wgnu-conditional-omitted-operand"
@@ -19,9 +19,9 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        LXMethodSwizzling([self class], @selector(textRectForBounds:), @selector(lx_textRectForBounds:));
-        LXMethodSwizzling([self class], @selector(editingRectForBounds:), @selector(lx_editingRectForBounds:));
-        LXMethodSwizzling([self class], @selector(leftViewRectForBounds:), @selector(lx_leftViewRectForBounds:));
+        [self lx_exchangeOriginalImp:@selector(textRectForBounds:) swizzledImp:@selector(lx_textRectForBounds:)];
+        [self lx_exchangeOriginalImp:@selector(editingRectForBounds:) swizzledImp:@selector(lx_editingRectForBounds:)];
+        [self lx_exchangeOriginalImp:@selector(leftViewRectForBounds:) swizzledImp:@selector(lx_leftViewRectForBounds:)];
     });
 }
 

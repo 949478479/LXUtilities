@@ -52,7 +52,6 @@
 
 #import "LXWeakWrapper.h"
 #import "GCD+LXExtension.h"
-#import "LXRuntimeUtilities.h"
 #import "LXDynamicTypeManager.h"
 #import "LXCoreDataController.h"
 
