@@ -2,11 +2,10 @@
 //  LXMigrationManager.h
 //
 //  Created by 从今以后 on 16/1/29.
-//  Copyright © 2016年 apple. All rights reserved.
+//  Copyright © 2016年 从今以后. All rights reserved.
 //
 
 @import Foundation;
-@class NSManagedObjectModel;
 
 NS_ASSUME_NONNULL_BEGIN
 

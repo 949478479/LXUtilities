@@ -2,7 +2,7 @@
 //  LXCoreDataController.h
 //
 //  Created by 从今以后 on 16/1/29.
-//  Copyright © 2016年 apple. All rights reserved.
+//  Copyright © 2016年 从今以后. All rights reserved.
 //
 
 @import CoreData;
@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXCoreDataController : NSObject
 
-- (LXCoreDataController *)initWithModelName:(NSString *)modelName
-								  storeName:(NSString *)storeName
-								  storeType:(NSString *)storeType NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelName:(NSString *)modelName
+                        storeName:(NSString *)storeName
+                        storeType:(NSString *)storeType NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)migrate:(NSError **)error;
 - (BOOL)saveIfNeed:(NSError **)error;
