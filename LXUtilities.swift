@@ -9,7 +9,7 @@ import Foundation
 
 func printLog(_ items: Any, file: String = #file, line: Int = #line, function: String = #function) {
     #if DEBUG
-        print("\((file as NSString).lastPathComponent)[\(line)] \(function)\n", items, separator: "")
+        print("\(function) at \((file as NSString).lastPathComponent)[\(line)] ", items, separator: "")
     #endif
 }
 
@@ -20,4 +20,10 @@ func value(from object: Any, forKey key: String) -> Any? {
         }
     }
     return nil
+}
+
+func synchronized(_ obj: Any!, _ closure: () -> Void) {
+    objc_sync_enter(obj)
+    closure()
+    objc_sync_exit(obj)
 }
