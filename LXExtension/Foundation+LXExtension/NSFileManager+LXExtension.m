@@ -2,7 +2,7 @@
 //  NSFileManager+LXExtension.m
 //
 //  Created by 从今以后 on 15/10/13.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Copyright © 2015年 从今以后. All rights reserved.
 //
 
 #import <CommonCrypto/CommonDigest.h>
@@ -95,23 +95,24 @@ NS_ASSUME_NONNULL_BEGIN
 		return 0;
 	}
 
-    NSFileManager *fileManager   = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSDictionary *itemAttributes = [fileManager attributesOfItemAtPath:path error:NULL];
 
-    if (itemAttributes[NSFileType] != NSFileTypeDirectory) { // 文件
+    if (itemAttributes[NSFileType] == NSFileTypeRegular) { // 文件
         return [itemAttributes[NSFileSize] unsignedLongLongValue];
-    }
-
-    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:path];
-
-    uint64_t size = 0;
-    while ([enumerator nextObject]) {
-        itemAttributes = [enumerator fileAttributes];
-        if (itemAttributes[NSFileType] == NSFileTypeRegular) {
-            size += [itemAttributes[NSFileSize] unsignedLongLongValue];
-        }
-    }
-    return size;
+	}
+	else if (itemAttributes[NSFileType] == NSFileTypeDirectory) { // 文件夹
+		NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:path];
+		uint64_t size = 0;
+		while ([enumerator nextObject]) {
+			itemAttributes = [enumerator fileAttributes];
+			if (itemAttributes[NSFileType] == NSFileTypeRegular) {
+				size += [itemAttributes[NSFileSize] unsignedLongLongValue];
+			}
+		}
+		return size;
+	}
+	return 0; // 其他
 }
 
 #pragma mark - 文件校验
