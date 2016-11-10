@@ -21,16 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 图片缩放 -
 
 /**
- *  缩放图片到目标尺寸。
- *
- *  @param targetSize  目标尺寸。若模式为 AspectFit，则最终图片可能比目标尺寸小。
- *  @param contentMode 缩放模式。有效模式为：
-					   @c UIViewContentModeScaleToFill
-					   @c UIViewContentModeScaleAspectFit
-					   @c UIViewContentModeScaleAspectFill
+ 缩放图片到指定像素尺寸。
+
+ @param size 新图片的像素尺寸。
+ @param contentMode 有效模式为：UIViewContentModeScaleToFill，UIViewContentModeScaleAspectFit，UIViewContentModeScaleAspectFill
  */
-- (UIImage *)lx_resizedImageForTargetSize:(CGSize)targetSize
-							  contentMode:(UIViewContentMode)contentMode;
+- (UIImage *)lx_imageByScalingToSize:(CGSize)size
+						 contentMode:(UIViewContentMode)contentMode;
 
 /// 图片在 @c UIViewContentModeScaleAspectFit 模式下填充 @c boundingRect 时的 frame。
 - (CGRect)lx_rectForScaleAspectFitInsideBoundingRect:(CGRect)boundingRect;

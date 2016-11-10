@@ -20,10 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 图片缩放 -
 
-- (UIImage *)lx_resizedImageForTargetSize:(CGSize)targetSize
-							  contentMode:(UIViewContentMode)contentMode
+- (UIImage *)lx_imageByScalingToSize:(CGSize)size
+						 contentMode:(UIViewContentMode)contentMode
 {
-    CGRect drawingRect = { .size = targetSize }; // 默认为 UIViewContentModeScaleToFill
+    CGRect drawingRect = { .size = size }; // 默认为 UIViewContentModeScaleToFill
 
     if (contentMode == UIViewContentModeScaleAspectFit) {
 		
@@ -34,22 +34,22 @@ NS_ASSUME_NONNULL_BEGIN
         CGFloat ratio = self.size.height / self.size.width;
 
         // 先尝试以宽度为准，根据纵横比求出高度
-		drawingRect.size.height = targetSize.width * ratio;
+		drawingRect.size.height = size.width * ratio;
 
 		// 若高度不足期望值，说明应以高度为准
-        if (drawingRect.size.height < targetSize.height) {
+        if (drawingRect.size.height < size.height) {
             // 以高度为准，根据纵横比计算宽度
-            drawingRect.size = CGSizeMake(targetSize.height / ratio, targetSize.height);
+            drawingRect.size = CGSizeMake(size.height / ratio, size.height);
             // 绘制区域的原点 x 坐标需向左平移，从而使裁剪区域居中
-            drawingRect.origin.x = -(drawingRect.size.width - targetSize.width) / 2;
+            drawingRect.origin.x = -(drawingRect.size.width - size.width) / 2;
         }
 		// 在宽度满足期望值的情况下，高度大于等于期望高度。绘制区域原点 y 坐标应向上平移，从而使裁剪区域居中。
         else {
-            drawingRect.origin.y = -(drawingRect.size.height - targetSize.height) / 2;
+            drawingRect.origin.y = -(drawingRect.size.height - size.height) / 2;
         }
     }
 
-    UIGraphicsBeginImageContextWithOptions(targetSize, NO, 0);
+    UIGraphicsBeginImageContext(size);
 
     [self drawInRect:drawingRect];
 

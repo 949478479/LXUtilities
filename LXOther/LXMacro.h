@@ -71,8 +71,8 @@ LX_DIAGNOSTIC_POP
 /// @name 计算代码执行耗时
 ///--------------------
 
-#define LX_BENCHMARKING_BEGIN CFTimeInterval begin = CACurrentMediaTime();
-#define LX_BENCHMARKING_END   CFTimeInterval end   = CACurrentMediaTime(); printf("运行时间: %g 秒\n", end - begin);
+#define LX_BENCHMARKING_BEGIN CFTimeInterval lx_begin = CACurrentMediaTime();
+#define LX_BENCHMARKING_END   CFTimeInterval lx_end   = CACurrentMediaTime(); printf("运行时间: %g 秒\n", lx_end - lx_begin);
 
 #pragma mark -
 
