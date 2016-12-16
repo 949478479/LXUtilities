@@ -18,8 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable UIViewController *)lx_rootViewController;
 
 /// 主窗口的顶层视图控制器。
-/// 涉及到视图控制器容器时，只支持 UINavigationController，UITabBarController，UISplitViewController。
-/// 对于 UISplitViewController，只考虑了 master 视图控制器层级，因此在 iPhone 和 iPad 设备上的结果会有所不同。
+/// 涉及到视图控制器容器时，只支持 UINavigationController，UITabBarController。
 + (nullable UIViewController *)lx_topViewController;
 
 /// 将指定故事板中的初始控制器设置为主窗口的根控制器。
