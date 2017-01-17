@@ -128,11 +128,13 @@ NS_ASSUME_NONNULL_BEGIN
 	CC_MD5_Init(&md5);
 
 	while (1) {
-		NSData *fileData = [handle readDataOfLength:1024];
-		if (fileData.length == 0) {
-			break;
+		@autoreleasepool {
+			NSData *fileData = [handle readDataOfLength:1024];
+			if (fileData.length == 0) {
+				break;
+			}
+			CC_MD5_Update(&md5, [fileData bytes], (CC_LONG)[fileData length]);
 		}
-		CC_MD5_Update(&md5, [fileData bytes], (CC_LONG)[fileData length]);
 	}
 
 	unsigned char digest[CC_MD5_DIGEST_LENGTH];
