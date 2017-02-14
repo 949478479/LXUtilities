@@ -7,6 +7,7 @@
 
 #import "UIWindow+LXExtension.h"
 #import "UIApplication+LXExtension.h"
+#import "UIViewController+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,25 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable UIViewController *)lx_topViewController
 {
-    UIViewController *topVC = [self lx_keyWindow].rootViewController;
-
-	Class tabBarControllerClass = [UITabBarController class];
-    Class navigationControllerClass = [UINavigationController class];
-
-    while (1) {
-        if ([topVC isKindOfClass:navigationControllerClass]) {
-            topVC = [(UINavigationController *)topVC visibleViewController];
-        } else if ([topVC isKindOfClass:tabBarControllerClass]) {
-            topVC = [(UITabBarController *)topVC selectedViewController];
-        } else {
-            UIViewController *presentedVC = topVC.presentedViewController;
-            if (presentedVC) {
-                topVC = presentedVC;
-            } else {
-                return topVC;
-            }
-        }
-    }
+    return [[self lx_keyWindow].rootViewController lx_visibleViewControllerIfExist];
 }
 
 + (nullable UIViewController *)lx_rootViewController
