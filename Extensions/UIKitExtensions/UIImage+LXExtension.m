@@ -78,9 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
-	BOOL opaque = (alphaInfo & kCGImageAlphaNoneSkipLast) ||
-	(alphaInfo & kCGImageAlphaNoneSkipFirst) ||
-	(alphaInfo & kCGImageAlphaNone);
+	BOOL opaque = (alphaInfo == kCGImageAlphaNoneSkipLast) ||
+	(alphaInfo == kCGImageAlphaNoneSkipFirst) ||
+	(alphaInfo == kCGImageAlphaNone);
 	opaque = (opaque && CGRectContainsRect(drawingRect, LXRectMakeWithSize(size)));
 
 	UIGraphicsBeginImageContextWithOptions(size, opaque, self.scale);
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	CGRect clippedRect = CGRectIntegral(LXRectApplyScale(rect, self.scale));
 	CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, clippedRect);
-	UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:UIImageOrientationUp];
+	UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
 	CGImageRelease(imageRef);
 	return finalImage;
 }
@@ -124,6 +124,44 @@ NS_ASSUME_NONNULL_BEGIN
 	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	return finalImage;
+}
+
+#pragma mark - 
+
+- (UIImage *)lx_grayImage
+{
+	size_t width = self.size.width * self.scale;
+	size_t height = self.size.height * self.scale;
+
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+	CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, colorSpace, kCGImageAlphaNone);
+	CGContextDrawImage(context, CGRectMake(0, 0, width, height), self.CGImage);
+	CGImageRef grayImageRef = CGBitmapContextCreateImage(context);
+	CGColorSpaceRelease(colorSpace);
+	CGContextRelease(context);
+
+	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
+	BOOL opaque = (alphaInfo == kCGImageAlphaNoneSkipLast) ||
+	(alphaInfo == kCGImageAlphaNoneSkipFirst) ||
+	(alphaInfo == kCGImageAlphaNone);
+
+	if (opaque) {
+		UIImage *grayImage = [UIImage imageWithCGImage:grayImageRef scale:self.scale orientation:self.imageOrientation];
+		CGImageRelease(grayImageRef);
+		return grayImage;
+	}
+
+	context = CGBitmapContextCreate(NULL, width, height, 8, 0, NULL, kCGImageAlphaOnly);
+	CGContextDrawImage(context, CGRectMake(0, 0, width, height), self.CGImage);
+	CGImageRef maskImageRef = CGBitmapContextCreateImage(context);
+	CGImageRef maskedGrayImageRef = CGImageCreateWithMask(grayImageRef, maskImageRef);
+	CGContextRelease(context);
+	CGImageRelease(grayImageRef);
+	CGImageRelease(maskImageRef);
+
+	UIImage *maskedGrayImage = [UIImage imageWithCGImage:maskedGrayImageRef scale:self.scale orientation:self.imageOrientation];
+	CGImageRelease(maskedGrayImageRef);
+	return maskedGrayImage;
 }
 
 #pragma mark - 获取像素颜色

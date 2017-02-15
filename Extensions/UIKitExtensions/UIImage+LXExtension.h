@@ -92,11 +92,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage *)lx_imageWithCornerRadius:(CGFloat)cornerRadius
 					  backgroundColor:(nullable UIColor *)backgroundColor;
 
-///-----------------
-/// @name 获取像素颜色
-///-----------------
+///--------------
+/// @name 图片颜色
+///--------------
 
-#pragma mark - 获取像素颜色
+#pragma mark - 图片颜色
+
+/// 将图片转换为灰度图片
+- (UIImage *)lx_grayImage;
 
 /// 获取当前图片的均色，原理是将图片绘制到 1px * 1px 的矩形内，再从当前区域取色，得到图片的均色
 - (UIColor *)lx_averageColor;
