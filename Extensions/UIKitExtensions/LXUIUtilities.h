@@ -21,9 +21,9 @@ LXFloorInPixel(CGFloat value, CGFloat scale) {
 	return 0;
 }
 
-/// 将以 pt 为单位的浮点值沿靠近 0 的方向取整
+/// 将浮点值沿靠近 0 的方向取整
 CG_INLINE CGFloat
-LXFloorInPoint(CGFloat value) {
+LXFloor(CGFloat value) {
 	if (value > 0)
 		return floor(value);
 	if (value < 0)
@@ -41,9 +41,9 @@ LXCeilInPixel(CGFloat value, CGFloat scale) {
 	return 0;
 }
 
-/// 将以 pt 为单位的浮点值沿远离 0 的方向取整
+/// 将浮点值沿远离 0 的方向取整
 CG_INLINE CGFloat
-LXCeilInPoint(CGFloat value) {
+LXCeil(CGFloat value) {
 	if (value > 0)
 		return ceil(value);
 	if (value < 0)
@@ -55,12 +55,6 @@ LXCeilInPoint(CGFloat value) {
 CG_INLINE CGFloat
 LXRoundInPixel(CGFloat value, CGFloat scale) {
 	return round(value * scale) / scale;
-}
-
-/// 将以 pt 为单位的浮点值四舍五入取整
-CG_INLINE CGFloat
-LXRoundInPoint(CGFloat value) {
-	return round(value);
 }
 
 #pragma mark - CGPoint
@@ -75,6 +69,12 @@ LXPointCeilInPixel(CGPoint point, CGFloat scale) {
 CG_INLINE CGPoint
 LXPointFloorInPixel(CGPoint point, CGFloat scale) {
 	return CGPointMake(floor(point.x * scale) / scale, floor(point.y * scale) / scale);
+}
+
+/// 将一个 CGPoint 的坐标四舍五入取整
+CG_INLINE CGPoint
+LXPointRound(CGPoint point) {
+	return CGPointMake(round(point.x), round(point.y));
 }
 
 #pragma mark - CGSize
@@ -106,16 +106,16 @@ LXSizeFloorInPixel(CGSize size, CGFloat scale) {
 	return CGSizeMake(LXFloorInPixel(size.width, scale), LXFloorInPixel(size.height, scale));
 }
 
-/// 将一个以 pt 为单位的 CGSize 的宽高向上取整
+/// 将 CGSize 的宽高沿远离 0 的方向取整
 CG_INLINE CGSize
 LXSizeCeil(CGSize size) {
-	return CGSizeMake(LXCeilInPoint(size.width), LXCeilInPoint(size.height));
+	return CGSizeMake(LXCeil(size.width), LXCeil(size.height));
 }
 
-/// 将一个以 pt 为单位的 CGSize 的宽高向下取整
+/// 将 CGSize 的宽高沿靠近 0 的方向取整
 CG_INLINE CGSize
 LXSizeFloor(CGSize size) {
-	return CGSizeMake(LXFloorInPoint(size.width), LXFloorInPoint(size.height));
+	return CGSizeMake(LXFloor(size.width), LXFloor(size.height));
 }
 
 #pragma mark - CGRect
@@ -182,6 +182,15 @@ LXRectFlatMake(CGFloat x, CGFloat y, CGFloat width, CGFloat height, CGFloat scal
 					  floor(y * scale) / scale,
 					  LXCeilInPixel(width, scale),
 					  LXCeilInPixel(height, scale));
+}
+
+/// 为一个 CGRect 叠加 scale 计算
+CG_INLINE CGRect
+LXRectApplyScale(CGRect rect, CGFloat scale) {
+	return CGRectMake(CGRectGetMinX(rect) * scale,
+					  CGRectGetMinY(rect) * scale,
+					  CGRectGetWidth(rect) * scale,
+					  CGRectGetHeight(rect) * scale);
 }
 
 #pragma mark - UIEdgeInsets

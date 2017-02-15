@@ -11,101 +11,118 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (LXExtension)
 
-/// 图片纵横比例。
-@property (nonatomic, readonly) CGFloat lx_aspectRatio;
+/// 图片纵横比例
+- (CGFloat)lx_aspectRatio;
+
+///--------------
+/// @name 图片创建
+///--------------
+
+#pragma mark - 图片创建
+
+/**
+ *  使用 @c +[UIImage imageWithContentsOfFile:] 创建图片
+ *
+ *  @param path 图片相对于 mainBundle 的路径，需包含扩展名
+ */
++ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path NS_SWIFT_NAME(init(lx_contentsOfFile:));
+
+/// 使用 @c +[UIImage imageNamed:] 创建 @c UIImageRenderingModeAlwaysOriginal 渲染模式的图片
++ (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
+
+/// 生成尺寸为 1pt * 1pt 的纯色图片
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color;
+
+/**
+ 生成指定大小的纯色图片
+
+ @param color	     图片颜色
+ @param size		 图片大小，单位是 pt
+ @param cornerRadius 图片圆角半径
+ */
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color
+									  size:(CGSize)size
+							  cornerRadius:(CGFloat)cornerRadius NS_SWIFT_NAME(init(color:size:cornerRadius:));
 
 ///--------------
 /// @name 图片缩放
 ///--------------
 
-#pragma mark - 图片缩放 -
+#pragma mark - 图片缩放
 
 /**
- 缩放图片到指定像素尺寸。
+ 缩放图片到指定大小，以 pt 为单位
 
- @param size 新图片的像素尺寸。
- @param contentMode 有效模式为：UIViewContentModeScaleToFill，UIViewContentModeScaleAspectFit，UIViewContentModeScaleAspectFill
+ @param size	    新图片大小，以 pt 为单位
+ @param contentMode 默认为 @c UIViewContentModeScaleAspectFit，
+					其他可选项有 @c UIViewContentModeScaleToFill 和 @c UIViewContentModeScaleAspectFill
  */
 - (UIImage *)lx_imageByScalingToSize:(CGSize)size
 						 contentMode:(UIViewContentMode)contentMode;
 
-/// 图片在 @c UIViewContentModeScaleAspectFit 模式下填充 @c boundingRect 时的 frame。
-- (CGRect)lx_rectForScaleAspectFitInsideBoundingRect:(CGRect)boundingRect;
+/// 图片在 UIViewContentModeScaleAspectFit 模式下填充 boundingRect 时的 frame
+- (CGRect)lx_rectWithAspectRatioInsideRect:(CGRect)boundingRect;
 
 ///--------------
 /// @name 图片裁剪
 ///--------------
 
-#pragma mark - 图片裁剪 -
+#pragma mark - 图片裁剪
 
 /**
- *  生成圆形图片。
- *
- *  @param cropArea        相对于图片的正方形裁剪区域。
- *  @param backgroundColor 背景颜色，传入 @c nil 则背景透明。
+ 裁剪图片指定区域作为新图片
+
+ @param rect 裁剪区域，以 pt 为单位
  */
-- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
-                        backgroundColor:(nullable UIColor *)backgroundColor;
+- (UIImage *)lx_imageWithClippedRect:(CGRect)rect;
 
 /**
- *  生成带边框的圆形图片，图片最终尺寸为裁剪尺寸加上两倍边框宽度。
- *
- *  @param cropArea        相对于图片的正方形裁剪区域。
- *  @param borderWidth     边框宽度，传入 @c 0 则无边框。
- *  @param borderColor     边框颜色，传入 @c nil 则为不透明黑色。
- *  @param backgroundColor 背景颜色，传入 @c nil 则背景透明。
+ 生成有圆角的背景透明图片
+
+ @param cornerRadius 圆角半径，以 pt 为单位
  */
-- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
-							borderWidth:(CGFloat)borderWidth
-							borderColor:(nullable UIColor *)borderColor
-                        backgroundColor:(nullable UIColor *)backgroundColor;
-
-///--------------
-/// @name 创建图片
-///--------------
-
-#pragma mark - 创建图片 -
+- (UIImage *)lx_imageWithCornerRadius:(CGFloat)cornerRadius;
 
 /**
- *  使用 @c [UIImage imageWithContentsOfFile:] 创建图片。
- *
- *  @param path 图片相对于 @c mainBundle 的路径，包含扩展名。
+ 生成有圆角和背景色的图片
+
+ @param cornerRadius    圆角半径，以 pt 为单位
+ @param backgroundColor 背景颜色，默认透明
  */
-+ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path NS_SWIFT_NAME(init(lx_contentsOfFile:));
-
-/// 使用 @c [UIImage imageNamed:] 创建 @c UIImageRenderingModeAlwaysOriginal 渲染模式的图片。
-+ (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
-
-/// 生成尺寸为 1 * 1 的纯色图片
-+ (nullable instancetype)lx_imageWithColor:(UIColor *)color;
-
-/// 生成纯色图片。仅当 @c color 的 @c alpha 为 @c 1 且 @c cornerRadius 为 @c 0 时，图片才是完全不透明的。
-+ (nullable instancetype)lx_imageWithColor:(UIColor *)color
-                                      size:(CGSize)size
-                              cornerRadius:(CGFloat)cornerRadius NS_SWIFT_NAME(init(color:size:cornerRadius:));
+- (UIImage *)lx_imageWithCornerRadius:(CGFloat)cornerRadius
+					  backgroundColor:(nullable UIColor *)backgroundColor;
 
 ///-----------------
 /// @name 获取像素颜色
 ///-----------------
 
-#pragma mark - 获取像素颜色 -
+#pragma mark - 获取像素颜色
 
-/// 获取图片指定位置像素颜色，单位是点。
+/// 获取当前图片的均色，原理是将图片绘制到 1px * 1px 的矩形内，再从当前区域取色，得到图片的均色
+- (UIColor *)lx_averageColor;
+
+/// 获取图片指定位置像素的颜色，单位是 px
 - (UIColor *)lx_pixelColorAtPosition:(CGPoint)position;
 
-#pragma mark - 生成二维码图片
+///-------------
+/// @name 二维码
+///-------------
+
+#pragma mark - 二维码
 
 /**
  *  生成二维码图片
  *
  *  @param message     二维码内容
- *  @param size        以点为单位的二维码尺寸
- *  @param logo        中心的logo图案
+ *  @param size        二维码尺寸，以 pt 为单位
+ *  @param logo        二维码中心图案
+ *  @param logoSize    二维码中心图案尺寸，以 pt 为单位
  *  @param transparent 是否将白色背景变为透明
  */
 + (instancetype)lx_QRCodeImageWithMessage:(NSString *)message
                                      size:(CGSize)size
                                      logo:(nullable UIImage *)logo
+								 logoSize:(CGSize)logoSize
                               transparent:(BOOL)transparent;
 @end
 

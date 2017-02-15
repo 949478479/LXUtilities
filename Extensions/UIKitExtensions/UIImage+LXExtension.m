@@ -7,202 +7,176 @@
 
 @import AVFoundation.AVUtilities;
 #import "UIImage+LXExtension.h"
+#import "LXUIUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIImage (LXExtension)
 
-- (CGFloat)lx_aspectRatio
-{
-	CGSize size = self.size;
-	return size.height / size.width;
+- (CGFloat)lx_aspectRatio {
+	return self.size.height / self.size.width;
 }
 
-#pragma mark - 图片缩放 -
-
-- (UIImage *)lx_imageByScalingToSize:(CGSize)size
-						 contentMode:(UIViewContentMode)contentMode
-{
-    CGRect drawingRect = { .size = size }; // 默认为 UIViewContentModeScaleToFill
-
-    if (contentMode == UIViewContentModeScaleAspectFit) {
-		
-        drawingRect.size = [self lx_rectForScaleAspectFitInsideBoundingRect:drawingRect].size;
-
-    } else if (contentMode == UIViewContentModeScaleAspectFill) {
-
-        CGFloat ratio = self.size.height / self.size.width;
-
-        // 先尝试以宽度为准，根据纵横比求出高度
-		drawingRect.size.height = size.width * ratio;
-
-		// 若高度不足期望值，说明应以高度为准
-        if (drawingRect.size.height < size.height) {
-            // 以高度为准，根据纵横比计算宽度
-            drawingRect.size = CGSizeMake(size.height / ratio, size.height);
-            // 绘制区域的原点 x 坐标需向左平移，从而使裁剪区域居中
-            drawingRect.origin.x = -(drawingRect.size.width - size.width) / 2;
-        }
-		// 在宽度满足期望值的情况下，高度大于等于期望高度。绘制区域原点 y 坐标应向上平移，从而使裁剪区域居中。
-        else {
-            drawingRect.origin.y = -(drawingRect.size.height - size.height) / 2;
-        }
-    }
-
-    UIGraphicsBeginImageContext(size);
-
-    [self drawInRect:drawingRect];
-
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-- (CGRect)lx_rectForScaleAspectFitInsideBoundingRect:(CGRect)boundingRect
-{
-    return AVMakeRectWithAspectRatioInsideRect(self.size, boundingRect);
-}
-
-#pragma mark - 图片裁剪 -
-
-- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
-                        backgroundColor:(nullable UIColor *)backgroundColor
-{
-    return [self lx_roundedImageForCropArea:cropArea
-                                borderWidth:0.0
-                                borderColor:nil
-                            backgroundColor:backgroundColor];
-}
-
-- (UIImage *)lx_roundedImageForCropArea:(CGRect)cropArea
-							borderWidth:(CGFloat)borderWidth
-							borderColor:(nullable UIColor *)borderColor
-                        backgroundColor:(nullable UIColor *)backgroundColor
-{
-    CGSize contextSize = { cropArea.size.width + 2 * borderWidth, cropArea.size.height + 2 * borderWidth };
-
-	UIGraphicsBeginImageContextWithOptions(contextSize, backgroundColor != nil, 0);
-
-    if (backgroundColor) {
-        [backgroundColor setFill];
-        UIRectFill((CGRect){.size = contextSize});
-    }
-
-	// 将外边框路径以内的圆形区域填充为边框颜色
-    if (borderWidth > 0) {
-        [borderColor setFill];
-		[[UIBezierPath bezierPathWithOvalInRect:(CGRect){.size = contextSize}] fill];
-    }
-
-    // 内边框原点相对于上下文原点向内偏移 borderWidth，尺寸为图片裁剪尺寸
-	CGRect innerBoundaryRect = { .origin = { borderWidth, borderWidth }, .size = cropArea.size };
-
-	// 设置内边框路径以内的圆形区域为裁剪范围
-    [[UIBezierPath bezierPathWithOvalInRect:innerBoundaryRect] addClip];
-
-    // 调整图片绘制原点，使裁剪区部分正好对应内边框区域
-    CGPoint drawingPoint = { -cropArea.origin.x + borderWidth, -cropArea.origin.y + borderWidth };
-
-    [self drawAtPoint:drawingPoint];
-
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-#pragma mark - 创建图片 -
+#pragma mark - 图片创建
 
 + (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path
 {
-    return [self imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
+	return [self imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
 }
 
 + (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name
 {
-    return [[self imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+	return [[self imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 
 + (nullable instancetype)lx_imageWithColor:(UIColor *)color
 {
-    return [self lx_imageWithColor:color size:CGSizeMake(1.0, 1.0) cornerRadius:0.0];
+	return [self lx_imageWithColor:color size:CGSizeMake(1.0, 1.0) cornerRadius:0.0];
 }
 
 + (nullable instancetype)lx_imageWithColor:(UIColor *)color
 									  size:(CGSize)size
 							  cornerRadius:(CGFloat)cornerRadius
 {
-    CGColorRef cg_color = color.CGColor;
-
-    CGFloat alpha = CGColorGetAlpha(cg_color);
-
-    BOOL opaque = (alpha == 1.0 && cornerRadius == 0.0);
-
-    UIGraphicsBeginImageContextWithOptions(size, opaque, 0);
-
-    CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), cg_color);
-
-    [[UIBezierPath bezierPathWithRoundedRect:(CGRect){.size = size} cornerRadius:cornerRadius] fill];
-
-	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-
+	color = color ?: [UIColor clearColor];
+	size = LXSizeCeilInPixel(size, [[UIScreen mainScreen] scale]);
+	BOOL opaque = (cornerRadius == 0.0 && CGColorGetAlpha(color.CGColor) == 1.0);
+	UIGraphicsBeginImageContextWithOptions(size, opaque, 0);
+	[color setFill];
+	[[UIBezierPath bezierPathWithRoundedRect:LXRectMakeWithSize(size) cornerRadius:cornerRadius] fill];
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-	
-	return image;
+	return finalImage;
 }
 
-#pragma mark - 获取像素颜色 -
+#pragma mark - 图片缩放
+
+- (UIImage *)lx_imageByScalingToSize:(CGSize)size
+						 contentMode:(UIViewContentMode)contentMode
+{
+	size = LXSizeCeilInPixel(size, self.scale);
+
+	CGRect drawingRect = CGRectZero;
+	if (contentMode == UIViewContentModeScaleToFill) {
+		drawingRect = LXRectMakeWithSize(size);
+	} else {
+		CGFloat ratio = 0;
+		CGSize imageSize = self.size;
+		CGFloat horizontalRatio = size.width / imageSize.width;
+		CGFloat verticalRatio = size.height / imageSize.height;
+		if (contentMode == UIViewContentModeScaleAspectFill) {
+			ratio = fmaxf(horizontalRatio, verticalRatio);
+		} else {
+			// 默认为 UIViewContentModeScaleAspectFit
+			ratio = fminf(horizontalRatio, verticalRatio);
+		}
+		drawingRect.size.width = imageSize.width * ratio;
+		drawingRect.size.height = imageSize.height * ratio;
+		drawingRect.origin.x = (size.width - drawingRect.size.width) / 2;
+		drawingRect.origin.y = (size.height - drawingRect.size.height) / 2;
+		drawingRect = LXRectFlatted(drawingRect, self.scale);
+	}
+
+	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
+	BOOL opaque = (alphaInfo & kCGImageAlphaNoneSkipLast) ||
+	(alphaInfo & kCGImageAlphaNoneSkipFirst) ||
+	(alphaInfo & kCGImageAlphaNone);
+	opaque = (opaque && CGRectContainsRect(drawingRect, LXRectMakeWithSize(size)));
+
+	UIGraphicsBeginImageContextWithOptions(size, opaque, self.scale);
+    [self drawInRect:drawingRect];
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return finalImage;
+}
+
+- (CGRect)lx_rectWithAspectRatioInsideRect:(CGRect)boundingRect {
+    return LXRectFlatted(AVMakeRectWithAspectRatioInsideRect(self.size, boundingRect), [[UIScreen mainScreen] scale]);
+}
+
+#pragma mark - 图片裁剪
+
+- (UIImage *)lx_imageWithClippedRect:(CGRect)rect
+{
+	CGRect clippedRect = CGRectIntegral(LXRectApplyScale(rect, self.scale));
+	CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, clippedRect);
+	UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:UIImageOrientationUp];
+	CGImageRelease(imageRef);
+	return finalImage;
+}
+
+- (UIImage *)lx_imageWithCornerRadius:(CGFloat)cornerRadius {
+	return [self lx_imageWithCornerRadius:cornerRadius backgroundColor:nil];
+}
+
+- (UIImage *)lx_imageWithCornerRadius:(CGFloat)cornerRadius
+					  backgroundColor:(nullable UIColor *)backgroundColor
+{
+	BOOL opaque = (backgroundColor != nil) && (CGColorGetAlpha(backgroundColor.CGColor) == 1.0);
+	UIGraphicsBeginImageContextWithOptions(self.size, opaque, self.scale);
+	CGRect drawingRect = LXRectMakeWithSize(self.size);
+	if (backgroundColor) {
+		[backgroundColor setFill];
+		UIRectFill(drawingRect);
+	}
+	[[UIBezierPath bezierPathWithRoundedRect:drawingRect cornerRadius:cornerRadius] addClip];
+	[self drawAtPoint:CGPointZero];
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return finalImage;
+}
+
+#pragma mark - 获取像素颜色
+
+- (UIColor *)lx_averageColor
+{
+	unsigned char rgba[4] = {};
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGContextRef context = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, kCGImageAlphaPremultipliedLast);
+	CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), self.CGImage);
+	CGColorSpaceRelease(colorSpace);
+	CGContextRelease(context);
+	if (rgba[3] > 0) {
+		return [UIColor colorWithRed:(CGFloat)rgba[0] / rgba[3]
+							   green:(CGFloat)rgba[1] / rgba[3]
+								blue:(CGFloat)rgba[2] / rgba[3]
+							   alpha:(CGFloat)rgba[3] / 255.0];
+	} else {
+		return [UIColor colorWithRed:rgba[0]/255.0
+							   green:rgba[1]/255.0
+								blue:rgba[2]/255.0
+							   alpha:0];
+	}
+}
 
 - (UIColor *)lx_pixelColorAtPosition:(CGPoint)position
 {
-    size_t pixelsWide = 1;
-    size_t pixelsHigh = 1;
-    size_t bitsPerComponent = 8;
-    size_t bytesPerRow = pixelsWide * 4;
-    size_t bitmapByteCount = bytesPerRow * pixelsHigh;
+	position = LXPointRound(position);
 
+	unsigned char rgba[4] = {};
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    unsigned char *bitmapData  = calloc(bitmapByteCount, sizeof(unsigned char));
-    CGBitmapInfo bitmapInfo    = (CGBitmapInfo)kCGImageAlphaPremultipliedLast;
+    CGContextRef bitmapContext = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, kCGImageAlphaPremultipliedLast);
+    CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, CGRectMake(position.x, position.y, 1, 1));
+    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, 1, 1), imageRef);
 
-    CGContextRef bitmapContext = CGBitmapContextCreate(bitmapData,
-                                                       pixelsWide,
-                                                       pixelsHigh,
-                                                       bitsPerComponent,
-                                                       bytesPerRow,
-                                                       colorSpace,
-                                                       bitmapInfo);
-
-    CGRect rect = CGRectMake(position.x * self.scale, position.y * self.scale, pixelsWide, pixelsHigh);
-
-    CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, rect);
-
-    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, pixelsWide, pixelsHigh), imageRef);
-
-    CGFloat alpha = bitmapData[3] / 255.0;
-    CGFloat red   = bitmapData[0] / 255.0 / alpha;
-    CGFloat green = bitmapData[1] / 255.0 / alpha;
-    CGFloat blue  = bitmapData[2] / 255.0 / alpha;
-
-//    NSLog(@"%d %d %d %d", bitmapData[0], bitmapData[1], bitmapData[2], bitmapData[3]);
-//    NSLog(@"%f %f %f %f", red, green, blue, alpha);
-
-    free(bitmapData);
     CGImageRelease(imageRef);
     CGContextRelease(bitmapContext);
     CGColorSpaceRelease(colorSpace);
 
+	CGFloat alpha = rgba[3] / 255.0;
+	CGFloat red   = (CGFloat)rgba[0] / rgba[3];
+	CGFloat green = (CGFloat)rgba[1] / rgba[3];
+	CGFloat blue  = (CGFloat)rgba[2] / rgba[3];
+
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-#pragma mark - 生成二维码图片
+#pragma mark - 二维码
 
 + (instancetype)lx_QRCodeImageWithMessage:(NSString *)message
                                      size:(CGSize)size
                                      logo:(nullable UIImage *)logo
+								 logoSize:(CGSize)logoSize
                               transparent:(BOOL)transparent
 {
     NSData *messageData = [message dataUsingEncoding:NSISOLatin1StringEncoding];
@@ -227,12 +201,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                      bytesPerRow,
                                                      colorSpace,
                                                      kCGImageAlphaNoneSkipLast);
-        CGColorSpaceRelease(colorSpace);
 
         // 重绘图片去除透明通道，这样才能使用 CGImageCreateWithMaskingColors 函数
-        CGContextDrawImage(context, (CGRect){.size=extent.size}, outputCGImage);
-        CGImageRelease(outputCGImage);
+        CGContextDrawImage(context, LXRectMakeWithSize(extent.size), outputCGImage);
+		CGImageRelease(outputCGImage);
         CGImageRef opaqueOutputCGImage = CGBitmapContextCreateImage(context);
+		CGColorSpaceRelease(colorSpace);
         CGContextRelease(context);
 
         // 去除白色背景
@@ -241,33 +215,29 @@ NS_ASSUME_NONNULL_BEGIN
         CGImageRelease(opaqueOutputCGImage);
     }
 
-    UIGraphicsBeginImageContextWithOptions(size, !transparent, 0);
-
+	CGFloat scale = [[UIScreen mainScreen] scale];
+	size = LXSizeCeilInPixel(size, scale);
+    UIGraphicsBeginImageContextWithOptions(size, !transparent, scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
-
     // 让二维码更清晰
     CGContextSetInterpolationQuality(context, kCGInterpolationNone);
-
     // 翻转，不然是上下颠倒的
     CGContextTranslateCTM(context, 0, size.height);
     CGContextScaleCTM(context, 1, -1);
-
-    CGContextDrawImage(context, (CGRect){.size=size}, outputCGImage);
+    CGContextDrawImage(context, LXRectMakeWithSize(size), outputCGImage);
     CGImageRelease(outputCGImage);
 
     if (logo) {
-        CGSize logoSize = logo.size;
-        CGRect rect = {
-            .origin = { size.width/2 - logoSize.width/2, size.height/2 - logoSize.height/2 },
-            .size = logoSize
-        };
-        CGContextDrawImage(context, rect, logo.CGImage);
+		logoSize = LXSizeCeilInPixel(logoSize, scale);
+		CGRect logoRect = LXRectMakeWithSize(logoSize);
+		logoRect.origin.x = (size.width - logoSize.width) / 2;
+		logoRect.origin.y = (size.height - logoSize.height) / 2;
+		logoRect = LXRectFlatted(logoRect, scale);
+        CGContextDrawImage(context, logoRect, logo.CGImage);
     }
 
     UIImage *QRCodeimage = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
-
     return QRCodeimage;
 }
 
