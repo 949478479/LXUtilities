@@ -25,13 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param path 图片相对于 mainBundle 的路径，需包含扩展名
  */
-+ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path NS_SWIFT_NAME(init(lx_contentsOfFile:));
++ (nullable instancetype)lx_imageWithContentsOfFile:(NSString *)path NS_SWIFT_NAME(init(contentsOfFile:));
 
 /// 使用 @c +[UIImage imageNamed:] 创建 @c UIImageRenderingModeAlwaysOriginal 渲染模式的图片
 + (nullable instancetype)lx_originalRenderingImageNamed:(NSString *)name NS_SWIFT_NAME(init(originalRenderingImageNamed:));
 
 /// 生成尺寸为 1pt * 1pt 的纯色图片
-+ (nullable instancetype)lx_imageWithColor:(UIColor *)color;
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color NS_SWIFT_NAME(init(color:));
 
 /**
  生成指定大小的纯色图片
@@ -43,6 +43,24 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable instancetype)lx_imageWithColor:(UIColor *)color
 									  size:(CGSize)size
 							  cornerRadius:(CGFloat)cornerRadius NS_SWIFT_NAME(init(color:size:cornerRadius:));
+
+/**
+ 将文字渲染为图片，图片尺寸和文字尺寸相同
+
+ @param attributedString 文字内容
+ @param backgroundColor  背景色，默认透明
+ */
++ (nullable instancetype)lx_imageWithAttributedString:(NSAttributedString *)attributedString
+									  backgroundColor:(UIColor *)backgroundColor NS_SWIFT_NAME(init(AttributedString:backgroundColor:));
+
+
+/**
+ 对指定视图的可见视图层级截图
+
+ @param view         要截图的视图
+ @param afterUpdates 是否要在界面更新完成后才截图
+ */
++ (nullable instancetype)lx_imageWithView:(UIView *)view afterScreenUpdates:(BOOL)afterUpdates NS_SWIFT_NAME(init(view:afterScreenUpdates:));
 
 ///--------------
 /// @name 图片缩放
@@ -93,13 +111,25 @@ NS_ASSUME_NONNULL_BEGIN
 					  backgroundColor:(nullable UIColor *)backgroundColor;
 
 ///--------------
+/// @name 图片效果
+///--------------
+
+#pragma mark - 图片效果
+
+/// 将图片转换为灰度图片
+- (UIImage *)lx_grayImage;
+
+/// 设置图片透明度
+- (UIImage *)lx_imageWithAlpha:(CGFloat)alpha;
+
+/// 使用指定颜色重新渲染图片
+- (UIImage *)lx_imageWithTintColor:(UIColor *)tintColor;
+
+///--------------
 /// @name 图片颜色
 ///--------------
 
 #pragma mark - 图片颜色
-
-/// 将图片转换为灰度图片
-- (UIImage *)lx_grayImage;
 
 /// 获取当前图片的均色，原理是将图片绘制到 1px * 1px 的矩形内，再从当前区域取色，得到图片的均色
 - (UIColor *)lx_averageColor;

@@ -49,6 +49,34 @@ NS_ASSUME_NONNULL_BEGIN
 	return finalImage;
 }
 
++ (nullable instancetype)lx_imageWithAttributedString:(NSAttributedString *)attributedString
+									  backgroundColor:(UIColor *)backgroundColor
+{
+	BOOL opaque = (backgroundColor != nil) && (CGColorGetAlpha(backgroundColor.CGColor) == 1.0);
+	CGSize stringSize = [attributedString boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+	stringSize = LXSizeCeil(stringSize);
+	CGRect drawingRect = LXRectMakeWithSize(stringSize);
+	UIGraphicsBeginImageContextWithOptions(stringSize, opaque, 0);
+	if (backgroundColor) {
+		[backgroundColor setFill];
+		UIRectFill(drawingRect);
+	}
+	[attributedString drawInRect:drawingRect];
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return finalImage;
+}
+
++ (nullable instancetype)lx_imageWithView:(UIView *)view afterScreenUpdates:(BOOL)afterUpdates
+{
+	BOOL opaque = (view.alpha == 1.0);
+	UIGraphicsBeginImageContextWithOptions(view.bounds.size, opaque, 0);
+	[view drawViewHierarchyInRect:LXRectMakeWithSize(view.bounds.size) afterScreenUpdates:afterUpdates];
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return finalImage;
+}
+
 #pragma mark - 图片缩放
 
 - (UIImage *)lx_imageByScalingToSize:(CGSize)size
@@ -126,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return finalImage;
 }
 
-#pragma mark - 
+#pragma mark - 图片效果
 
 - (UIImage *)lx_grayImage
 {
@@ -162,6 +190,30 @@ NS_ASSUME_NONNULL_BEGIN
 	UIImage *maskedGrayImage = [UIImage imageWithCGImage:maskedGrayImageRef scale:self.scale orientation:self.imageOrientation];
 	CGImageRelease(maskedGrayImageRef);
 	return maskedGrayImage;
+}
+
+- (UIImage *)lx_imageWithAlpha:(CGFloat)alpha
+{
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	[self drawInRect:LXRectMakeWithSize(self.size) blendMode:kCGBlendModeNormal alpha:alpha];
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return finalImage;
+}
+
+- (UIImage *)lx_imageWithTintColor:(UIColor *)tintColor
+{
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextTranslateCTM(context, 0, self.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+	CGRect rect = LXRectMakeWithSize(self.size);
+	CGContextClipToMask(context, rect, self.CGImage);
+	CGContextSetFillColorWithColor(context, tintColor.CGColor);
+	CGContextFillRect(context, rect);
+	UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return finalImage;
 }
 
 #pragma mark - 获取像素颜色
