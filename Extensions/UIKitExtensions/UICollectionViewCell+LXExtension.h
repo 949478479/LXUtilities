@@ -11,12 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UICollectionViewCell (LXExtension)
 
-/// 对应的 indexPath
-@property (nullable, nonatomic, readonly) NSIndexPath *indexPath;
-
-/// 使用类名作为重用标识符来获取单元格
-+ (instancetype)lx_cellWithCollectionView:(UICollectionView *)collectionView
-                             forIndexPath:(NSIndexPath *)indexPath;
+/// cell 对应的 indexPath
+- (nullable NSIndexPath *)indexPath;
 
 @end
 

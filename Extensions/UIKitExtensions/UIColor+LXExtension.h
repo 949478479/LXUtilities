@@ -11,9 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIColor (LXExtension)
 
-///---------------
-/// @name RGB 颜色
-///---------------
+///--------------
+/// @name 颜色创建
+///--------------
+
+#pragma mark - 颜色创建
 
 /**
  *  创建 @c alpha 为 1.0 的 RGB 颜色，颜色值范围 0.0~255.0。
@@ -29,10 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
                        green:(CGFloat)green
                         blue:(CGFloat)blue
                        alpha:(CGFloat)alpha NS_SWIFT_NAME(init(red:green:blue:_alpha:));
-
-///-----------------
-/// @name 十六进制颜色
-///-----------------
 
 /**
  *  根据十六进制颜色值创建 @c alpha 为 @c 1.0 的颜色。例如，传入 @c 0xFFFFFF 将创建白色。
@@ -54,10 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIColor *)lx_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha NS_SWIFT_NAME(init(hexString:alpha:));
 
-///------------
-/// @name 随机色
-///------------
-
 /**
  *  生成 @c alpha 为 @c 1.0 的随机色。
  */
@@ -67,6 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  生成指定 @c alpha 的随机色。
  */
 + (UIColor *)lx_randomColorWithAlpha:(CGFloat)alpha;
+
+///--------------
+/// @name 颜色信息
+///--------------
+
+#pragma mark - 颜色信息
+
+- (CGFloat)lx_alpha;
 
 @end
 

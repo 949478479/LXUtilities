@@ -11,14 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UITableView (LXExtension)
 
-@property (nullable, nonatomic, readonly) __kindof UITableViewCell *lx_cellForSelectedRow;
+- (void)lx_dequeueReusableCellWithClass:(Class)cls forIndexPath:(NSIndexPath *)indexPath;
 
-@property (nullable, nonatomic, readonly) NSArray<__kindof UITableViewCell *> *lx_cellsForSelectedRows;
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
+
+- (nullable __kindof UITableViewCell *)lx_cellForSelectedRow;
+
+- (nullable NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows;
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableHeaderViewHeight:(void (^_Nullable)(void))configuration;
+- (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration;
 /// 根据自动布局更新 tableFooterView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableFooterViewHeight:(void (^_Nullable)(void))configuration;
+- (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration;
 
 @end
 

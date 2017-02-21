@@ -1,17 +1,24 @@
 //
 //  UICollectionView+LXExtension.h
-//  XWZUserClient
 //
 //  Created by 从今以后 on 16/8/18.
-//  Copyright © 2016年 创意时代. All rights reserved.
+//  Copyright © 2016年 从今以后. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UICollectionView (LXExtension)
 
-@property (nullable, nonatomic, readonly) __kindof UICollectionView *lx_cellForSelectedItem;
+- (void)lx_dequeueReusableCellWithClass:(Class)cls forIndexPath:(NSIndexPath *)indexPath;
 
-@property (nullable, nonatomic, readonly) NSArray<__kindof UICollectionView *> *lx_cellsForSelectedItems;
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
+
+- (nullable __kindof UICollectionView *)lx_cellForSelectedItem;
+
+- (nullable NSArray<__kindof UICollectionView *> *)lx_cellsForSelectedItems;
 
 @end
+
+NS_ASSUME_NONNULL_END

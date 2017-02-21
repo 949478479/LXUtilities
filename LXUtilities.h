@@ -28,9 +28,9 @@
 #import "UIStoryboard+LXExtension.h"
 #import "UIBezierPath+LXExtension.h"
 #import "UIApplication+LXExtension.h"
-#import "UITableViewCell+LXExtension.h"
 #import "UIViewController+LXExtension.h"
 #import "UICollectionView+LXExtension.h"
+#import "NSLayoutConstraint+LXExtension.h"
 #import "UICollectionViewCell+LXExtension.h"
 
 #import "NSData+LXExtension.h"

@@ -5,7 +5,7 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-@import AVFoundation.AVUtilities;
+#import <AVFoundation/AVUtilities.h>
 #import "UIImage+LXExtension.h"
 #import "LXUIUtilities.h"
 
@@ -29,8 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return [[self imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }
 
-+ (nullable instancetype)lx_imageWithColor:(UIColor *)color
-{
++ (nullable instancetype)lx_imageWithColor:(UIColor *)color {
 	return [self lx_imageWithColor:color size:CGSizeMake(1.0, 1.0) cornerRadius:0.0];
 }
 
@@ -84,9 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	size = LXSizeCeilInPixel(size, self.scale);
 
+	CGSize contextSize = CGSizeZero;
 	CGRect drawingRect = CGRectZero;
 	if (contentMode == UIViewContentModeScaleToFill) {
-		drawingRect = LXRectMakeWithSize(size);
+		contextSize = size;
+		drawingRect.size = size;
 	} else {
 		CGFloat ratio = 0;
 		CGSize imageSize = self.size;
@@ -98,24 +99,23 @@ NS_ASSUME_NONNULL_BEGIN
 			// 默认为 UIViewContentModeScaleAspectFit
 			ratio = fminf(horizontalRatio, verticalRatio);
 		}
-		drawingRect.size.width = imageSize.width * ratio;
-		drawingRect.size.height = imageSize.height * ratio;
-		drawingRect.origin.x = (size.width - drawingRect.size.width) / 2;
-		drawingRect.origin.y = (size.height - drawingRect.size.height) / 2;
-		drawingRect = LXRectFlatted(drawingRect, self.scale);
+		drawingRect.size = CGSizeMake(imageSize.width * ratio, imageSize.height * ratio);
+		if (contentMode == UIViewContentModeScaleAspectFill) {
+			contextSize = size;
+			drawingRect.origin.x = (size.width - drawingRect.size.width) / 2;
+			drawingRect.origin.y = (size.height - drawingRect.size.height) / 2;
+			drawingRect = LXRectFlatted(drawingRect, self.scale);
+		} else {
+			drawingRect.size = LXSizeCeilInPixel(drawingRect.size, self.scale);
+			contextSize = drawingRect.size;
+		}
 	}
 
-	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
-	BOOL opaque = (alphaInfo == kCGImageAlphaNoneSkipLast) ||
-	(alphaInfo == kCGImageAlphaNoneSkipFirst) ||
-	(alphaInfo == kCGImageAlphaNone);
-	opaque = (opaque && CGRectContainsRect(drawingRect, LXRectMakeWithSize(size)));
-
-	UIGraphicsBeginImageContextWithOptions(size, opaque, self.scale);
+	UIGraphicsBeginImageContextWithOptions(contextSize, self.lx_opaque, self.scale);
     [self drawInRect:drawingRect];
-    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return finalImage;
+    return scaledImage;
 }
 
 - (CGRect)lx_rectWithAspectRatioInsideRect:(CGRect)boundingRect {
@@ -126,6 +126,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)lx_imageWithClippedRect:(CGRect)rect
 {
+	// 要裁剪的区域比自身大，所以不用裁剪直接返回自身即可
+	if (CGRectContainsRect(rect, LXRectMakeWithSize(self.size))) {
+		return self;
+	}
+
 	CGRect clippedRect = CGRectIntegral(LXRectApplyScale(rect, self.scale));
 	CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, clippedRect);
 	UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
@@ -160,20 +165,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	size_t width = self.size.width * self.scale;
 	size_t height = self.size.height * self.scale;
+	CGRect imageRect = CGRectMake(0, 0, width, height);
 
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
 	CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, colorSpace, kCGImageAlphaNone);
-	CGContextDrawImage(context, CGRectMake(0, 0, width, height), self.CGImage);
+	CGContextDrawImage(context, imageRect, self.CGImage);
 	CGImageRef grayImageRef = CGBitmapContextCreateImage(context);
 	CGColorSpaceRelease(colorSpace);
 	CGContextRelease(context);
 
-	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
-	BOOL opaque = (alphaInfo == kCGImageAlphaNoneSkipLast) ||
-	(alphaInfo == kCGImageAlphaNoneSkipFirst) ||
-	(alphaInfo == kCGImageAlphaNone);
-
-	if (opaque) {
+	if (self.lx_opaque) {
 		UIImage *grayImage = [UIImage imageWithCGImage:grayImageRef scale:self.scale orientation:self.imageOrientation];
 		CGImageRelease(grayImageRef);
 		return grayImage;
@@ -189,6 +190,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 	UIImage *maskedGrayImage = [UIImage imageWithCGImage:maskedGrayImageRef scale:self.scale orientation:self.imageOrientation];
 	CGImageRelease(maskedGrayImageRef);
+	// 用 CGBitmapContextCreateImage 方式创建出来的图片
+	// CGImageAlphaInfo 总是为 CGImageAlphaInfoNone
+	// 导致 qmui_opaque 与原图不一致，所以这里再做多一步
+	UIGraphicsBeginImageContextWithOptions(maskedGrayImage.size, NO, maskedGrayImage.scale);
+	[maskedGrayImage drawInRect:imageRect];
+	maskedGrayImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 	return maskedGrayImage;
 }
 
@@ -203,7 +211,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIImage *)lx_imageWithTintColor:(UIColor *)tintColor
 {
-	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	UIGraphicsBeginImageContextWithOptions(self.size, self.lx_opaque, self.scale);
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextTranslateCTM(context, 0, self.size.height);
 	CGContextScaleCTM(context, 1.0, -1.0);
@@ -216,7 +224,16 @@ NS_ASSUME_NONNULL_BEGIN
 	return finalImage;
 }
 
-#pragma mark - 获取像素颜色
+#pragma mark - 图片信息
+
+- (BOOL)lx_opaque
+{
+	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
+	BOOL opaque = alphaInfo == kCGImageAlphaNoneSkipLast
+	|| alphaInfo == kCGImageAlphaNoneSkipFirst
+	|| alphaInfo == kCGImageAlphaNone;
+	return opaque;
+}
 
 - (UIColor *)lx_averageColor
 {

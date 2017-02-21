@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIColor (LXExtension)
 
-#pragma mark - RGB 颜色
+#pragma mark - 颜色信息
 
 + (UIColor *)lx_colorWithRed:(CGFloat)red
                        green:(CGFloat)green
@@ -27,8 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 {
     return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
 }
-
-#pragma mark - 十六进制颜色
 
 + (UIColor *)lx_colorWithHex:(uint)hex alpha:(CGFloat)alpha
 {
@@ -73,8 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [self lx_colorWithHexString:hexString alpha:1.0];
 }
 
-#pragma mark - 随机色
-
 + (UIColor *)lx_randomColor
 {
     return [self lx_randomColorWithAlpha:1.0];
@@ -86,6 +82,12 @@ NS_ASSUME_NONNULL_BEGIN
                         green:arc4random_uniform(256)/255.0
                          blue:arc4random_uniform(256)/255.0
                         alpha:alpha];
+}
+
+#pragma mark - 颜色信息
+
+- (CGFloat)lx_alpha {
+	return CGColorGetAlpha(self.CGColor);
 }
 
 @end

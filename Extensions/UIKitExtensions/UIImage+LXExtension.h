@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  缩放图片到指定大小，以 pt 为单位
 
- @param size	    新图片大小，以 pt 为单位
+ @param size	    新图片大小，以 pt 为单位，除非使用 UIViewContentModeScaleToFill，否则缩放后的实际大小可能会小于指定大小
  @param contentMode 默认为 @c UIViewContentModeScaleAspectFit，
 					其他可选项有 @c UIViewContentModeScaleToFill 和 @c UIViewContentModeScaleAspectFill
  */
@@ -129,7 +129,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 图片颜色
 ///--------------
 
-#pragma mark - 图片颜色
+#pragma mark - 图片信息
+
+/// 判断一张图是否不存在 alpha 通道，注意 “不存在 alpha 通道” 不等价于 “不透明”。一张不透明的图有可能是存在 alpha 通道但 alpha 值为 1。
+- (BOOL)lx_opaque;
 
 /// 获取当前图片的均色，原理是将图片绘制到 1px * 1px 的矩形内，再从当前区域取色，得到图片的均色
 - (UIColor *)lx_averageColor;

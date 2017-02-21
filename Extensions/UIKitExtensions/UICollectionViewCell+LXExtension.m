@@ -9,16 +9,8 @@
 
 @implementation UICollectionViewCell (LXExtension)
 
-- (NSIndexPath *)indexPath
-{
+- (NSIndexPath *)indexPath {
     return [self valueForKeyPath:@"layoutAttributes.indexPath"];
-}
-
-+ (instancetype)lx_cellWithCollectionView:(UICollectionView *)collectionView
-                             forIndexPath:(NSIndexPath *)indexPath
-{
-    return [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(self.class)
-                                                     forIndexPath:indexPath];
 }
 
 @end
