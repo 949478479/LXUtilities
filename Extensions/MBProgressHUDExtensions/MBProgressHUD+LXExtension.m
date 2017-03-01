@@ -53,7 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
 
     hud.labelText = text;
-    hud.userInteractionEnabled = NO;
     hud.removeFromSuperViewOnHide = YES;
 
     return hud;

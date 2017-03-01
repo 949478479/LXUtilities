@@ -2,7 +2,7 @@
 //  LXTimer.m
 //
 //  Created by 从今以后 on 15/11/30.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Copyright © 2015年 从今以后. All rights reserved.
 //
 
 #import "LXTimer.h"
@@ -48,9 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSParameterAssert(handler != nil);
 
     LXTimer *timer = [[LXTimer alloc] initWithInterval:timeInterval tolerance:tolerance];
-
     [timer _configureTimerSourceWithHandler:handler];
-
     return timer;
 }
 
@@ -68,22 +66,21 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSMethodSignature *signature = [target methodSignatureForSelector:selector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    invocation.selector = selector;
-    if (signature.numberOfArguments == 3) {
-        [invocation setArgument:&timer atIndex:2];
-    }
+	[invocation setSelector:selector];
+	[invocation setArgument:&timer atIndex:2];
 
     __weak id weakTarget = target;
     [timer _configureTimerSourceWithHandler:^{
-        if (weakTarget) {
-            [invocation invokeWithTarget:weakTarget];
+		__strong typeof(weakTarget) strongTarget = weakTarget;
+        if (strongTarget) {
+            [invocation invokeWithTarget:strongTarget];
         }
     }];
 
     return timer;
 }
 
-#pragma mark - 配置回调闭包
+#pragma mark - 配置定时器
 
 - (void)_configureTimerSourceWithHandler:(dispatch_block_t)handler
 {
@@ -101,14 +98,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (!_isStarted) {
         _isStarted = YES;
         __weak typeof(self) weakSelf = self;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_timeInterval * NSEC_PER_SEC)),
-                       dispatch_get_main_queue(), ^{
-                           __strong typeof(weakSelf) strongSelf = weakSelf;
-                           if (strongSelf) {
-                               dispatch_resume(strongSelf->_timerSource);
-                               strongSelf->_isSuspended = NO;
-                           }
-                       });
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			__strong typeof(weakSelf) self = weakSelf;
+			if (self) {
+				dispatch_resume(_timerSource);
+				_isSuspended = NO;
+			}
+		});
     }
 }
 
@@ -123,7 +119,6 @@ NS_ASSUME_NONNULL_BEGIN
     if (_isSuspended) {
         dispatch_resume(_timerSource);
     }
-
     _timerSource = nil;
 }
 
