@@ -14,4 +14,14 @@
     return self.text.length > 0;
 }
 
+- (void)setLayerColor:(UIColor *)layerColor
+{
+	self.layer.backgroundColor = layerColor.CGColor;
+}
+
+- (UIColor *)layerColor
+{
+	return [UIColor colorWithCGColor:self.layer.backgroundColor];
+}
+
 @end

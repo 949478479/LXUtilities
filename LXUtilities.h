@@ -55,6 +55,8 @@
 #import "LXTimer.h"
 #import "LXImagePicker.h"
 #import "LXMulticastDelegate.h"
+
 //#import "MBProgressHUD+LXExtension.h"
+#import "UINavigationBar+LXAlphaChange.h"
 
 void synchronized(id obj, void (^block)(void));

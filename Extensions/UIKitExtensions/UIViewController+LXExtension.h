@@ -2,7 +2,7 @@
 //  UIViewController+LXExtension.h
 //
 //  Created by 从今以后 on 15/10/13.
-//  Copyright © 2015年 apple. All rights reserved.
+//  Copyright © 2015年 从今以后. All rights reserved.
 //
 
 @import UIKit;
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 实例化方法
 ///---------------
 
-#pragma mark - 实例化方法 -
+#pragma mark - 实例化方法
 
 /// 用控制器类名作为标识符实例化指定故事板中的控制器
 + (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName;
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 查询方法
 ///--------------
 
-#pragma mark - 查询方法 -
+#pragma mark - 查询方法
 
 /// 控制器所属 `UITabBarController` 的 `tabBar`。
 - (nullable __kindof UITabBar *)lx_tabBar;

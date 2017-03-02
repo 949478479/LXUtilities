@@ -12,7 +12,7 @@
 - (CGSize)lx_sizeWithBoundingSize:(CGSize)size
 {
     return CGRectIntegral([self boundingRectWithSize:size
-                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                              context:nil]).size;
 }
 

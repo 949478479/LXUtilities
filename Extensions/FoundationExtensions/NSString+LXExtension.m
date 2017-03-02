@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(font != nil);
     return CGRectIntegral([self boundingRectWithSize:size
-                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                           attributes:@{ NSFontAttributeName : font }
                                              context:nil]).size;
 }

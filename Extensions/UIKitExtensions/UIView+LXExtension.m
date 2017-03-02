@@ -196,11 +196,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable __kindof UIViewController *)lx_viewController
 {
 	UIResponder *responder = self.nextResponder;
-
 	for (Class cls = [UIViewController class]; responder && ![responder isKindOfClass:cls];) {
 		responder = responder.nextResponder;
 	}
-
 	return (UIViewController * _Nullable)responder;
 }
 
