@@ -229,8 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)lx_opaque
 {
 	CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(self.CGImage);
-	BOOL opaque = alphaInfo == kCGImageAlphaNoneSkipLast
-	|| alphaInfo == kCGImageAlphaNoneSkipFirst
+	BOOL opaque = alphaInfo == kCGImageAlphaNoneSkipFirst
+	|| alphaInfo == kCGImageAlphaNoneSkipLast
 	|| alphaInfo == kCGImageAlphaNone;
 	return opaque;
 }
@@ -239,19 +239,20 @@ NS_ASSUME_NONNULL_BEGIN
 {
 	unsigned char rgba[4] = {};
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGContextRef context = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, kCGImageAlphaPremultipliedLast);
+	CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host;
+	CGContextRef context = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, bitmapInfo);
 	CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), self.CGImage);
 	CGColorSpaceRelease(colorSpace);
 	CGContextRelease(context);
-	if (rgba[3] > 0) {
-		return [UIColor colorWithRed:(CGFloat)rgba[0] / rgba[3]
-							   green:(CGFloat)rgba[1] / rgba[3]
-								blue:(CGFloat)rgba[2] / rgba[3]
-							   alpha:(CGFloat)rgba[3] / 255.0];
+	if (rgba[0] > 0) {
+		return [UIColor colorWithRed:(CGFloat)rgba[1] / rgba[0]
+							   green:(CGFloat)rgba[2] / rgba[0]
+								blue:(CGFloat)rgba[3] / rgba[0]
+							   alpha:(CGFloat)rgba[0] / 255.0];
 	} else {
-		return [UIColor colorWithRed:rgba[0]/255.0
-							   green:rgba[1]/255.0
-								blue:rgba[2]/255.0
+		return [UIColor colorWithRed:rgba[1] / 255.0
+							   green:rgba[2] / 255.0
+								blue:rgba[3] / 255.0
 							   alpha:0];
 	}
 }
@@ -262,7 +263,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 	unsigned char rgba[4] = {};
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef bitmapContext = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, kCGImageAlphaPremultipliedLast);
+	CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host;
+    CGContextRef bitmapContext = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, bitmapInfo);
     CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, CGRectMake(position.x, position.y, 1, 1));
     CGContextDrawImage(bitmapContext, CGRectMake(0, 0, 1, 1), imageRef);
 
@@ -270,10 +272,10 @@ NS_ASSUME_NONNULL_BEGIN
     CGContextRelease(bitmapContext);
     CGColorSpaceRelease(colorSpace);
 
-	CGFloat alpha = rgba[3] / 255.0;
-	CGFloat red   = (CGFloat)rgba[0] / rgba[3];
-	CGFloat green = (CGFloat)rgba[1] / rgba[3];
-	CGFloat blue  = (CGFloat)rgba[2] / rgba[3];
+	CGFloat alpha = rgba[0] / 255.0;
+	CGFloat red   = (CGFloat)rgba[1] / rgba[0];
+	CGFloat green = (CGFloat)rgba[2] / rgba[0];
+	CGFloat blue  = (CGFloat)rgba[3] / rgba[0];
 
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
@@ -299,15 +301,15 @@ NS_ASSUME_NONNULL_BEGIN
         size_t pixelsWide = CGImageGetWidth(outputCGImage);
         size_t pixelsHigh = CGImageGetHeight(outputCGImage);
         size_t bitsPerComponent = 8;
-        size_t bytesPerRow = pixelsWide * 4;
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		CGBitmapInfo bitmapInfo = kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host;
         CGContextRef context = CGBitmapContextCreate(NULL,
                                                      pixelsWide,
                                                      pixelsHigh,
                                                      bitsPerComponent,
-                                                     bytesPerRow,
+                                                     0,
                                                      colorSpace,
-                                                     kCGImageAlphaNoneSkipLast);
+                                                     bitmapInfo);
 
         // 重绘图片去除透明通道，这样才能使用 CGImageCreateWithMaskingColors 函数
         CGContextDrawImage(context, LXRectMakeWithSize(extent.size), outputCGImage);
