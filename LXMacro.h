@@ -11,20 +11,66 @@
 /// @name 功能宏
 ///------------
 
+/// 安全释放指针
 #define LXFree(ptr) if (ptr) { free(ptr); ptr = NULL; }
 
-#define LX_CONSTRUCTOR __attribute__((constructor))
-
-#define LX_FATAL_ERROR() NSAssert(NO, @"fatal error")
-
-#define LX_OVERLOADABLE __attribute__((overloadable))
-
-#define LX_FINAL __attribute__((objc_subclassing_restricted))
-
+/// 安全执行块
 #define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); }
 
-#define LX_ONEXIT void (^block)(void) __attribute__((cleanup(LXBlockCleanUp), unused)) = ^
-__attribute__((unused)) static void LXBlockCleanUp(__strong void(^*block)(void)) { (*block)(); }
+/// 触发断言
+#define LX_FATAL_ERROR() NSAssert(NO, @"fatal error.")
+
+/**
+ 在 dyld 加载完毕一个 Mach-O 文件(一个可执行文件或者一个库)后，会调用其中标记 LX_CONSTRUCTOR 的函数
+ 
+ 若有多个 LX_CONSTRUCTOR 函数且想控制优先级的话，可以写成 __attribute__((constructor(101)))，里面的数字越小优先级越高，1 ~ 100 为系统保留
+ */
+#define LX_CONSTRUCTOR __attribute__((constructor))
+#define LX_CONSTRUCTOR_WITH_PRIORITY(priority) __attribute__((constructor(priority)))
+
+/// 标志子类继承这个方法时需要调用 super 实现
+#define LX_REQUIRES_SUPER __attribute__((objc_requires_super))
+
+/// 标记一个类不能被子类继承
+#define LX_FINAL __attribute__((objc_subclassing_restricted))
+
+/// 在退出当前作用域结束时执行块中代码
+#define LX_ONEXIT void (^block)(void) __attribute__((cleanup(__LXBlockCleanUp), unused)) = ^
+__attribute__((unused)) static void __LXBlockCleanUp(__strong void(^*block)(void)) { (*block)(); }
+
+/// 改变类或协议在运行时的名字
+#define LX_RUNTIME_NAME(name) __attribute__((objc_runtime_name(#name)))
+
+/**
+ 用于 C 函数，可以定义若干个函数名相同，但参数不同的方法，调用时编译器会自动根据参数选择函数原型：
+
+	LX_OVERLOADABLE void logAnything(id obj) {
+ NSLog(@"%@", obj);
+	}
+	LX_OVERLOADABLE void logAnything(int number) {
+ NSLog(@"%@", @(number));
+	}
+	LX_OVERLOADABLE void logAnything(CGRect rect) {
+ NSLog(@"%@", NSStringFromCGRect(rect));
+	}
+
+	logAnything(233);
+	logAnything(@[@"1", @"2"]);
+	logAnything(CGRectMake(1, 2, 3, 4));
+ */
+#define LX_OVERLOADABLE __attribute__((overloadable))
+
+/**
+ 为 struct 类型或是 union 类型添加 @(...) 语法糖支持，例如：
+
+ typedef struct LX_BOXABLE {
+ CGFloat x, y, width, height;
+ } LXRect;
+
+ LXRect rect = {1, 2, 3, 4};
+ NSValue *value = @(rect);
+ */
+#define LX_BOXABLE __attribute__((objc_boxable))
 
 #pragma mark - 忽略警告 -
 

@@ -17,7 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable __kindof UITableViewCell *)lx_cellForSelectedRow;
 
-- (nullable NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows;
+- (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows;
+
+- (NSArray<NSIndexPath *> *)lx_allIndexPaths;
+
+- (NSArray<NSIndexPath *> *)lx_indexPathsForSection:(NSInteger)section;
+
+- (void)lx_selectRowAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated;
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
 - (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration;

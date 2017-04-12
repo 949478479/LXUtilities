@@ -14,6 +14,15 @@
 	[self dequeueReusableCellWithIdentifier:NSStringFromClass(cls) forIndexPath:indexPath];
 }
 
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion
+{
+	[UIView animateWithDuration:0 animations:^{
+		[self reloadData];
+	} completion:^(BOOL finished) {
+		completion();
+	}];
+}
+
 - (UITableViewCell *)lx_cellForSelectedRow {
     return [self cellForRowAtIndexPath:[self indexPathForSelectedRow]];
 }
@@ -27,13 +36,38 @@
     return [cells copy];
 }
 
-- (void)lx_reloadDataWithCompletion:(void (^)(void))completion
+- (NSArray<NSIndexPath *> *)lx_allIndexPaths
 {
-	[UIView animateWithDuration:0 animations:^{
-		[self reloadData];
-	} completion:^(BOOL finished) {
-		completion();
-	}];
+    NSInteger countOfIndexPaths = 0;
+    NSInteger countOfSections = [self numberOfSections];
+    for (NSInteger section = 0; section < countOfSections; ++section) {
+       countOfIndexPaths += [self numberOfRowsInSection:section];
+    }
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:countOfIndexPaths];
+    for (NSInteger section = 0; section < countOfSections; ++section) {
+        NSInteger countOfRows = [self numberOfRowsInSection:section];
+        for (NSInteger row = 0; row < countOfRows; ++row) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
+        }
+    }
+    return [indexPaths copy];
+}
+
+- (NSArray<NSIndexPath *> *)lx_indexPathsForSection:(NSInteger)section
+{
+    NSInteger countOfRows = [self numberOfRowsInSection:section];
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:countOfRows];
+    for (NSInteger row = 0; row < countOfRows; ++row) {
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
+    }
+    return [indexPaths copy];
+}
+
+- (void)lx_selectRowAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated
+{
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self selectRowAtIndexPath:indexPath animated:animated scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 static inline void _lx_updateTableHeaderFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))
