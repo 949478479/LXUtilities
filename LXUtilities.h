@@ -27,6 +27,7 @@
 #import "UITextField+LXExtension.h"
 #import "UIStoryboard+LXExtension.h"
 #import "UIBezierPath+LXExtension.h"
+#import "UIScrollView+LXExtension.h"
 #import "UIApplication+LXExtension.h"
 #import "UIViewController+LXExtension.h"
 #import "UICollectionView+LXExtension.h"
@@ -57,6 +58,5 @@
 #import "LXMulticastDelegate.h"
 
 //#import "MBProgressHUD+LXExtension.h"
-#import "UINavigationBar+LXAlphaChange.h"
 
 void synchronized(id obj, void (^block)(void));
