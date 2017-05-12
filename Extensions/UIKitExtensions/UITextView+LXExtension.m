@@ -43,4 +43,31 @@
     self.selectedRange = NSMakeRange(selectedRange.location + 1, 0); // 恢复光标到插入点后.
 }
 
+
+@end
+
+#pragma mark - 触摸识别
+
+@implementation UITextView (LXTouchExtension)
+
+- (NSArray<NSValue *> *)lx_rectsForCharacterRange:(NSRange)range
+{
+    NSMutableArray *rects = [NSMutableArray new];
+    NSRange glyphRange = [self.layoutManager glyphRangeForCharacterRange:range actualCharacterRange:NULL];
+    [self.layoutManager enumerateEnclosingRectsForGlyphRange:glyphRange
+                                    withinSelectedGlyphRange:NSMakeRange(NSNotFound, 0)
+                                             inTextContainer:self.textContainer
+                                                  usingBlock:^(CGRect rect, BOOL * _Nonnull stop) {
+                                                      [rects addObject:[NSValue valueWithCGRect:rect]];
+                                                  }];
+    return rects;
+}
+
+- (NSUInteger)lx_characterIndexForPoint:(CGPoint)point
+{
+    return [self.layoutManager characterIndexForPoint:point
+                                      inTextContainer:self.textContainer
+             fractionOfDistanceBetweenInsertionPoints:NULL];
+}
+
 @end

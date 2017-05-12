@@ -6,6 +6,7 @@
 //
 
 @import UIKit;
+#import "LXMacro.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,5 +61,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id)lx_JSONObjectWithOptions:(NSJSONReadingOptions)options;
 
 @end
+
+LX_OVERLOADABLE
+NS_INLINE NSRange LXMaxRange(NSString *string) {
+    return (NSRange){0,string.length};
+}
 
 NS_ASSUME_NONNULL_END

@@ -6,6 +6,7 @@
 //
 
 @import UIKit;
+#import "LXMacro.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,5 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)lx_sizeWithBoundingSize:(CGSize)size;
 
 @end
+
+LX_OVERLOADABLE
+NS_INLINE NSRange LXMaxRange(NSAttributedString *string) {
+    return (NSRange){0,string.length};
+}
 
 NS_ASSUME_NONNULL_END
