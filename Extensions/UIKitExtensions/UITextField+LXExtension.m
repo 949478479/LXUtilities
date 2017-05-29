@@ -22,16 +22,17 @@
         [self lx_exchangeOriginalImp:@selector(textRectForBounds:) swizzledImp:@selector(lx_textRectForBounds:)];
         [self lx_exchangeOriginalImp:@selector(editingRectForBounds:) swizzledImp:@selector(lx_editingRectForBounds:)];
         [self lx_exchangeOriginalImp:@selector(leftViewRectForBounds:) swizzledImp:@selector(lx_leftViewRectForBounds:)];
+        [self lx_exchangeOriginalImp:@selector(rightViewRectForBounds:) swizzledImp:@selector(lx_rightViewRectForBounds:)];
     });
 }
 
-#pragma mark - 设置左视图
+#pragma mark - 设置左右视图
 
 - (void)setLeftViewImage:(UIImage *)leftViewImage
 {
     UIImageView *leftView = [[UIImageView alloc] initWithImage:leftViewImage];
     leftView.contentMode  = UIViewContentModeCenter;
-    self.leftView     = leftView;
+    self.leftView = leftView;
     self.leftViewMode = UITextFieldViewModeAlways;
 }
 
@@ -43,11 +44,28 @@
     return nil;
 }
 
+- (void)setRightViewImage:(UIImage *)rightViewImage
+{
+    UIButton *rightView = [UIButton new];
+    [rightView setContentMode:UIViewContentModeCenter];
+    [rightView setImage:rightViewImage forState:UIControlStateNormal];
+    self.rightView = rightView;
+    self.rightViewMode = UITextFieldViewModeAlways;
+}
+
+- (UIImage *)rightViewImage
+{
+    if ([self.rightView isKindOfClass:[UIButton class]]) {
+        return ((UIButton *)self.leftView).currentImage;
+    }
+    return nil;
+}
+
 #pragma mark - 调整 frame 的辅助函数
 
 static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect newRect)
 {
-    if (CGRectIsNull(newRect)) {
+    if (CGRectIsEmpty(newRect)) {
         return oldRect;
     }
 
@@ -81,16 +99,13 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
 
 - (CGRect)editingRect
 {
-    NSValue *rectValue = objc_getAssociatedObject(self, _cmd);
-
-    return rectValue ? [rectValue CGRectValue] : CGRectNull;
+    return [objc_getAssociatedObject(self, _cmd) CGRectValue];
 }
 
 - (CGRect)lx_editingRectForBounds:(CGRect)bounds
 {
-    CGRect oldRect = [self lx_editingRectForBounds:bounds];
     CGRect newRect = [self editingRect];
-
+    CGRect oldRect = [self lx_editingRectForBounds:bounds];
     return LXAdjustRectForOldRectAndNewRect(oldRect, newRect);
 }
 
@@ -106,61 +121,54 @@ static inline CGRect LXAdjustRectForOldRectAndNewRect(CGRect oldRect, CGRect new
 
 - (CGRect)textRect
 {
-    NSValue *rectValue = objc_getAssociatedObject(self, _cmd);
-
-    return rectValue ? [rectValue CGRectValue] : CGRectNull;
+    return [objc_getAssociatedObject(self, _cmd) CGRectValue];
 }
 
 - (CGRect)lx_textRectForBounds:(CGRect)bounds
 {
-    CGRect oldRect = [self lx_textRectForBounds:bounds];
     CGRect newRect = [self textRect];
-
+    CGRect oldRect = [self lx_textRectForBounds:bounds];
     return LXAdjustRectForOldRectAndNewRect(oldRect, newRect);
 }
 
-#pragma mark - 设置左视图 frame
+#pragma mark - 设置左右视图 frame
 
-- (void)setLeftViewRect:(CGRect)leftViewRect
+- (void)setLeftViewSize:(CGSize)leftViewSize
 {
     objc_setAssociatedObject(self,
-                             @selector(leftViewRect),
-                             [NSValue valueWithCGRect:leftViewRect],
+                             @selector(leftViewSize),
+                             [NSValue valueWithCGSize:leftViewSize],
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (CGRect)leftViewRect
+- (CGSize)leftViewSize
 {
-    NSValue *rectValue = objc_getAssociatedObject(self, _cmd);
-
-    return rectValue ? [rectValue CGRectValue] : CGRectNull;
+    return [objc_getAssociatedObject(self, _cmd) CGSizeValue];
 }
 
 - (CGRect)lx_leftViewRectForBounds:(CGRect)bounds
 {
-    CGRect oldRect = [self lx_leftViewRectForBounds:bounds];
-    CGRect newRect = [self leftViewRect];
+    self.leftView.bounds = (CGRect){.size = [self leftViewSize]};
+    return [self lx_leftViewRectForBounds:bounds];
+}
 
-    if (CGRectIsNull(newRect)) {
-        return oldRect;
-    }
+- (void)setRightViewSize:(CGSize)rightViewSize
+{
+    objc_setAssociatedObject(self,
+                             @selector(rightViewSize),
+                             [NSValue valueWithCGSize:rightViewSize],
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
-    CGSize  oldSize   = oldRect.size;
-    CGPoint oldOrigin = oldRect.origin;
+- (CGSize)rightViewSize
+{
+    return [objc_getAssociatedObject(self, _cmd) CGSizeValue];
+}
 
-    CGSize  newSize   = newRect.size;
-    CGPoint newOrigin = newRect.origin;
-
-    return (CGRect) {
-        {
-            newOrigin.x >= 0 ? newOrigin.x : oldOrigin.x,
-            newOrigin.y >= 0 ? newOrigin.y : oldOrigin.y,
-        },
-        {
-            newSize.width >= 0 ? newSize.width : oldSize.width,
-            newSize.height >= 0 ? newSize.height : oldSize.height,
-        },
-    };
+- (CGRect)lx_rightViewRectForBounds:(CGRect)bounds
+{
+    self.rightView.bounds = (CGRect){.size = [self rightViewSize]};
+    return [self lx_rightViewRectForBounds:bounds];
 }
 
 #pragma mark - 设置占位文字颜色
