@@ -25,15 +25,15 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSParameterAssert(text.length > 0);
     NSParameterAssert(view != nil);
-
+    
     MBProgressHUD *hud = [self showHUDAddedTo:view animated:YES];
-
-    hud.labelText = text;
+    
+    hud.label.text = text;
     hud.mode = MBProgressHUDModeText;
     hud.removeFromSuperViewOnHide = YES;
-
-    [hud hide:YES afterDelay:1.0];
-
+    
+    [hud hideAnimated:YES afterDelay:1.0];
+    
     return hud;
 }
 
@@ -49,12 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view
 {
     NSParameterAssert(view != nil);
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-
-    hud.labelText = text;
+    
+    hud.label.text = text;
     hud.removeFromSuperViewOnHide = YES;
-
+    
     return hud;
 }
 
@@ -70,13 +70,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view
 {
     NSParameterAssert(view != nil);
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-
-    hud.labelText = text;
-    hud.dimBackground = YES;
+    
+    hud.label.text = text;
+    hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:.2f];
     hud.removeFromSuperViewOnHide = YES;
-
+    
     return hud;
 }
 
@@ -85,18 +86,18 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)lx_show:(nullable NSString *)text icon:(NSString *)icon view:(UIView *)view
 {
     NSParameterAssert(view != nil);
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-
-    hud.labelText = text;
+    
+    hud.label.text = text;
     hud.removeFromSuperViewOnHide = YES;
     hud.mode = MBProgressHUDModeCustomView;
-
+    
     UIImage *image = [UIImage imageNamed:icon];
     NSAssert(image, @"添加MBProgressHUD时图片%@不存在", icon);
     hud.customView = [[UIImageView alloc] initWithImage:image];
-
-    [hud hide:YES afterDelay:1.0];
+    
+    [hud hideAnimated:YES afterDelay:1.0];
 }
 
 #pragma mark - 持续显示环形进度条 HUD -
@@ -111,13 +112,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(nullable NSString *)text
 {
     NSParameterAssert(view != nil);
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-
-    hud.labelText = text;
+    
+    hud.label.text = text;
     hud.removeFromSuperViewOnHide = YES;
     hud.mode = MBProgressHUDModeAnnularDeterminate;
-
+    
     return hud;
 }
 

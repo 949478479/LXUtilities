@@ -29,10 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 持续显示无蒙版的原生活动指示器风格的 HUD -
 
-/// 在主窗口上持续显示原生活动指示器风格的 HUD，不会屏蔽触摸，需要手动移除
+/// 在主窗口上持续显示原生活动指示器风格的 HUD，需要手动移除
 + (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text;
 
-/// 在指定父视图上持续显示原生活动指示器风格的 HUD，不会屏蔽触摸，需要手动移除
+/// 在指定父视图上持续显示原生活动指示器风格的 HUD，需要手动移除
 + (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view;
 
 ///-----------------------------------------
