@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) IBInspectable CGSize shadowOffset;
 /// 图层阴影透明度
 @property (nonatomic) IBInspectable float shadowOpacity;
+/// 图层阴影模糊半径
+@property (nonatomic) IBInspectable CGFloat shadowRadius;
 /// 图层阴影颜色
 @property (nullable, nonatomic) IBInspectable UIColor *shadowColor;
 

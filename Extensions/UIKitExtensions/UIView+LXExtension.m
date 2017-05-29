@@ -184,6 +184,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark 阴影
 
+- (void)setShadowOffset:(CGSize)shadowOffset
+{
+    self.layer.shadowOffset = shadowOffset;
+}
+
+- (CGSize)shadowOffset
+{
+    return self.layer.shadowOffset;
+}
+
 - (void)setShadowOpacity:(float)shadowOpacity
 {
     self.layer.shadowOpacity = shadowOpacity;
@@ -194,14 +204,14 @@ NS_ASSUME_NONNULL_BEGIN
     return self.layer.shadowOpacity;
 }
 
-- (void)setShadowOffset:(CGSize)shadowOffset
+- (void)setShadowRadius:(CGFloat)shadowRadius
 {
-    self.layer.shadowOffset = shadowOffset;
+    self.layer.shadowRadius = shadowRadius;
 }
 
-- (CGSize)shadowOffset
+- (CGFloat)shadowRadius
 {
-    return self.layer.shadowOffset;
+    return self.layer.shadowRadius;
 }
 
 - (void)setShadowColor:(nullable UIColor *)shadowColor
