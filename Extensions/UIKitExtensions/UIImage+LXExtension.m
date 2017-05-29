@@ -286,47 +286,66 @@ NS_ASSUME_NONNULL_BEGIN
                                      size:(CGSize)size
                                      logo:(nullable UIImage *)logo
 								 logoSize:(CGSize)logoSize
-                              transparent:(BOOL)transparent
+                          foregroundColor:(nullable UIColor *)foregroundColor
+                          backgroundColor:(nullable UIColor *)backgroundColor
 {
     NSData *messageData = [message dataUsingEncoding:NSISOLatin1StringEncoding];
     CIFilter *QRCodeFilter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
     [QRCodeFilter setValue:messageData forKey:@"inputMessage"];
+    [QRCodeFilter setValue:@"H" forKey:@"inputCorrectionLevel"];
 
-    CIImage *outputImage = QRCodeFilter.outputImage;
-    CGRect extent = outputImage.extent;
-    CGImageRef outputCGImage = [[CIContext contextWithOptions:nil] createCGImage:outputImage fromRect:extent];
-
-    if (transparent) {
-        // 为了去除图片透明通道，需要重绘图片
+    CIImage *outputCIImage = QRCodeFilter.outputImage;
+    CGRect extent = outputCIImage.extent;
+    CGImageRef outputCGImage = [[CIContext new] createCGImage:outputCIImage fromRect:extent];
+    
+    if (foregroundColor || backgroundColor) {
         size_t pixelsWide = CGImageGetWidth(outputCGImage);
         size_t pixelsHigh = CGImageGetHeight(outputCGImage);
-        size_t bitsPerComponent = 8;
+        size_t countOfPixels = pixelsWide * pixelsHigh;
+        UInt32 *pixels = calloc(countOfPixels, sizeof(UInt32));
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-		CGBitmapInfo bitmapInfo = kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host;
-        CGContextRef context = CGBitmapContextCreate(NULL,
-                                                     pixelsWide,
-                                                     pixelsHigh,
-                                                     bitsPerComponent,
-                                                     0,
-                                                     colorSpace,
-                                                     bitmapInfo);
-
-        // 重绘图片去除透明通道，这样才能使用 CGImageCreateWithMaskingColors 函数
+        CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host;
+        CGContextRef context = CGBitmapContextCreate(pixels, pixelsWide, pixelsHigh, 8, 4 * pixelsWide, colorSpace, bitmapInfo);
         CGContextDrawImage(context, LXRectMakeWithSize(extent.size), outputCGImage);
-		CGImageRelease(outputCGImage);
-        CGImageRef opaqueOutputCGImage = CGBitmapContextCreateImage(context);
-		CGColorSpaceRelease(colorSpace);
+        
+        CGFloat fRed = 0, fGreen = 0, fBlue = 0;
+        CGFloat bRed = 0, bGreen = 0, bBlue = 0, bAlpha = 0;
+        [foregroundColor getRed:&fRed green:&fGreen blue:&fBlue alpha:NULL];
+        [backgroundColor getRed:&bRed green:&bGreen blue:&bBlue alpha:&bAlpha];
+        
+        UInt8 *components = NULL;
+        UInt32 *currentPixel = pixels;
+        for (size_t i = 0; i < countOfPixels; ++i) {
+            components = (UInt8 *)currentPixel;
+            if (*currentPixel == 0xFF000000) { // 黑色，即前景
+                if (foregroundColor) {
+                    components[2] = fRed   * 255.0; // R
+                    components[1] = fGreen * 255.0; // G
+                    components[0] = fBlue  * 255.0; // B
+                }
+            } else if (backgroundColor) {
+                if (bAlpha == 0.0) {
+                    *currentPixel = 0;
+                } else {
+                    components[2] = bRed   * 255.0; // R
+                    components[1] = bGreen * 255.0; // G
+                    components[0] = bBlue  * 255.0; // B
+                }
+            }
+            ++currentPixel;
+        }
+        
+        CGImageRelease(outputCGImage);
+        outputCGImage = CGBitmapContextCreateImage(context);
+        
+        CGColorSpaceRelease(colorSpace);
         CGContextRelease(context);
-
-        // 去除白色背景
-        const CGFloat components[6] = {255,255,255,255,255,255};
-        outputCGImage = CGImageCreateWithMaskingColors(opaqueOutputCGImage, components);
-        CGImageRelease(opaqueOutputCGImage);
+        free(pixels);
     }
 
 	CGFloat scale = [[UIScreen mainScreen] scale];
 	size = LXSizeCeilInPixel(size, scale);
-    UIGraphicsBeginImageContextWithOptions(size, !transparent, scale);
+    UIGraphicsBeginImageContextWithOptions(size, ![backgroundColor isEqual:[UIColor clearColor]], scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     // 让二维码更清晰
     CGContextSetInterpolationQuality(context, kCGInterpolationNone);

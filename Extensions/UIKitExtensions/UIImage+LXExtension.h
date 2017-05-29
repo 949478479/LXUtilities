@@ -149,17 +149,19 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  生成二维码图片
  *
- *  @param message     二维码内容
- *  @param size        二维码尺寸，以 pt 为单位
- *  @param logo        二维码中心图案
- *  @param logoSize    二维码中心图案尺寸，以 pt 为单位
- *  @param transparent 是否将白色背景变为透明
+ *  @param message         二维码内容
+ *  @param size            二维码尺寸，以 pt 为单位
+ *  @param logo            二维码中心图案
+ *  @param logoSize        二维码中心图案尺寸，以 pt 为单位
+ *  @param foregroundColor 前景色，默认黑色
+ *  @param backgroundColor 背景色，默认白色
  */
 + (instancetype)lx_QRCodeImageWithMessage:(NSString *)message
                                      size:(CGSize)size
                                      logo:(nullable UIImage *)logo
-								 logoSize:(CGSize)logoSize
-                              transparent:(BOOL)transparent;
+                                 logoSize:(CGSize)logoSize
+                          foregroundColor:(nullable UIColor *)foregroundColor
+                          backgroundColor:(nullable UIColor *)backgroundColor;
 @end
 
 NS_ASSUME_NONNULL_END
