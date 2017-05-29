@@ -10,10 +10,6 @@
 
 @implementation UITableView (LXExtension)
 
-- (void)lx_dequeueReusableCellWithClass:(Class)cls forIndexPath:(NSIndexPath *)indexPath {
-	[self dequeueReusableCellWithIdentifier:NSStringFromClass(cls) forIndexPath:indexPath];
-}
-
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion
 {
 	[UIView animateWithDuration:0 animations:^{

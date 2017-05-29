@@ -9,10 +9,6 @@
 
 @implementation UICollectionView (LXExtension)
 
-- (void)lx_dequeueReusableCellWithClass:(Class)cls forIndexPath:(NSIndexPath *)indexPath {
-	[self dequeueReusableCellWithReuseIdentifier:NSStringFromClass(cls) forIndexPath:indexPath];
-}
-
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion
 {
 	[UIView animateWithDuration:0 animations:^{

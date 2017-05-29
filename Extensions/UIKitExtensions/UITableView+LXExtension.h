@@ -11,8 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UITableView (LXExtension)
 
-- (void)lx_dequeueReusableCellWithClass:(Class)cls forIndexPath:(NSIndexPath *)indexPath;
-
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
 
 - (nullable __kindof UITableViewCell *)lx_cellForSelectedRow;
