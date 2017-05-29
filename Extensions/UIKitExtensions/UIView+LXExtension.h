@@ -41,12 +41,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 是否光栅化
 @property (nonatomic) IBInspectable BOOL shouldRasterize;
+
 /// 图层圆角
 @property (nonatomic) IBInspectable CGFloat cornerRadius;
 /// 图层边框宽度，单位是像素
 @property (nonatomic) IBInspectable CGFloat borderWidth;
 /// 图层边框颜色
 @property (nullable, nonatomic) IBInspectable UIColor *borderColor;
+
+/// 图层阴影偏移
+@property (nonatomic) IBInspectable CGSize shadowOffset;
+/// 图层阴影透明度
+@property (nonatomic) IBInspectable float shadowOpacity;
+/// 图层阴影颜色
+@property (nullable, nonatomic) IBInspectable UIColor *shadowColor;
 
 /// 添加图层到附属图层上。
 - (void)lx_addSublayer:(CALayer *)layer;

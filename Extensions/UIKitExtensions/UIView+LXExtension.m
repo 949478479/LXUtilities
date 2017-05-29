@@ -134,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 图层 -
 
-#pragma mark 是否光栅化
+#pragma mark 光栅化
 
 - (void)setShouldRasterize:(BOOL)shouldRasterize
 {
@@ -147,7 +147,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.layer.shouldRasterize;
 }
 
-#pragma mark 图层圆角
+#pragma mark 圆角
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.layer.cornerRadius;
 }
 
-#pragma mark 边框宽度
+#pragma mark 边框
 
 - (void)setBorderWidth:(CGFloat)borderWidth
 {
@@ -171,8 +171,6 @@ NS_ASSUME_NONNULL_BEGIN
     return self.layer.borderWidth;
 }
 
-#pragma mark 边框颜色
-
 - (void)setBorderColor:(nullable UIColor *)borderColor
 {
     self.layer.borderColor = borderColor.CGColor;
@@ -181,6 +179,39 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)borderColor
 {
     CGColorRef color = self.layer.borderColor;
+    return color ? [UIColor colorWithCGColor:color] : nil;
+}
+
+#pragma mark 阴影
+
+- (void)setShadowOpacity:(float)shadowOpacity
+{
+    self.layer.shadowOpacity = shadowOpacity;
+}
+
+- (float)shadowOpacity
+{
+    return self.layer.shadowOpacity;
+}
+
+- (void)setShadowOffset:(CGSize)shadowOffset
+{
+    self.layer.shadowOffset = shadowOffset;
+}
+
+- (CGSize)shadowOffset
+{
+    return self.layer.shadowOffset;
+}
+
+- (void)setShadowColor:(nullable UIColor *)shadowColor
+{
+    self.layer.shadowColor = shadowColor.CGColor;
+}
+
+- (nullable UIColor *)shadowColor
+{
+    CGColorRef color = self.layer.shadowColor;
     return color ? [UIColor colorWithCGColor:color] : nil;
 }
 
