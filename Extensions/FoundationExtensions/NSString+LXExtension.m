@@ -25,24 +25,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 表单验证 -
 
-- (BOOL)lx_evaluateWithRegularExpression:(NSString *)regularExpression
+- (BOOL)lx_evaluateWithRegExp:(NSString *)regExp
 {
-    return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regularExpression] evaluateWithObject:self];
+    return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regExp] evaluateWithObject:self];
 }
 
 - (BOOL)lx_isMoney
 {
-    return [self lx_evaluateWithRegularExpression:@"^(([1-9]\\d*)|(0))(\\.\\d{1,2})?$"];
+    return [self lx_evaluateWithRegExp:@"^(([1-9]\\d*)|(0))(\\.\\d{1,2})?$"];
 }
 
 - (BOOL)lx_isDigit
 {
-    return [self lx_evaluateWithRegularExpression:@"^\\d+$"];
+    return [self lx_evaluateWithRegExp:@"^\\d+$"];
 }
 
 - (BOOL)lx_isChinese
 {
-    return [self lx_evaluateWithRegularExpression:@"^[\\u4e00-\\u9fa5]+$"];
+    return [self lx_evaluateWithRegExp:@"^[\\u4e00-\\u9fa5]+$"];
 }
 
 - (BOOL)lx_isPhoneNumber
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
      17x 系列: 170, 171, 173, 175, 176, 177, 178.
      18x 系列: 180, 181, 182, 183, 184, 185, 186, 187, 188, 189. (全段)
      */
-    return [self lx_evaluateWithRegularExpression:@"^1([38]\\d|4[579]|5[012356789]|7[0135678])\\d{8}$"];
+    return [self lx_evaluateWithRegExp:@"^1([38]\\d|4[579]|5[012356789]|7[0135678])\\d{8}$"];
 }
 
 - (BOOL)lx_isEmail
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
      邮件地址一般是: 字母, 数字, "_". 有的还能有 ".", "-". 一般4-18字符.各种邮箱要求不一...
      域名几乎都是 abc.com, abc.cn, 123.com, 123.cn 这种形式.
      */
-    return [self lx_evaluateWithRegularExpression:@"^([a-zA-Z0-9\\.\\-_]+)@([a-zA-Z0-9]+)\\.(com|cn)$"];
+    return [self lx_evaluateWithRegExp:@"^([a-zA-Z0-9\\.\\-_]+)@([a-zA-Z0-9]+)\\.(com|cn)$"];
 }
 
 - (BOOL)lx_isIDCardNumber
@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *regularExpression = @"^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}((19)|(20))\\d{2}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$";
 
     // 验证格式是否符合
-    if (![self lx_evaluateWithRegularExpression:regularExpression]) {
+    if (![self lx_evaluateWithRegExp:regularExpression]) {
         return NO;
     }
 
@@ -187,6 +187,16 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     return [idCardLast intValue] == idCardY[idCardMod];
+}
+
+- (BOOL)lx_onlyContainsAlphanumericUnderline
+{
+    return [self lx_evaluateWithRegExp:@"^[a-zA-Z0-9_]+$"];
+}
+
+- (BOOL)lx_isEmpty
+{
+    return self.length == 0;
 }
 
 - (BOOL)lx_hasCharacters

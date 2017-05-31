@@ -28,8 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)lx_isChinese;
 - (BOOL)lx_isPhoneNumber;
 - (BOOL)lx_isIDCardNumber;
+- (BOOL)lx_onlyContainsAlphanumericUnderline;
 
+- (BOOL)lx_isEmpty;
 - (BOOL)lx_hasCharacters;
+
+- (BOOL)lx_evaluateWithRegExp:(NSString *)regExp;
 
 ///--------------
 /// @name 加密处理
