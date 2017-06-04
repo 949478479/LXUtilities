@@ -11,171 +11,139 @@
 
 @implementation UIButton (LXExtension)
 
-#pragma mark - 设置和获取标题 -
+#pragma mark - 设置和获取标题
 
-- (void)setLx_normalTitle:(NSString *)lx_normalTitle
-{
+- (void)lx_setNormalTitle:(NSString *)lx_normalTitle {
     [self setTitle:lx_normalTitle forState:UIControlStateNormal];
 }
 
-- (NSString *)lx_normalTitle
-{
+- (NSString *)lx_normalTitle {
     return [self titleForState:UIControlStateNormal];
 }
 
-- (void)setLx_disabledTitle:(NSString *)lx_disabledTitle
-{
+- (void)lx_setDisabledTitle:(NSString *)lx_disabledTitle {
     [self setTitle:lx_disabledTitle forState:UIControlStateDisabled];
 }
 
-- (NSString *)lx_disabledTitle
-{
+- (NSString *)lx_disabledTitle {
     return [self titleForState:UIControlStateDisabled];
 }
 
-- (void)setLx_selectedTitle:(NSString *)lx_selectedTitle
-{
+- (void)lx_setSelectedTitle:(NSString *)lx_selectedTitle {
     [self setTitle:lx_selectedTitle forState:UIControlStateSelected];
 }
 
-- (NSString *)lx_selectedTitle
-{
+- (NSString *)lx_selectedTitle {
     return [self titleForState:UIControlStateSelected];
 }
 
-- (void)setLx_highlightedTitle:(NSString *)lx_highlightedTitle
-{
+- (void)lx_setHighlightedTitle:(NSString *)lx_highlightedTitle {
     [self setTitle:lx_highlightedTitle forState:UIControlStateHighlighted];
 }
 
-- (NSString *)lx_highlightedTitle
-{
+- (NSString *)lx_highlightedTitle {
     return [self titleForState:UIControlStateHighlighted];
 }
 
-#pragma mark - 设置和获取标题颜色 -
+#pragma mark - 设置和获取标题颜色
 
-- (void)setLx_normalTitleColor:(UIColor *)lx_normalTitleColor
-{
+- (void)lx_setNormalTitleColor:(UIColor *)lx_normalTitleColor {
     [self setTitleColor:lx_normalTitleColor forState:UIControlStateNormal];
 }
 
-- (UIColor *)lx_normalTitleColor
-{
+- (UIColor *)lx_normalTitleColor {
     return [self titleColorForState:UIControlStateNormal];
 }
 
-- (void)setLx_disabledTitleColor:(UIColor *)lx_disabledTitleColor
-{
+- (void)lx_setDisabledTitleColor:(UIColor *)lx_disabledTitleColor {
     [self setTitleColor:lx_disabledTitleColor forState:UIControlStateDisabled];
 }
 
-- (UIColor *)lx_disabledTitleColor
-{
+- (UIColor *)lx_disabledTitleColor {
     return [self titleColorForState:UIControlStateDisabled];
 }
 
-- (void)setLx_selectedTitleColor:(UIColor *)lx_selectedTitleColor
-{
+- (void)lx_setSelectedTitleColor:(UIColor *)lx_selectedTitleColor {
     [self setTitleColor:lx_selectedTitleColor forState:UIControlStateSelected];
 }
 
-- (UIColor *)lx_selectedTitleColor
-{
+- (UIColor *)lx_selectedTitleColor {
     return [self titleColorForState:UIControlStateSelected];
 }
 
-- (void)setLx_highlightedTitleColor:(UIColor *)lx_highlightedTitleColor
-{
+- (void)lx_setHighlightedTitleColor:(UIColor *)lx_highlightedTitleColor {
     [self setTitleColor:lx_highlightedTitleColor forState:UIControlStateHighlighted];
 }
 
-- (UIColor *)lx_highlightedTitleColor
-{
+- (UIColor *)lx_highlightedTitleColor {
     return [self titleColorForState:UIControlStateHighlighted];
 }
 
-#pragma mark - 设置和获取图片 -
+#pragma mark - 设置和获取图片
 
-- (void)setLx_normalImage:(UIImage *)lx_normalImage
-{
+- (void)lx_setNormalImage:(UIImage *)lx_normalImage {
     [self setImage:lx_normalImage forState:UIControlStateNormal];
 }
 
-- (UIImage *)lx_normalImage
-{
+- (UIImage *)lx_normalImage {
     return [self imageForState:UIControlStateNormal];
 }
 
-- (void)setLx_disabledImage:(UIImage *)lx_disabledImage
-{
+- (void)lx_setDisabledImage:(UIImage *)lx_disabledImage {
     [self setImage:lx_disabledImage forState:UIControlStateDisabled];
 }
 
-- (UIImage *)lx_disabledImage
-{
+- (UIImage *)lx_disabledImage {
     return [self imageForState:UIControlStateDisabled];
 }
 
-- (void)setLx_selectedImage:(UIImage *)lx_selectedImage
-{
+- (void)lx_setSelectedImage:(UIImage *)lx_selectedImage {
     [self setImage:lx_selectedImage forState:UIControlStateSelected];
 }
 
-- (UIImage *)lx_selectedImage
-{
+- (UIImage *)lx_selectedImage {
     return [self imageForState:UIControlStateSelected];
 }
 
-- (void)setLx_highlightedImage:(UIImage *)lx_highlightedImage
-{
+- (void)lx_setHighlightedImage:(UIImage *)lx_highlightedImage {
     [self setImage:lx_highlightedImage forState:UIControlStateHighlighted];
 }
 
-- (UIImage *)lx_highlightedImage
-{
+- (UIImage *)lx_highlightedImage {
     return [self imageForState:UIControlStateHighlighted];
 }
 
-#pragma mark - 设置和获取背景图片 -
+#pragma mark - 设置和获取背景图片
 
-- (void)setLx_normalBackgroundImage:(UIImage *)lx_normalBackgroundImage
-{
+- (void)lx_setNormalBackgroundImage:(UIImage *)lx_normalBackgroundImage {
     [self setBackgroundImage:lx_normalBackgroundImage forState:UIControlStateNormal];
 }
 
-- (UIImage *)lx_normalBackgroundImage
-{
+- (UIImage *)lx_normalBackgroundImage {
     return [self backgroundImageForState:UIControlStateNormal];
 }
 
-- (void)setLx_disabledBackgroundImage:(UIImage *)lx_disabledBackgroundImage
-{
+- (void)lx_setDisabledBackgroundImage:(UIImage *)lx_disabledBackgroundImage {
     [self setBackgroundImage:lx_disabledBackgroundImage forState:UIControlStateDisabled];
 }
 
-- (UIImage *)lx_disabledBackgroundImage
-{
+- (UIImage *)lx_disabledBackgroundImage {
     return [self imageForState:UIControlStateDisabled];
 }
 
-- (void)setLx_selectedBackgroundImage:(UIImage *)lx_selectedBackgroundImage
-{
+- (void)lx_setSelectedBackgroundImage:(UIImage *)lx_selectedBackgroundImage {
     [self setBackgroundImage:lx_selectedBackgroundImage forState:UIControlStateSelected];
 }
 
-- (UIImage *)lx_selectedBackgroundImage
-{
+- (UIImage *)lx_selectedBackgroundImage {
     return [self backgroundImageForState:UIControlStateSelected];
 }
 
-- (void)setLx_highlightedBackgroundImage:(UIImage *)lx_highlightedBackgroundImage
-{
+- (void)lx_setHighlightedBackgroundImage:(UIImage *)lx_highlightedBackgroundImage {
     [self setBackgroundImage:lx_highlightedBackgroundImage forState:UIControlStateHighlighted];
 }
 
-- (UIImage *)lx_highlightedBackgroundImage
-{
+- (UIImage *)lx_highlightedBackgroundImage {
     return [self backgroundImageForState:UIControlStateHighlighted];
 }
 
@@ -187,41 +155,37 @@
     self.titleLabel.backgroundColor = labelBackgroundColor;
 }
 
-- (UIColor *)labelBackgroundColor
-{
+- (UIColor *)labelBackgroundColor {
     return self.titleLabel.backgroundColor;
 }
 
 - (void)setDisabledBackgroundColor:(UIColor *)disabledBackgroundColor
 {
     [self lx_associateValue:disabledBackgroundColor forKey:@"disabledBackgroundColor"];
-    [self setLx_disabledBackgroundImage:[UIImage lx_imageWithColor:disabledBackgroundColor]];
+    [self lx_setDisabledBackgroundImage:[UIImage lx_imageWithColor:disabledBackgroundColor]];
 }
 
-- (UIColor *)disabledBackgroundColor
-{
+- (UIColor *)disabledBackgroundColor {
     return [self lx_associatedValueForKey:@"disabledBackgroundColor"];
 }
 
 - (void)setHighlightedBackgroundColor:(UIColor *)highlightedBackgroundColor
 {
     [self lx_associateValue:highlightedBackgroundColor forKey:@"highlightedBackgroundColor"];
-    [self setLx_highlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBackgroundColor]];
+    [self lx_setHighlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBackgroundColor]];
 }
 
-- (UIColor *)highlightedBackgroundColor
-{
+- (UIColor *)highlightedBackgroundColor {
     return [self lx_associatedValueForKey:@"highlightedBackgroundColor"];
 }
 
 - (void)setSelectedBackgroundColor:(UIColor *)selectedBackgroundColor
 {
     [self lx_associateValue:selectedBackgroundColor forKey:@"selectedBackgroundColor"];
-    [self setLx_selectedBackgroundImage:[UIImage lx_imageWithColor:selectedBackgroundColor]];
+    [self lx_setSelectedBackgroundImage:[UIImage lx_imageWithColor:selectedBackgroundColor]];
 }
 
-- (UIColor *)selectedBackgroundColor
-{
+- (UIColor *)selectedBackgroundColor {
     return [self lx_associatedValueForKey:@"selectedBackgroundColor"];
 }
 
