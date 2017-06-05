@@ -5,84 +5,37 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-#import "MBProgressHUD.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MBProgressHUD (LXExtension)
 
-///-----------------------
-/// @name 短暂显示纯文本 HUD
-///-----------------------
+/// 在视图上短暂显示文本并可附带自定义图标
++ (MBProgressHUD *)lx_showStatus:(NSString *)status withImage:(UIImage *)image toView:(UIView *)view;
 
-#pragma mark - 短暂显示纯文本 HUD -
+/// 在视图上显示纯文本并自动移除，若 view 传 nil 则在主窗口显示
++ (MBProgressHUD *)lx_showStatus:(NSString *)status toView:(nullable UIView *)view;
 
-/// 在主窗口上短暂显示纯文本 HUD 并自动移除
-+ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text;
+/// 在视图上短暂显示带感叹号图标的文本并自动移除，若 view 传 nil 则在主窗口显示
++ (MBProgressHUD *)lx_showInfoWithStatus:(NSString *)status toView:(nullable UIView *)view;
 
-/// 在指定父视图上显示纯文本 HUD 并自动移除
-+ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text toView:(UIView *)view;
+/// 在指定视图上持续显示环形动画活动指示器，若 view 传 nil 则在主窗口显示，需要手动移除
++ (MBProgressHUD *)lx_showRingActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
 
-///-----------------------------------------
-/// @name 持续显示无蒙版的原生活动指示器风格的 HUD
-///-----------------------------------------
+/// 在指定视图上持续显示原生活动指示器，若 view 传 nil 则在主窗口显示，需要手动移除
++ (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
 
-#pragma mark - 持续显示无蒙版的原生活动指示器风格的 HUD -
+/// 在视图上持续显示伴有背景遮罩的原生活动指示器，若 view 传 nil 则在主窗口显示，需要手动移除
++ (MBProgressHUD *)lx_showMaskActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
 
-/// 在主窗口上持续显示原生活动指示器风格的 HUD，需要手动移除
-+ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text;
+/// 在视图上持续显示环形进度条，若 view 传 nil 则在主窗口显示，需要手动移除
++ (MBProgressHUD *)lx_showProgressWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
 
-/// 在指定父视图上持续显示原生活动指示器风格的 HUD，需要手动移除
-+ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view;
-
-///-----------------------------------------
-/// @name 持续显示有蒙版的原生活动指示器风格的 HUD
-///-----------------------------------------
-
-#pragma mark - 持续显示有蒙版的原生活动指示器风格的 HUD -
-
-/// 在主窗口上持续显示原生活动指示器风格的 HUD，附带蒙版效果，需要手动移除
-+ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text;
-
-/// 在指定父视图上持续显示原生活动指示器风格的 HUD，附带蒙版效果，需要手动移除
-+ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view;
-
-///--------------------------
-/// @name 短暂显示自定义图标 HUD
-///--------------------------
-
-#pragma mark - 短暂显示自定义图标 HUD -
-
-/// 在指定父视图上短暂显示附带自定义图标的 HUD
-+ (void)lx_show:(nullable NSString *)text icon:(NSString *)icon view:(UIView *)view;
-
-///--------------------------
-/// @name 持续显示环形进度条 HUD
-///--------------------------
-
-#pragma mark - 持续显示环形进度条 HUD -
-
-/// 在主窗口上持续显示环形进度条样式的无蒙版 HUD，需手动更新 `progress` 属性，并隐藏 HUD
-+ (MBProgressHUD *)lx_showProgressHUDWithText:(nullable NSString *)text;
-
-/// 在指定视图上持续显示环形进度条样式的无蒙版 HUD，需手动更新 `progress` 属性，并隐藏 HUD
-+ (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(nullable NSString *)text;
-
-///---------------
-/// @name 隐藏 HUD
-///---------------
-
-#pragma mark - 隐藏 HUD -
-
-/// 隐藏主窗口上的 HUD，有动画效果
-+ (void)lx_hideHUD;
-/// 隐藏主窗口上的 HUD
-+ (void)lx_hideHUD:(BOOL)animated;
-
-/// 隐藏指定视图上的 HUD，有动画效果
-+ (void)lx_hideHUDForView:(UIView *)view;
-/// 隐藏指定视图上的 HUD
-+ (void)lx_hideHUDForView:(UIView *)view animated:(BOOL)animated;
+/// 隐藏窗口上的 HUD，有动画效果
++ (void)lx_hideHUDForWindow;
+/// 隐藏窗口上的 HUD
++ (void)lx_hideHUDForWindowAnimated:(BOOL)animated;
 
 @end
 

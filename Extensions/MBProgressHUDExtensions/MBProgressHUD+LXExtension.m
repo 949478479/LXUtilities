@@ -6,145 +6,95 @@
 //
 
 #import "LXUtilities.h"
+#import "LXRingAnimatedView.h"
 #import "MBProgressHUD+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation MBProgressHUD (LXExtension)
 
-#pragma mark - 短暂显示纯文本 HUD -
+#pragma mark - 短暂显示自定义图标 HUD
 
-+ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text
++ (MBProgressHUD *)lx_showStatus:(NSString *)status withImage:(UIImage *)image toView:(UIView *)view
 {
-    UIWindow *keywindow = [UIWindow lx_keyWindow];
-    NSAssert(keywindow, @"添加MBProgressHUD时主窗口为空");
-    return [self lx_showTextHUDWithText:text toView:keywindow];
-}
-
-+ (MBProgressHUD *)lx_showTextHUDWithText:(NSString *)text toView:(UIView *)view
-{
-    NSParameterAssert(text.length > 0);
-    NSParameterAssert(view != nil);
-    
-    MBProgressHUD *hud = [self showHUDAddedTo:view animated:YES];
-    
-    hud.label.text = text;
-    hud.mode = MBProgressHUDModeText;
-    hud.removeFromSuperViewOnHide = YES;
-    
+    NSParameterAssert(view);
+    NSParameterAssert(image);
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    hud.label.text = status;
+    hud.mode = MBProgressHUDModeCustomView;
+    hud.customView = [[UIImageView alloc] initWithImage:image];
     [hud hideAnimated:YES afterDelay:1.0];
-    
     return hud;
 }
 
-#pragma mark - 持续显示无蒙版的原生活动指示器风格的 HUD -
+#pragma mark - 短暂显示纯文本 HUD
 
-+ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text
++ (MBProgressHUD *)lx_showStatus:(NSString *)status toView:(nullable UIView *)view
 {
-    UIWindow *keyWindow = [UIWindow lx_keyWindow];
-    NSAssert(keyWindow, @"添加MBProgressHUD时主窗口为空");
-    return [self lx_showActivityIndicatorWithText:text toView:keyWindow];
-}
-
-+ (MBProgressHUD *)lx_showActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view
-{
-    NSParameterAssert(view != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    
-    hud.label.text = text;
-    hud.removeFromSuperViewOnHide = YES;
-    
+    NSParameterAssert(status.length > 0);
+    MBProgressHUD *hud = [self showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    hud.label.text = status;
+    hud.mode = MBProgressHUDModeText;
+    [hud hideAnimated:YES afterDelay:1.0];
     return hud;
 }
 
-#pragma mark - 持续显示有蒙版的原生活动指示器风格的 HUD -
+#pragma mark - 短暂显示带感叹号图标的文本
 
-+ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text
-{
-    UIWindow *keyWindow = [UIWindow lx_keyWindow];
-    NSAssert(keyWindow, @"添加MBProgressHUD时主窗口为空");
-    return [self lx_showDimActivityIndicatorWithText:text toView:keyWindow];
++ (MBProgressHUD *)lx_showInfoWithStatus:(NSString *)status toView:(nullable UIView *)view {
+    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"info"] toView:view ?: [UIWindow lx_keyWindow]];
 }
 
-+ (MBProgressHUD *)lx_showDimActivityIndicatorWithText:(nullable NSString *)text toView:(UIView *)view
+#pragma mark - 持续显示环形动画活动指示器
+
++ (MBProgressHUD *)lx_showRingActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    NSParameterAssert(view != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    
-    hud.label.text = text;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    hud.label.text = status;
+    hud.mode = MBProgressHUDModeCustomView;
+    hud.customView = [LXRingAnimatedView new];
+    return hud;
+}
+
+#pragma mark - 持续显示原生活动指示器
+
++ (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
+{
+    NSParameterAssert(view);
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    hud.label.text = status;
+    return hud;
+}
+
+#pragma mark - 持续显示伴有遮罩背景的原生活动指示器
+
++ (MBProgressHUD *)lx_showMaskActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    hud.label.text = status;
     hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
     hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:.2f];
-    hud.removeFromSuperViewOnHide = YES;
-    
     return hud;
 }
 
-#pragma mark - 短暂显示自定义图标 HUD -
+#pragma mark - 持续显示环形进度条 HUD
 
-+ (void)lx_show:(nullable NSString *)text icon:(NSString *)icon view:(UIView *)view
++ (MBProgressHUD *)lx_showProgressWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    NSParameterAssert(view != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    
-    hud.label.text = text;
-    hud.removeFromSuperViewOnHide = YES;
-    hud.mode = MBProgressHUDModeCustomView;
-    
-    UIImage *image = [UIImage imageNamed:icon];
-    NSAssert(image, @"添加MBProgressHUD时图片%@不存在", icon);
-    hud.customView = [[UIImageView alloc] initWithImage:image];
-    
-    [hud hideAnimated:YES afterDelay:1.0];
-}
-
-#pragma mark - 持续显示环形进度条 HUD -
-
-+ (MBProgressHUD *)lx_showProgressHUDWithText:(nullable NSString *)text
-{
-    UIWindow *keyWindow = [UIWindow lx_keyWindow];
-    NSAssert(keyWindow, @"添加MBProgressHUD时主窗口为空");
-    return [self lx_showProgressHUDToView:keyWindow text:text];
-}
-
-+ (MBProgressHUD *)lx_showProgressHUDToView:(UIView *)view text:(nullable NSString *)text
-{
-    NSParameterAssert(view != nil);
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    
-    hud.label.text = text;
-    hud.removeFromSuperViewOnHide = YES;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    hud.label.text = status;
     hud.mode = MBProgressHUDModeAnnularDeterminate;
-    
     return hud;
 }
 
-#pragma mark - 隐藏 HUD -
+#pragma mark - 隐藏 HUD
 
-+ (void)lx_hideHUD
-{
-    [self lx_hideHUD:YES];
++ (void)lx_hideHUDForWindow {
+    [self lx_hideHUDForWindowAnimated:YES];
 }
 
-+ (void)lx_hideHUD:(BOOL)animated
-{
-    UIWindow *keyWindow = [UIWindow lx_keyWindow];
-    NSAssert(keyWindow, @"隐藏MBProgressHUD时主窗口为空");
-    [self hideHUDForView:keyWindow animated:animated];
-}
-
-+ (void)lx_hideHUDForView:(UIView *)view
-{
-    [self lx_hideHUDForView:view animated:YES];
-}
-
-+ (void)lx_hideHUDForView:(UIView *)view animated:(BOOL)animated
-{
-    NSAssert(view, @"隐藏MBProgressHUD时视图为空");
-    [self hideHUDForView:view animated:animated];
++ (void)lx_hideHUDForWindowAnimated:(BOOL)animated {
+    [self hideHUDForView:[UIWindow lx_keyWindow] animated:animated];
 }
 
 @end
