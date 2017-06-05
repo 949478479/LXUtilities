@@ -19,10 +19,10 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self lx_exchangeOriginalImp:@selector(textRectForBounds:) swizzledImp:@selector(lx_textRectForBounds:)];
-        [self lx_exchangeOriginalImp:@selector(editingRectForBounds:) swizzledImp:@selector(lx_editingRectForBounds:)];
-        [self lx_exchangeOriginalImp:@selector(leftViewRectForBounds:) swizzledImp:@selector(lx_leftViewRectForBounds:)];
-        [self lx_exchangeOriginalImp:@selector(rightViewRectForBounds:) swizzledImp:@selector(lx_rightViewRectForBounds:)];
+        [self lx_exchangeOriginalSEL:@selector(textRectForBounds:) swizzledSEL:@selector(lx_textRectForBounds:)];
+        [self lx_exchangeOriginalSEL:@selector(editingRectForBounds:) swizzledSEL:@selector(lx_editingRectForBounds:)];
+        [self lx_exchangeOriginalSEL:@selector(leftViewRectForBounds:) swizzledSEL:@selector(lx_leftViewRectForBounds:)];
+        [self lx_exchangeOriginalSEL:@selector(rightViewRectForBounds:) swizzledSEL:@selector(lx_rightViewRectForBounds:)];
     });
 }
 

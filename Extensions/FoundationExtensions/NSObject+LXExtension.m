@@ -42,12 +42,12 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self lx_exchangeOriginalImp:@selector(description) swizzledImp:@selector(lx_description)];
+        [self lx_exchangeOriginalSEL:@selector(description) swizzledSEL:@selector(lx_description)];
     });
 }
 #endif
 
-+ (void)lx_exchangeOriginalImp:(SEL)originalSel swizzledImp:(SEL)swizzledSel
++ (void)lx_exchangeOriginalSEL:(SEL)originalSel swizzledSEL:(SEL)swizzledSel
 {
     NSParameterAssert(originalSel);
     NSParameterAssert(swizzledSel);

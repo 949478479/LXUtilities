@@ -23,7 +23,7 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol);
 /// @name 方法交换
 ///--------------
 
-+ (void)lx_exchangeOriginalImp:(SEL)originalSel swizzledImp:(SEL)swizzledSel;
++ (void)lx_exchangeOriginalSEL:(SEL)originalSel swizzledSEL:(SEL)swizzledSel;
 
 ///--------------
 /// @name 关联对象
