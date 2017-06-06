@@ -13,18 +13,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIWindow (LXExtension)
 
-+ (nullable UIWindow *)lx_keyWindow
-{
++ (nullable UIWindow *)lx_keyWindow {
 	return [UIWindow valueForKey:@"keyWindow"] ?: [UIApplication lx_appDelegate].window;
 }
 
-+ (nullable UIViewController *)lx_topViewController
-{
++ (nullable UIWindow *)lx_topWindow {
+    return [UIApplication sharedApplication].windows.lastObject;
+}
+
++ (nullable UIViewController *)lx_topViewController {
     return [[self lx_keyWindow].rootViewController lx_visibleViewControllerIfExist];
 }
 
-+ (nullable UIViewController *)lx_rootViewController
-{
++ (nullable UIViewController *)lx_rootViewController {
 	return [self lx_keyWindow].rootViewController;
 }
 

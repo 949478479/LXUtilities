@@ -22,8 +22,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _duration = 1;
-        _lineWidth = 2;
+        _duration = .5;
+        _lineWidth = 4;
         _ringRadius = 20;
         _ringColor = [UIColor blackColor];
 
@@ -54,19 +54,18 @@
 
 #pragma mark - 动画
 
-- (void)didMoveToSuperview
+- (void)didMoveToWindow
 {
-    [super didMoveToSuperview];
+    [super didMoveToWindow];
 
-    if (!self.superview) {
-        return;
+    if (self.window) {
+        [self _startAnimation];
+    } else {
+        [self _stopAnimation];
     }
-
-    [self configureRingLayer];
-    [self startAnimation];
 }
 
-- (void)configureRingLayer
+- (void)_configureRingLayer
 {
     CGFloat diameter = self.ringRadius * 2;
     CGRect bounds = { .size = { diameter, diameter} };
@@ -78,9 +77,14 @@
     self.ringLayer.strokeColor = self.ringColor.CGColor;
 }
 
-- (void)startAnimation
-{
+- (void)_stopAnimation {
     [self.ringLayer removeAllAnimations];
+}
+
+- (void)_startAnimation
+{
+    [self _stopAnimation];
+    [self _configureRingLayer];
 
     uint index = 0;
     CGFloat radian = M_PI_4 * 3;

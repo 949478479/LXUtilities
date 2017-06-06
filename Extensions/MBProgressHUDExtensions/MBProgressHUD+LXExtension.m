@@ -32,24 +32,32 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showStatus:(NSString *)status toView:(nullable UIView *)view
 {
     NSParameterAssert(status.length > 0);
-    MBProgressHUD *hud = [self showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    MBProgressHUD *hud = [self showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     hud.mode = MBProgressHUDModeText;
     [hud hideAnimated:YES afterDelay:1.0];
     return hud;
 }
 
-#pragma mark - 短暂显示带感叹号图标的文本
+#pragma mark - 短暂显示带图标的文本
 
 + (MBProgressHUD *)lx_showInfoWithStatus:(NSString *)status toView:(nullable UIView *)view {
-    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"info"] toView:view ?: [UIWindow lx_keyWindow]];
+    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"info"] toView:view ?: [UIWindow lx_topWindow]];
+}
+
++ (MBProgressHUD *)lx_showSuccessWithStatus:(NSString *)status toView:(nullable UIView *)view {
+    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"success"] toView:view ?: [UIWindow lx_topWindow]];
+}
+
++ (MBProgressHUD *)lx_showErrorWithStatus:(NSString *)status toView:(nullable UIView *)view {
+    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"error"] toView:view ?: [UIWindow lx_topWindow]];
 }
 
 #pragma mark - 持续显示环形动画活动指示器
 
 + (MBProgressHUD *)lx_showRingActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     hud.mode = MBProgressHUDModeCustomView;
     hud.customView = [LXRingAnimatedView new];
@@ -61,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
     NSParameterAssert(view);
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     return hud;
 }
@@ -70,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (MBProgressHUD *)lx_showMaskActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
     hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:.2f];
@@ -81,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (MBProgressHUD *)lx_showProgressWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_keyWindow] animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     hud.mode = MBProgressHUDModeAnnularDeterminate;
     return hud;
@@ -94,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (void)lx_hideHUDForWindowAnimated:(BOOL)animated {
-    [self hideHUDForView:[UIWindow lx_keyWindow] animated:animated];
+    [self hideHUDForView:[UIWindow lx_topWindow] animated:animated];
 }
 
 @end
