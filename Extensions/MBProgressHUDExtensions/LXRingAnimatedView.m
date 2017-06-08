@@ -8,9 +8,9 @@
 
 #import "LXRingAnimatedView.h"
 
-#define LXMINIMUM 0.000001
+#define LXMINIMUM 0.0000001
 
-@interface LXRingAnimatedView ()
+@interface LXRingAnimatedView () <CAAnimationDelegate>
 @property (nonatomic) CAShapeLayer *ringLayer;
 @end
 
@@ -22,15 +22,16 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _duration = .5;
-        _lineWidth = 4;
-        _ringRadius = 20;
-        _ringColor = [UIColor blackColor];
+        _lineWidth = 3;
+        _duration = .8;
+        _ringRadius = 10;
+        _ringColor = [UIColor colorWithRed:72./255 green:130./255 blue:244./255 alpha:1];
 
         _ringLayer = [CAShapeLayer new];
-        _ringLayer.fillColor = nil;
         _ringLayer.lineCap = kCALineCapRound;
+        _ringLayer.fillColor = [UIColor clearColor].CGColor;
         _ringLayer.contentsScale = [UIScreen mainScreen].scale;
+        _ringLayer.actions = @{ @"strokeEnd": [NSNull null], @"strokeStart": [NSNull null] };
 
         [self.layer addSublayer:_ringLayer];
     }
@@ -52,6 +53,10 @@
     return CGSizeMake(diameter, diameter);
 }
 
+- (CGSize)sizeThatFits:(CGSize)size {
+    return [self intrinsicContentSize];
+}
+
 #pragma mark - 动画
 
 - (void)didMoveToWindow
@@ -65,21 +70,84 @@
     }
 }
 
-- (void)_configureRingLayer
+- (void)_configureRing
 {
-    CGFloat diameter = self.ringRadius * 2;
-    CGRect bounds = { .size = { diameter, diameter} };
-    CGPathRef path = CGPathCreateWithEllipseInRect(bounds, NULL);
-
-    self.ringLayer.bounds = bounds;
-    self.ringLayer.path = CFAutorelease(path);
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, 0, 0, self.ringRadius, 0, 2*M_PI * 7./8, NO);
+    self.ringLayer.path = path;
     self.ringLayer.lineWidth = self.lineWidth;
+    self.ringLayer.bounds = CGPathGetBoundingBox(path);
     self.ringLayer.strokeColor = self.ringColor.CGColor;
+    CGPathRelease(path);
+}
+
+- (void)_startAnimation
+{
+    [self _stopAnimation];
+    [self _configureRing];
+    [self _addAnimation];
 }
 
 - (void)_stopAnimation {
     [self.ringLayer removeAllAnimations];
 }
+
+- (void)_addAnimation
+{
+    NSTimeInterval duration = self.duration;
+    CAMediaTimingFunction *timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+
+    // end LXMINIMUM => 1
+    CABasicAnimation *strokeEnd = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    strokeEnd.fromValue = @(LXMINIMUM);
+    strokeEnd.toValue = @1;
+    strokeEnd.duration = duration;
+    strokeEnd.timingFunction = timingFunction;
+
+    // start 0 => 1 - LXMINIMUM
+    CABasicAnimation *strokeStart = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
+    strokeStart.fromValue = @0;
+    strokeStart.toValue = @(1 - LXMINIMUM);
+    strokeStart.duration = duration;
+    strokeStart.beginTime = duration;
+    strokeStart.fillMode = kCAFillModeBackwards;
+    strokeStart.timingFunction = timingFunction;
+
+    // 转一周，等于没转
+    CAKeyframeAnimation *rotation = [CAKeyframeAnimation animationWithKeyPath:@"transform.rotation"];
+    rotation.duration = duration * 2;
+    rotation.values = @[@0, @(M_PI), @(2*M_PI)];
+    rotation.timingFunctions = @[timingFunction, timingFunction];
+
+    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+    animationGroup.delegate = self;
+    animationGroup.duration = duration * 2;
+    animationGroup.animations = @[strokeEnd, strokeStart, rotation];
+
+    [self.ringLayer addAnimation:animationGroup forKey:nil];
+
+    self.ringLayer.strokeEnd = 1;
+    self.ringLayer.strokeStart = 1 - LXMINIMUM;
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    if (!flag) {
+        return;
+    }
+
+    self.ringLayer.strokeStart = 0;
+    self.ringLayer.strokeEnd = LXMINIMUM;
+
+    CGAffineTransform transform = CGAffineTransformMakeRotation(-M_PI * (1./4 + 7./4 * LXMINIMUM));
+    CGPathRef path = CGPathCreateCopyByTransformingPath(self.ringLayer.path, &transform);
+    self.ringLayer.path = path;
+    CGPathRelease(path);
+    
+    [self _addAnimation];
+}
+
+/* 这个是旧版实现，不够完美。
 
 - (void)_startAnimation
 {
@@ -166,5 +234,6 @@
 
     [self.ringLayer addAnimation:animationGroup forKey:nil];
 }
+*/
 
 @end

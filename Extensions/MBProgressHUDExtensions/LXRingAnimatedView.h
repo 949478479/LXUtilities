@@ -12,13 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXRingAnimatedView : UIView
 
-/// 圆弧线条宽度，默认 4pt
+/// 圆弧线条宽度，默认 3pt
 @property (nonatomic) CGFloat lineWidth UI_APPEARANCE_SELECTOR;
-/// 半径，默认 20pt
+/// 半径，默认 10pt
 @property (nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;
-/// 圆弧颜色，默认黑色
+/// 圆弧颜色，默认使用 4882F4
 @property (nonatomic) UIColor *ringColor UI_APPEARANCE_SELECTOR;
-/// 单次动画持续时间，默认 0.5s
+/// 单次动画持续时间，默认 0.8s
 @property (nonatomic) NSTimeInterval duration UI_APPEARANCE_SELECTOR;
 
 @end
