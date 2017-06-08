@@ -28,6 +28,9 @@
 #define LX_CONSTRUCTOR __attribute__((constructor))
 #define LX_CONSTRUCTOR_WITH_PRIORITY(priority) __attribute__((constructor(priority)))
 
+/// 未使用返回值时提示警告
+#define LX_UNUSED_RESULT_WARN __attribute__((warn_unused_result))
+
 /// 标志子类继承这个方法时需要调用 super 实现
 #define LX_REQUIRES_SUPER __attribute__((objc_requires_super))
 
