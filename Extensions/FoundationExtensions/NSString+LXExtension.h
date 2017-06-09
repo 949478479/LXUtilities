@@ -10,17 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSString (LXExtension)
+LX_OVERLOADABLE
+NS_INLINE NSRange LXMaxRange(NSString *string) {
+    return (NSRange){0,string.length};
+}
 
-///--------------
-/// @name 文本范围
-///--------------
 
-- (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font;
+#pragma mark - 正则
 
-///--------------
-/// @name 文本校验
-///--------------
+///-----------
+/// @name 正则
+///-----------
+
+@interface NSString (LXRegularExpression)
 
 - (BOOL)lx_isMoney;
 - (BOOL)lx_isDigit;
@@ -35,9 +37,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)lx_evaluateWithRegExp:(NSString *)regExp;
 
-///--------------
-/// @name 加密处理
-///--------------
+@end
+
+
+#pragma mark - 哈希
+
+///-----------
+/// @name 哈希
+///-----------
+
+@interface NSString (LXHash)
 
 - (NSString *)lx_MD5;
 - (NSString *)lx_SHA1;
@@ -53,15 +62,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)lx_HMACSHA384WithKey:(NSString *)key;
 - (NSString *)lx_HMACSHA512WithKey:(NSString *)key;
 
-///-----------
-/// @name 其他
-///-----------
+@end
 
-/// 根据字符串生成URL
-- (nullable NSURL *)lx_URL;
 
-/// 将非字母、数字、下划线的字符替换为下划线。开头的数字也会被替换为下划线。
-- (NSString *)lx_alphanumericString;
+#pragma mark - JSON
+
+///------------
+/// @name JSON
+///------------
+
+@interface NSString (LXJSON)
 
 /// 根据 JSON 对象生成 JSON 字符串
 + (nullable instancetype)lx_stringWithJSONObject:(id)obj;
@@ -73,9 +83,45 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-LX_OVERLOADABLE
-NS_INLINE NSRange LXMaxRange(NSString *string) {
-    return (NSRange){0,string.length};
-}
+
+#pragma mark - URL
+
+///----------
+/// @name URL
+///----------
+
+@interface NSString (LXURL)
+
+/// 根据字符串生成URL
+- (nullable NSURL *)lx_URL;
+
+@end
+
+
+#pragma mark - 绘图
+
+///-----------
+/// @name 绘图
+///-----------
+
+@interface NSString (LXDrawing)
+
+- (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font;
+
+@end
+
+
+#pragma mark - 其他
+
+///-----------
+/// @name 其他
+///-----------
+
+@interface NSString (LXOther)
+
+/// 将非字母、数字、下划线的字符替换为下划线。开头的数字也会被替换为下划线。
+- (NSString *)lx_alphanumericString;
+
+@end
 
 NS_ASSUME_NONNULL_END

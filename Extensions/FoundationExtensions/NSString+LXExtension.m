@@ -10,38 +10,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSString (LXExtension)
+#pragma mark - 正则
 
-#pragma mark - 文本范围 -
+@implementation NSString (LXRegularExpression)
 
-- (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font
-{
-    NSParameterAssert(font != nil);
-    return CGRectIntegral([self boundingRectWithSize:size
-                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                          attributes:@{ NSFontAttributeName : font }
-                                             context:nil]).size;
-}
-
-#pragma mark - 表单验证 -
-
-- (BOOL)lx_evaluateWithRegExp:(NSString *)regExp
-{
+- (BOOL)lx_evaluateWithRegExp:(NSString *)regExp {
     return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regExp] evaluateWithObject:self];
 }
 
-- (BOOL)lx_isMoney
-{
+- (BOOL)lx_isMoney {
     return [self lx_evaluateWithRegExp:@"^(([1-9]\\d*)|(0))(\\.\\d{1,2})?$"];
 }
 
-- (BOOL)lx_isDigit
-{
+- (BOOL)lx_isDigit {
     return [self lx_evaluateWithRegExp:@"^\\d+$"];
 }
 
-- (BOOL)lx_isChinese
-{
+- (BOOL)lx_isChinese {
     return [self lx_evaluateWithRegExp:@"^[\\u4e00-\\u9fa5]+$"];
 }
 
@@ -189,22 +174,23 @@ NS_ASSUME_NONNULL_BEGIN
     return [idCardLast intValue] == idCardY[idCardMod];
 }
 
-- (BOOL)lx_onlyContainsAlphanumericUnderline
-{
+- (BOOL)lx_onlyContainsAlphanumericUnderline {
     return [self lx_evaluateWithRegExp:@"^[a-zA-Z0-9_]+$"];
 }
 
-- (BOOL)lx_isEmpty
-{
+- (BOOL)lx_isEmpty {
     return self.length == 0;
 }
 
-- (BOOL)lx_hasCharacters
-{
+- (BOOL)lx_hasCharacters {
     return self.length > 0;
 }
 
-#pragma mark - 加密处理
+@end
+
+#pragma mark - 哈希
+
+@implementation NSString (LXHash)
 
 typedef unsigned char *LX_DigestAlgorithmFunction(const void *data, CC_LONG len, unsigned char *md);
 
@@ -281,17 +267,67 @@ typedef unsigned char *LX_DigestAlgorithmFunction(const void *data, CC_LONG len,
     return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA512 digestLength:CC_SHA512_DIGEST_LENGTH key:key];
 }
 
-#pragma mark - 其他 -
+@end
 
-- (nullable NSURL *)lx_URL
+#pragma mark - JSON
+
+@implementation NSString (LXJSON)
+
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj {
+    return [self lx_stringWithJSONObject:obj prettyPrinted:NO];
+}
+
++ (nullable instancetype)lx_stringWithJSONObject:(id)obj prettyPrinted:(BOOL)prettyPrinted
 {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:obj options:prettyPrinted error:NULL];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
+- (nullable id)lx_JSONObject {
+    return [self lx_JSONObjectWithOptions:0];
+}
+
+- (nullable id)lx_JSONObjectWithOptions:(NSJSONReadingOptions)options
+{
+    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    return [NSJSONSerialization JSONObjectWithData:data options:options error:NULL];
+}
+
+@end
+
+#pragma mark - URL
+
+@implementation NSString (LXURL)
+
+- (nullable NSURL *)lx_URL {
     return [NSURL URLWithString:self];
 }
+
+@end
+
+#pragma mark - 绘图
+
+@implementation NSString (LXDrawing)
+
+- (CGSize)lx_sizeWithBoundingSize:(CGSize)size font:(UIFont *)font
+{
+    NSParameterAssert(font);
+    return CGRectIntegral([self boundingRectWithSize:size
+                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                          attributes:@{ NSFontAttributeName : font }
+                                             context:nil]).size;
+}
+
+@end
+
+#pragma mark - 其他
+
+@implementation NSString (LXOther)
 
 - (NSString *)lx_alphanumericString
 {
     NSParameterAssert(self.length > 0);
-    
+
     NSMutableString *alphanumericString = self.mutableCopy;
 
     [alphanumericString replaceOccurrencesOfString:@"[^a-z0-9A-Z_]"
@@ -304,28 +340,6 @@ typedef unsigned char *LX_DigestAlgorithmFunction(const void *data, CC_LONG len,
                                            options:NSRegularExpressionSearch
                                              range:(NSRange){0,1}];
     return alphanumericString;
-}
-
-+ (nullable instancetype)lx_stringWithJSONObject:(id)obj
-{
-    return [self lx_stringWithJSONObject:obj prettyPrinted:NO];
-}
-
-+ (nullable instancetype)lx_stringWithJSONObject:(id)obj prettyPrinted:(BOOL)prettyPrinted
-{
-    NSData *data = [NSJSONSerialization dataWithJSONObject:obj options:prettyPrinted error:NULL];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-}
-
-- (nullable id)lx_JSONObject
-{
-    return [self lx_JSONObjectWithOptions:0];
-}
-
-- (nullable id)lx_JSONObjectWithOptions:(NSJSONReadingOptions)options
-{
-    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
-    return [NSJSONSerialization JSONObjectWithData:data options:options error:NULL];
 }
 
 @end
