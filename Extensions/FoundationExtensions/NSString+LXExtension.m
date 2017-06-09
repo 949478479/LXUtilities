@@ -5,7 +5,7 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
 #import "NSString+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -204,61 +204,81 @@ NS_ASSUME_NONNULL_BEGIN
     return self.length > 0;
 }
 
-#pragma mark - 加密处理 -
+#pragma mark - 加密处理
 
-typedef unsigned char *__LXDigestFunction(const void *data, CC_LONG len, unsigned char *md);
+typedef unsigned char *LX_DigestAlgorithmFunction(const void *data, CC_LONG len, unsigned char *md);
 
-- (NSString *)lx_hashStringWithDigestLength:(CC_LONG)digestLength
-                             digestFunction:(__LXDigestFunction)digestFunction
+- (NSString *)lx_digestWithAlgorithmFunction:(LX_DigestAlgorithmFunction)function digestLength:(CC_LONG)digestLength
 {
-    const char *string = self.UTF8String;
-
-    unsigned char digest[digestLength];
-
-    digestFunction(string, (CC_LONG)strlen(string), digest);
-
-	NSString *hashedString = [NSString stringWithFormat:
-						   @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-						   digest[0], digest[1],
-						   digest[2], digest[3],
-						   digest[4], digest[5],
-						   digest[6], digest[7],
-						   digest[8], digest[9],
-						   digest[10], digest[11],
-						   digest[12], digest[13],
-						   digest[14], digest[15]];
-
-	return hashedString;
+    const char *data = self.UTF8String;
+    uint8_t buffer[digestLength];
+    function(data, (CC_LONG)strlen(data), buffer);
+    NSMutableString *output = [NSMutableString stringWithCapacity:digestLength * 2];
+    for (CC_LONG i = 0; i < digestLength; i++) {
+        [output appendFormat:@"%02x", buffer[i]];
+    }
+    return output.copy;
 }
 
-- (NSString *)lx_MD5
-{
-    return [self lx_hashStringWithDigestLength:CC_MD5_DIGEST_LENGTH digestFunction:CC_MD5];
+- (NSString *)lx_MD5 {
+    return [self lx_digestWithAlgorithmFunction:CC_MD5 digestLength:CC_MD5_DIGEST_LENGTH];
 }
 
-- (NSString *)lx_SHA1
-{
-    return [self lx_hashStringWithDigestLength:CC_SHA1_DIGEST_LENGTH digestFunction:CC_SHA1];
+- (NSString *)lx_SHA1 {
+    return [self lx_digestWithAlgorithmFunction:CC_SHA1 digestLength:CC_SHA1_DIGEST_LENGTH];
 }
 
-- (NSString *)lx_SHA224
-{
-    return [self lx_hashStringWithDigestLength:CC_SHA224_DIGEST_LENGTH digestFunction:CC_SHA224];
+- (NSString *)lx_SHA224 {
+    return [self lx_digestWithAlgorithmFunction:CC_SHA224 digestLength:CC_SHA224_DIGEST_LENGTH];
 }
 
-- (NSString *)lx_SHA256
-{
-    return [self lx_hashStringWithDigestLength:CC_SHA256_DIGEST_LENGTH digestFunction:CC_SHA256];
+- (NSString *)lx_SHA256 {
+    return [self lx_digestWithAlgorithmFunction:CC_SHA256 digestLength:CC_SHA256_DIGEST_LENGTH];
 }
 
-- (NSString *)lx_SHA384
-{
-    return [self lx_hashStringWithDigestLength:CC_SHA384_DIGEST_LENGTH digestFunction:CC_SHA384];
+- (NSString *)lx_SHA384 {
+    return [self lx_digestWithAlgorithmFunction:CC_SHA384 digestLength:CC_SHA384_DIGEST_LENGTH];
 }
 
-- (NSString *)lx_SHA512
+- (NSString *)lx_SHA512 {
+    return [self lx_digestWithAlgorithmFunction:CC_SHA512 digestLength:CC_SHA512_DIGEST_LENGTH];
+}
+
+- (NSString *)lx_HMACWithAlgorithm:(CCHmacAlgorithm)algorithm digestLength:(CC_LONG)digestLength key:(NSString *)key
 {
-    return [self lx_hashStringWithDigestLength:CC_SHA512_DIGEST_LENGTH digestFunction:CC_SHA512];
+    const char *data = self.UTF8String;
+    const char *__key = key.UTF8String;
+    uint8_t buffer[digestLength];
+    CCHmac(algorithm, __key, strlen(__key), data, strlen(data), buffer);
+    NSMutableString *output = [NSMutableString stringWithCapacity:digestLength * 2];
+    for (CC_LONG i = 0; i < digestLength; i++) {
+        [output appendFormat:@"%02x", buffer[i]];
+    }
+    return output.copy;
+}
+
+- (NSString *)lx_HMACMD5WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgMD5 digestLength:CC_MD5_DIGEST_LENGTH key:key];
+}
+
+- (NSString *)lx_HMACSHA1WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA1 digestLength:CC_SHA1_DIGEST_LENGTH key:key];
+}
+
+- (NSString *)lx_HMACSHA224WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA224 digestLength:CC_SHA224_DIGEST_LENGTH key:key];
+}
+
+- (NSString *)lx_HMACSHA256WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA256 digestLength:CC_SHA256_DIGEST_LENGTH key:key];
+}
+
+- (NSString *)lx_HMACSHA384WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA384 digestLength:CC_SHA384_DIGEST_LENGTH key:key];
+}
+
+- (NSString *)lx_HMACSHA512WithKey:(NSString *)key {
+    return [self lx_HMACWithAlgorithm:kCCHmacAlgSHA512 digestLength:CC_SHA512_DIGEST_LENGTH key:key];
 }
 
 #pragma mark - 其他 -

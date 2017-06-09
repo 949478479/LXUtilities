@@ -46,6 +46,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)lx_SHA384;
 - (NSString *)lx_SHA512;
 
+- (NSString *)lx_HMACMD5WithKey:(NSString *)key;
+- (NSString *)lx_HMACSHA1WithKey:(NSString *)key;
+- (NSString *)lx_HMACSHA224WithKey:(NSString *)key;
+- (NSString *)lx_HMACSHA256WithKey:(NSString *)key;
+- (NSString *)lx_HMACSHA384WithKey:(NSString *)key;
+- (NSString *)lx_HMACSHA512WithKey:(NSString *)key;
+
 ///-----------
 /// @name 其他
 ///-----------
