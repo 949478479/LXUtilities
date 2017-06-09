@@ -12,21 +12,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (LXExtension)
 
 ///--------------------------
-/// @name 几何布局（基于 frame）
+/// @name 基于 frame 的布局方法
 ///--------------------------
 
-#pragma mark - 几何布局 -
+#pragma mark - 布局
 
-@property (nonatomic) CGSize  lx_size;
-@property (nonatomic) CGFloat lx_width;
-@property (nonatomic) CGFloat lx_height;
+@property (nonatomic, setter=lx_setSize:) CGSize  lx_size;
+@property (nonatomic, setter=lx_setWidth:) CGFloat lx_width;
+@property (nonatomic, setter=lx_setHeight:) CGFloat lx_height;
 
-@property (nonatomic) CGPoint lx_origin;
-@property (nonatomic) CGFloat lx_originX;
-@property (nonatomic) CGFloat lx_originY;
+@property (nonatomic, setter=lx_setOrigin:) CGPoint lx_origin;
+@property (nonatomic, setter=lx_setOriginX:) CGFloat lx_originX;
+@property (nonatomic, setter=lx_setOriginY:) CGFloat lx_originY;
 
-@property (nonatomic) CGFloat lx_centerX;
-@property (nonatomic) CGFloat lx_centerY;
+@property (nonatomic, setter=lx_setCenterX:) CGFloat lx_centerX;
+@property (nonatomic, setter=lx_setCenterY:) CGFloat lx_centerY;
 
 @property (nonatomic, readonly) CGFloat lx_minX;
 @property (nonatomic, readonly) CGFloat lx_minY;
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 图层
 ///-----------
 
-#pragma mark - 图层 -
+#pragma mark - 图层
 
 /// 是否光栅化
 @property (nonatomic) IBInspectable BOOL shouldRasterize;
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 视图控制器
 ///----------------
 
-#pragma mark - 视图控制器 -
+#pragma mark - 视图控制器
 
 /// 视图或祖先视图所属的 `UIViewController`。
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_viewController;
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name xib 支持
 ///--------------
 
-#pragma mark - xib 支持 -
+#pragma mark - xib 支持
 
 /// 使用类名同名 `xib` 文件创建 `UINib` 实例。
 + (UINib *)lx_nib;
@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 实例化方法
 ///---------------
 
-#pragma mark - 实例化方法 -
+#pragma mark - 实例化方法
 
 /// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNib NS_SWIFT_UNAVAILABLE("使用 instantiateFromNib() 方法。");
@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name 动画
 ///-----------
 
-#pragma mark - 动画 -
+#pragma mark - 动画
 
 /// 暂停、恢复动画。
 @property (nonatomic) BOOL lx_paused;

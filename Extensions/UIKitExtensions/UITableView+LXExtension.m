@@ -66,7 +66,7 @@
     }
 }
 
-static inline void _lx_updateTableHeaderFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))
+void _lx_updateTableHeaderFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))
 {
 	UIView *headerFooterView = isHeader ? tableView.tableHeaderView : tableView.tableFooterView;
 

@@ -12,11 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (LXExtension)
 
-#pragma mark - 几何布局 -
-
 #pragma mark size
 
-- (void)setLx_size:(CGSize)lx_size
+- (void)lx_setSize:(CGSize)lx_size
 {
     CGRect frame = self.frame;
     frame.size = lx_size;
@@ -28,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.frame.size;
 }
 
-- (void)setLx_width:(CGFloat)lx_width
+- (void)lx_setWidth:(CGFloat)lx_width
 {
     CGRect frame = self.frame;
     frame.size.width = lx_width;
@@ -40,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.frame.size.width;
 }
 
-- (void)setLx_height:(CGFloat)lx_height
+- (void)lx_setHeight:(CGFloat)lx_height
 {
     CGRect frame = self.frame;
     frame.size.height = lx_height;
@@ -54,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark origin
 
-- (void)setLx_origin:(CGPoint)lx_origin
+- (void)lx_setOrigin:(CGPoint)lx_origin
 {
     CGRect frame = self.frame;
     frame.origin = lx_origin;
@@ -66,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.frame.origin;
 }
 
-- (void)setLx_originX:(CGFloat)lx_originX
+- (void)lx_setOriginX:(CGFloat)lx_originX
 {
     CGRect frame = self.frame;
     frame.origin.x = lx_originX;
@@ -78,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.frame.origin.x;
 }
 
-- (void)setLx_originY:(CGFloat)lx_originY
+- (void)lx_setOriginY:(CGFloat)lx_originY
 {
     CGRect frame = self.frame;
     frame.origin.y = lx_originY;
@@ -92,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark center
 
-- (void)setLx_centerX:(CGFloat)lx_centerX
+- (void)lx_setCenterX:(CGFloat)lx_centerX
 {
 	self.center = (CGPoint){lx_centerX, self.center.y};
 }
@@ -102,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
     return self.center.x;
 }
 
-- (void)setLx_centerY:(CGFloat)lx_centerY
+- (void)lx_setCenterY:(CGFloat)lx_centerY
 {
 	self.center = (CGPoint){self.center.x, lx_centerY};
 }
@@ -132,9 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
     return CGRectGetMaxY(self.frame);
 }
 
-#pragma mark - 图层 -
-
-#pragma mark 光栅化
+#pragma mark - 光栅化
 
 - (void)setShouldRasterize:(BOOL)shouldRasterize
 {
@@ -232,7 +228,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.layer addSublayer:layer];
 }
 
-#pragma mark - 视图控制器 -
+#pragma mark - 视图控制器
 
 - (nullable __kindof UIViewController *)lx_viewController
 {
@@ -243,7 +239,7 @@ NS_ASSUME_NONNULL_BEGIN
 	return (UIViewController * _Nullable)responder;
 }
 
-#pragma mark - xib -
+#pragma mark - xib
 
 + (UINib *)lx_nib
 {
@@ -273,7 +269,7 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
 }
 
-#pragma mark - 动画 -
+#pragma mark - 动画
 
 - (void)setLx_paused:(BOOL)lx_paused
 {
