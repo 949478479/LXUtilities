@@ -100,7 +100,7 @@ static NSString *__LXTypeStringForTypeEncode(const char *typeEncode)
 	}
 
 	// 某些特殊限定符
-	NSString *qualifiers = nil;
+	NSString *qualifiers;
 	{
 		switch (typeEncode[0]) {
 			case 'r': qualifiers = @"const";  break;
@@ -130,7 +130,7 @@ static NSString *__LXProperyDescription(objc_property_t prop)
 	char getter[100] = {};
 	char setter[100] = {};
 	char *readwrite = "";
-	NSString *propertyType = nil;
+	NSString *propertyType;
 	const char *propertyName = property_getName(prop);
 
 	uint attrCount;
@@ -165,8 +165,7 @@ static NSString *__LXProperyDescription(objc_property_t prop)
 static NSArray<NSString *> *__LXProtocolMethodDescriptionList(Protocol *proto, BOOL isRequiredMethod, BOOL isInstanceMethod)
 {
 	uint outCount;
-	struct objc_method_description *methods =
-	protocol_copyMethodDescriptionList(proto, isRequiredMethod, isInstanceMethod,  &outCount);
+	struct objc_method_description *methods = protocol_copyMethodDescriptionList(proto, isRequiredMethod, isInstanceMethod,  &outCount);
 
 	NSMutableArray *descriptionList = [NSMutableArray arrayWithCapacity:outCount];
 
@@ -189,7 +188,7 @@ static NSArray<NSString *> *__LXProtocolMethodDescriptionList(Protocol *proto, B
 				selParts[idx - 2] = [NSString stringWithFormat:@"%@:(%@)arg%lu",
 									 selParts[idx - 2],
 									 __LXTypeStringForTypeEncode(argumentType),
-									 (unsigned long)idx - 2];
+									 (u_long)idx - 2];
 			}
 		}
 
@@ -203,7 +202,7 @@ static NSArray<NSString *> *__LXProtocolMethodDescriptionList(Protocol *proto, B
 	return descriptionList;
 }
 
-#pragma mark - 查看所有类的类名 -
+#pragma mark - 查看所有类的类名
 
 NSArray<NSString *> *LXClassNameList()
 {
@@ -220,21 +219,21 @@ NSArray<NSString *> *LXClassNameList()
 void LXPrintClassNameList()
 {
 	NSArray *classList = LXClassNameList();
-	LXLog(@"总计：%lu\n%@", (unsigned long)classList.count, classList);
+	LXLog(@"总计：%lu\n%@", (u_long)classList.count, classList);
 }
 
-#pragma mark - 查看协议中的方法和属性 -
+#pragma mark - 查看协议中的方法和属性
 
 NSDictionary<NSString *, NSArray<NSString *> *> *LXProtocolDescription(Protocol *proto)
 {
-	NSArray *requiredMethods = nil;
+	NSArray *requiredMethods;
 	{
 		NSArray *classMethods    = __LXProtocolMethodDescriptionList(proto, YES, NO);
 		NSArray *instanceMethods = __LXProtocolMethodDescriptionList(proto, YES, YES);
 		requiredMethods = [classMethods arrayByAddingObjectsFromArray:instanceMethods];
 	}
 
-	NSArray *optionalMethods = nil;
+	NSArray *optionalMethods;
 	{
 		NSArray *classMethods    = __LXProtocolMethodDescriptionList(proto, NO, NO);
 		NSArray *instanceMethods = __LXProtocolMethodDescriptionList(proto, NO, YES);
@@ -268,22 +267,19 @@ NSDictionary<NSString *, NSArray<NSString *> *> *LXProtocolDescription(Protocol 
 	return methodsAndProperties;
 }
 
-void LXPrintDescriptionForProtocol(Protocol *proto)
-{
+void LXPrintDescriptionForProtocol(Protocol *proto) {
 	LXLog(@"%s\n%@", protocol_getName(proto), LXProtocolDescription(proto));
 }
 
-#pragma mark -
-
 @implementation NSObject (LXIntrospection)
 
-#pragma mark - 查看实例变量和属性 -
+#pragma mark - 查看实例变量和属性
 
 + (NSArray<NSString *> *)lx_propertyDescriptionList
 {
 	NSMutableArray *result = [NSMutableArray new];
 
-	for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
+	for (Class class = self; class; class = class_getSuperclass(class)) {
 		uint outCount;
 		objc_property_t *properties = class_copyPropertyList(class, &outCount);
 		for (uint i = 0; i < outCount; ++i) {
@@ -295,8 +291,7 @@ void LXPrintDescriptionForProtocol(Protocol *proto)
 	return result;
 }
 
-+ (void)lx_printPropertyDescriptionList
-{
++ (void)lx_printPropertyDescriptionList {
 	LXLog(@"%s\n%@", class_getName(self), [self lx_propertyDescriptionList]);
 }
 
@@ -304,7 +299,7 @@ void LXPrintDescriptionForProtocol(Protocol *proto)
 {
 	NSMutableArray *ivarList = [NSMutableArray new];
 
-	for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
+	for (Class class = self; class; class = class_getSuperclass(class)) {
 
 		uint outCount;
 		Ivar *ivars = class_copyIvarList(class, &outCount);
@@ -342,18 +337,19 @@ void LXPrintDescriptionForProtocol(Protocol *proto)
 	return ivarList;
 }
 
-+ (void)lx_printIvarDescriptionList
-{
++ (void)lx_printIvarDescriptionList {
 	LXLog(@"%s\n%@", class_getName(self), [self lx_ivarDescriptionList]);
 }
 
-#pragma mark - 查看方法 -
+#pragma mark - 查看方法
 
 static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 {
 	NSMutableArray *result = [NSMutableArray new];
 
-	for (Class class = cls; class != Nil; class = class_getSuperclass(class)) {
+    // 如果是元类，最终会沿父类查找到 NSObject，获取到一些 NSObject 的实例方法，而此时需要的只是类方法，因此需要判断一下
+    Class rootClass = (class_isMetaClass(cls) ? [NSObject class] : nil);
+	for (Class class = cls; class && class != rootClass; class = class_getSuperclass(class)) {
 
 		uint outCount;
 		Method *methods = class_copyMethodList(class, &outCount);
@@ -363,7 +359,7 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 
 		for (uint i = 0; i < outCount; ++i) {
 
-			NSString *methodDescription = nil;
+			NSString *methodDescription;
 			{
 				char *returnType = method_copyReturnType(methods[i]);
 				methodDescription = [NSString stringWithFormat:@"%@ (%@)%s",
@@ -399,27 +395,23 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 	return result;
 }
 
-+ (NSArray<NSString *> *)lx_classMethodDescriptionList
-{
++ (NSArray<NSString *> *)lx_classMethodDescriptionList {
 	return __LXMethodDescriptionListForClass(object_getClass(self));
 }
 
-+ (void)lx_printClassMethodDescriptionList
-{
++ (void)lx_printClassMethodDescriptionList {
 	LXLog(@"%s\n%@", class_getName(self), [self lx_classMethodDescriptionList]);
 }
 
-+ (NSArray<NSString *> *)lx_instanceMethodDescriptionList
-{
++ (NSArray<NSString *> *)lx_instanceMethodDescriptionList {
 	return __LXMethodDescriptionListForClass(self);
 }
 
-+ (void)lx_printInstanceMethodDescriptionList
-{
++ (void)lx_printInstanceMethodDescriptionList {
 	LXLog(@"%s\n%@", class_getName(self), [self lx_instanceMethodDescriptionList]);
 }
 
-#pragma mark - 查看采纳的协议 -
+#pragma mark - 查看采纳的协议
 
 + (NSArray<NSString *> *)lx_adoptedProtocolDescriptionList
 {
@@ -459,8 +451,7 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 	return result;
 }
 
-+ (void)lx_printAdoptedProtocolDescriptionList
-{
++ (void)lx_printAdoptedProtocolDescriptionList {
 	LXLog(@"%s\n%@", class_getName(self), [self lx_adoptedProtocolDescriptionList]);
 }
 
@@ -492,19 +483,18 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 	return result;
 }
 
-+ (void)lx_printInheritanceTree
-{
++ (void)lx_printInheritanceTree {
 	LXLog(@"%s%@", class_getName(self), [self lx_inheritanceTree]);
 }
 
-#pragma mark - 获取实例变量名和属性名数组 -
+#pragma mark - 获取实例变量名和属性名数组
 
 + (NSArray<NSString *> *)lx_ivarNameList
 {
     NSMutableArray *ivarNameList = [NSMutableArray new];
 
-    for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
-        uint outCount = 0;
+    for (Class class = self; class; class = class_getSuperclass(class)) {
+        uint outCount;
         Ivar *ivars = class_copyIvarList(class, &outCount);
         for (uint i = 0; i < outCount; ++i) {
             [ivarNameList addObject:@(ivar_getName(ivars[i]))];
@@ -519,8 +509,8 @@ static NSArray<NSString *> *__LXMethodDescriptionListForClass(Class cls)
 {
     NSMutableArray *propertyNameList = [NSMutableArray new];
 
-    for (Class class = self; class != Nil; class = class_getSuperclass(class)) {
-        uint outCount = 0;
+    for (Class class = self; class; class = class_getSuperclass(class)) {
+        uint outCount;
         objc_property_t *properties = class_copyPropertyList(class, &outCount);
         for (uint i = 0; i < outCount; ++i) {
             [propertyNameList addObject:@(property_getName(properties[i]))];
