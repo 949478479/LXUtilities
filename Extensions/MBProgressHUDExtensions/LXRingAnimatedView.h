@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat ringRadius UI_APPEARANCE_SELECTOR;
 /// 圆弧颜色，默认使用 4882F4
 @property (nonatomic) UIColor *ringColor UI_APPEARANCE_SELECTOR;
-/// 单次动画持续时间，默认 0.8s
+/// 单次动画持续时间，默认 0.7s
 @property (nonatomic) NSTimeInterval duration UI_APPEARANCE_SELECTOR;
 
 @end

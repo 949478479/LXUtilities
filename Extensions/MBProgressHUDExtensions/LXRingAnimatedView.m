@@ -23,7 +23,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _lineWidth = 3;
-        _duration = .8;
+        _duration = .7;
         _ringRadius = 10;
         _ringColor = [UIColor colorWithRed:72./255 green:130./255 blue:244./255 alpha:1];
 
