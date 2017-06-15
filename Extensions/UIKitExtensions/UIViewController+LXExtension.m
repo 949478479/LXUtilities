@@ -11,10 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIViewController (LXExtension)
 
-#pragma mark - 实例化方法 -
+#pragma mark - 实例化方法
 
-+ (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-{
++ (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName {
     return [self lx_instantiateWithStoryboardName:storyboardName identifier:nil];
 }
 
@@ -24,29 +23,29 @@ NS_ASSUME_NONNULL_BEGIN
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
 
     if (identifier) {
-        return [storyboard instantiateViewControllerWithIdentifier:identifier];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:identifier];
+        NSAssert([vc isMemberOfClass:self], @"%@ 故事版中标识符为 %@ 的视图控制器类型与当前类型不匹配。", storyboardName, identifier);
+        return vc;
     }
 
     identifier = NSStringFromClass(self);
-    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:identifier];
-    NSAssert(viewController, @"%@ 故事版中的 %@ 视图控制器未指定标识符", storyboardName, identifier);
-    return viewController;
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:identifier];
+    NSAssert(vc, @"%@ 故事版中的 %@ 视图控制器未指定标识符", storyboardName, identifier);
+    NSAssert([vc isMemberOfClass:self], @"%@ 故事版中标识符为 %@ 的视图控制器类型与当前类型不匹配。", storyboardName, identifier);
+    return vc;
 }
 
 #pragma mark - 查询方法
 
-- (nullable UITabBar *)lx_tabBar
-{
+- (nullable UITabBar *)lx_tabBar {
 	return self.tabBarController.tabBar;
 }
 
-- (nullable UIToolbar *)lx_toolBar
-{
+- (nullable UIToolbar *)lx_toolBar {
 	return self.navigationController.toolbar;
 }
 
-- (nullable UINavigationBar *)lx_navigationBar
-{
+- (nullable UINavigationBar *)lx_navigationBar {
 	return self.navigationController.navigationBar;
 }
 
