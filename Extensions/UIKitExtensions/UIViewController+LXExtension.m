@@ -6,12 +6,13 @@
 //
 
 #import "UIViewController+LXExtension.h"
+#import "UIView+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIViewController (LXExtension)
 
-#pragma mark - 实例化方法
+#pragma mark - 实例化
 
 + (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName {
     return [self lx_instantiateWithStoryboardName:storyboardName identifier:nil];
@@ -35,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     return vc;
 }
 
-#pragma mark - 查询方法
+#pragma mark - 获取各种 bar
 
 - (nullable UITabBar *)lx_tabBar {
 	return self.tabBarController.tabBar;
@@ -48,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UINavigationBar *)lx_navigationBar {
 	return self.navigationController.navigationBar;
 }
+
+#pragma mark - 获取相关的视图控制器
 
 - (nullable UIViewController *)lx_visibleViewControllerIfExist
 {
@@ -66,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 	if (self.isViewLoaded && self.view.window) {
 		return self;
 	} else {
-		NSLog(@"lx_visibleViewControllerIfExist:，找不到可见的视图控制器。self = %@", self);
+		NSLog(@"lx_visibleViewControllerIfExist 找不到可见的视图控制器。self = %@", self);
 		return nil;
 	}
 }
@@ -86,6 +89,16 @@ NS_ASSUME_NONNULL_BEGIN
 	}
 
 	return viewControllers[indexOfSelf - 1];
+}
+
+#pragma mark - 标题视图
+
+- (void)lx_updateTitleViewSize
+{
+    UIView *titleView = self.navigationItem.titleView;
+    NSAssert(titleView, @"lx_updateTitleViewSize 获取不到 titleView。");
+    CGSize size = [titleView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    titleView.lx_size = size;
 }
 
 @end

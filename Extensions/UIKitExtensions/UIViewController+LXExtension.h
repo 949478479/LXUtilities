@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (LXExtension)
 
-///---------------
-/// @name 实例化方法
-///---------------
+///------------
+/// @name 实例化
+///------------
 
 #pragma mark - 实例化方法
 
@@ -24,26 +24,40 @@ NS_ASSUME_NONNULL_BEGIN
 + (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
                                                identifier:(nullable NSString *)identifier;
 
-///--------------
-/// @name 查询方法
-///--------------
 
-#pragma mark - 查询方法
+#pragma mark - 获取各种 bar
+
+///------------------
+/// @name 获取各种 bar
+///------------------
 
 /// 控制器所属 `UITabBarController` 的 `tabBar`。
-- (nullable __kindof UITabBar *)lx_tabBar;
+@property (nullable, nonatomic, readonly) __kindof UITabBar *lx_tabBar;
 
 /// 控制器所属 `UINavigationController` 的 `toolBar`。
-- (nullable __kindof  UIToolbar *)lx_toolBar;
+@property (nullable, nonatomic, readonly) __kindof UIToolbar *lx_toolBar;
 
 /// 控制器所属 `UINavigationController` 的 `navigationBar`。
-- (nullable __kindof  UINavigationBar *)lx_navigationBar;
+@property (nullable, nonatomic, readonly) __kindof UINavigationBar *lx_navigationBar;
 
-/// 获取和自身处于同一个导航控制器里的上一个视图控制器
-- (nullable __kindof UIViewController *)lx_previousViewController;
 
-/// 获取当前视图控制器里的最高层可见视图控制器
-- (nullable __kindof UIViewController *)lx_visibleViewControllerIfExist;
+#pragma mark - 获取相关的视图控制器
+
+///------------------------
+/// @name 获取相关的视图控制器
+///------------------------
+
+/// 获取自身所在的导航控制器栈中的上一个视图控制器。
+@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_previousViewController;
+
+/// 获取当前视图控制器层级中的顶层可见视图控制器。
+@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_visibleViewControllerIfExist;
+
+
+#pragma mark - 标题视图
+
+/// 根据标题视图内部约束更新其尺寸
+- (void)lx_updateTitleViewSize;
 
 @end
 
