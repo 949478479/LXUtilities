@@ -5,6 +5,7 @@
 //  Copyright © 2016年 从今以后. All rights reserved.
 //
 
+@import UIKit;
 @import CoreData;
 @import Foundation;
 
@@ -17,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
                         storeType:(NSString *)storeType NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)migrate:(NSError **)error;
-- (BOOL)saveIfNeed:(NSError **)error;
+- (BOOL)saveIfNeeded:(NSError **)error;
 
 @property (nonatomic, readonly) BOOL isMigrationNeeded;
 
-@property (nonatomic, readonly) NSURL	 *storeURL;
+@property (nonatomic, readonly) NSURL *storeURL;
 @property (nonatomic, readonly) NSString *modelName;
 @property (nonatomic, readonly) NSString *storeName;
 @property (nonatomic, readonly) NSString *storeType;

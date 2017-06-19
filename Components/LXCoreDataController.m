@@ -5,7 +5,6 @@
 //  Copyright © 2016年 从今以后. All rights reserved.
 //
 
-@import UIKit;
 #import "LXMacro.h"
 #import "LXMigrationManager.h"
 #import "LXCoreDataController.h"
@@ -61,11 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
 	if (_persistentStoreCoordinator == nil) {
-
 		NSError *error = nil;
 		_persistentStoreCoordinator =
 		[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-
 		[_persistentStoreCoordinator addPersistentStoreWithType:self.storeType
 												  configuration:nil
 															URL:self.storeURL
@@ -76,7 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 			abort();
 		}
 	}
-
 	return _persistentStoreCoordinator;
 }
 
@@ -103,9 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 		return ![self.managedObjectModel isConfiguration:nil
 							 compatibleWithStoreMetadata:sourceMetadata];
 	}
-
 	LXLog(error.localizedDescription);
-	
 	return NO;
 }
 
@@ -121,11 +115,10 @@ NS_ASSUME_NONNULL_BEGIN
 															  storeType:self.storeType
 															  modelName:self.modelName
 																  error:error];
-    
     if (success) {
-        LXLog(@"迁移完成!~");
+        LXLog(@"迁移完成!");
     } else {
-        LXLog(@"迁移失败。。");
+        LXLog(@"迁移失败!");
     }
 
 	[[UIApplication sharedApplication] endBackgroundTask:bgTask];
@@ -133,16 +126,14 @@ NS_ASSUME_NONNULL_BEGIN
 	return success;
 }
 
-- (BOOL)saveIfNeed:(NSError **)error
+- (BOOL)saveIfNeeded:(NSError **)error
 {
 	if (self.managedObjectContext.hasChanges) {
 		return [self.managedObjectContext save:error];
 	}
-
 	if (error != NULL) {
 		*error = nil;
 	}
-
 	return YES;
 }
 

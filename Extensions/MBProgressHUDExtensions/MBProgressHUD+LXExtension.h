@@ -19,7 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 在视图上短暂显示带感叹号图标的文本并自动移除，若 view 传 nil 则在顶层窗口显示
 + (MBProgressHUD *)lx_showInfoWithStatus:(NSString *)status toView:(nullable UIView *)view;
-+ (MBProgressHUD *)lx_showErrorWithStatus:(NSString *)status toView:(nullable UIView *)view;
+
+/// 在视图上短暂显示带对勾或叉图标的文本并自动移除，若 view 传 nil 则在顶层窗口显示
++ (MBProgressHUD *)lx_showFailureWithStatus:(NSString *)status toView:(nullable UIView *)view;
 + (MBProgressHUD *)lx_showSuccessWithStatus:(NSString *)status toView:(nullable UIView *)view;
 
 /// 在指定视图上持续显示环形动画活动指示器，若 view 传 nil 则在顶层窗口显示，需要手动移除

@@ -49,8 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
     return [self lx_showStatus:status withImage:[UIImage imageNamed:@"success"] toView:view ?: [UIWindow lx_topWindow]];
 }
 
-+ (MBProgressHUD *)lx_showErrorWithStatus:(NSString *)status toView:(nullable UIView *)view {
-    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"error"] toView:view ?: [UIWindow lx_topWindow]];
++ (MBProgressHUD *)lx_showFailureWithStatus:(NSString *)status toView:(nullable UIView *)view {
+    return [self lx_showStatus:status withImage:[UIImage imageNamed:@"failure"] toView:view ?: [UIWindow lx_topWindow]];
 }
 
 #pragma mark - 持续显示环形动画活动指示器
