@@ -25,3 +25,17 @@ func synchronized(_ obj: Any, _ closure: () -> Void) {
     closure()
     objc_sync_exit(obj)
 }
+
+func unwrap(any: Any) -> Any? {
+    let mirror = Mirror(reflecting: any)
+    // 说明不是可选类型
+    if mirror.displayStyle != .optional {
+        return any
+    }
+    // 是可选类型，不过无值
+    if mirror.children.count == 0 {
+        return nil
+    }
+    // 是可选类型，取值并返回
+    return mirror.children.first!.1
+}
