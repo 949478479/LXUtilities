@@ -10,66 +10,66 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark -
-
 @implementation NSDictionary (LXExtension)
 
-#pragma mark - 实例化方法 -
+#pragma mark - 实例化方法
 
-+ (nullable NSDictionary *)lx_dictionaryWithResourcePath:(NSString *)path
-{
++ (nullable NSDictionary *)lx_dictionaryWithResourcePath:(NSString *)path {
 	return [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:path ofType:nil]];
 }
 
-#pragma mark - 函数式便捷方法 -
+#pragma mark - 函数式便捷方法
 
-- (NSMutableArray *)lx_map:(id _Nullable (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))map
+- (NSMutableArray *)lx_map:(id _Nullable (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))transform
 {
 	NSUInteger count = self.count;
-
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
-
 	if (count == 0) {
 		return array;
 	}
 
-    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
-                                              id _Nonnull obj,
-                                              BOOL *_Nonnull stop) {
-        id result = map(key, obj);
+    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
+        id result = transform(key, obj);
 		if (result) {
 			[array addObject:result];
 		}
     }];
-
     return array;
+}
+
+- (NSMutableDictionary *)lx_mapValues:(id  _Nonnull (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))transform
+{
+	NSUInteger count = self.count;
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:count];
+	if (count == 0) {
+		return dict;
+	}
+
+	[self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
+		dict[key] = transform(key, obj);
+	}];
+	return dict;
 }
 
 - (NSMutableDictionary *)lx_filter:(BOOL (^)(__unsafe_unretained id _Nonnull, __unsafe_unretained id _Nonnull))filter
 {
 	NSUInteger count = self.count;
-
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:count];
-
 	if (count == 0) {
 		return dict;
 	}
 
-    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
-                                              id _Nonnull obj,
-                                              BOOL *_Nonnull stop) {
+    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
 		if (filter(key, obj)) {
 			dict[key] = obj;
 		}
     }];
-
     return dict;
 }
 
 #pragma mark - 其他
 
-- (BOOL)lx_hasElement
-{
+- (BOOL)lx_hasElement {
     return self.count > 0;
 }
 
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-#pragma mark - 打印对齐 -
+#pragma mark - 打印对齐
 
 #ifdef DEBUG
 #pragma clang diagnostic push
@@ -88,9 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     NSMutableString *description = [NSMutableString stringWithString:@"{\n"];
 
-    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key,
-											  id _Nonnull obj,
-											  BOOL *_Nonnull stop) {
+    [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
         NSMutableString *subDescription =
 		[NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
 
@@ -109,25 +107,23 @@ NS_ASSUME_NONNULL_BEGIN
 
     [description appendString:@"}"];
 
-    return description.copy;
+    return description;
 }
 #pragma clang diagnostic pop
-- (NSString *)debugDescription
-{
+- (NSString *)debugDescription {
     return [self descriptionWithLocale:nil];
 }
 #endif
 
 @end
 
-#pragma mark -
+#pragma mark
 
 @implementation NSMutableDictionary (LXExtension)
 
-#pragma mark - 实例化方法 -
+#pragma mark - 实例化方法
 
-+ (NSMutableDictionary *)dictionaryWithSharedKeys:(NSArray<id<NSCopying>> *)keys
-{
++ (NSMutableDictionary *)dictionaryWithSharedKeys:(NSArray<id<NSCopying>> *)keys {
 	return [NSMutableDictionary dictionaryWithSharedKeySet:[NSDictionary sharedKeySetForKeys:keys]];
 }
 
