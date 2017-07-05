@@ -5,6 +5,7 @@
 //  Copyright © 2016年 apple. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "UIWindow+LXExtension.h"
 #import "UIApplication+LXExtension.h"
 #import "UIViewController+LXExtension.h"
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation UIWindow (LXExtension)
 
 + (nullable UIWindow *)lx_keyWindow {
-	return [UIWindow valueForKey:@"keyWindow"] ?: [UIApplication lx_appDelegate].window;
+	return [UIWindow valueForKey:@"keyWindow"] ?: [UIApplication lx_delegate].window;
 }
 
 + (nullable UIWindow *)lx_topWindow {

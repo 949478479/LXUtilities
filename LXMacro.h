@@ -5,20 +5,30 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
+#ifndef LXMacro_h
+#define LXMacro_h
+
 #pragma mark - 功能宏
 
 ///------------
 /// @name 功能宏
 ///------------
 
+#define lx_weakify(object) __weak __typeof__(object) lx_weak_##object = object;
+#define lx_strongify(object) __typeof__(object) object = lx_weak_##object;
+
 /// 安全释放指针
-#define LXFree(ptr) if (ptr) { free(ptr); ptr = NULL; }
+#define lx_free(ptr) if (ptr) { free(ptr); ptr = NULL; }
 
 /// 安全执行块
-#define LX_BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); }
+#define lx_execute_block(block, ...) if (block) { block(__VA_ARGS__); }
 
 /// 触发断言
-#define LX_FATAL_ERROR() NSAssert(NO, @"fatal error.")
+#define lx_fatal_error() NSAssert(NO, @"fatal error.")
+
+/// 在退出当前作用域结束时执行块中代码
+#define lx_onexit void (^block)(void) __attribute__((cleanup(__LXBlockCleanUp), unused)) = ^
+__attribute__((unused)) static void __LXBlockCleanUp(__strong void(^*block)(void)) { (*block)(); }
 
 /**
  在 dyld 加载完毕一个 Mach-O 文件(一个可执行文件或者一个库)后，会调用其中标记 LX_CONSTRUCTOR 的函数
@@ -33,10 +43,6 @@
 
 /// 标记一个类不能被子类继承
 #define LX_FINAL __attribute__((objc_subclassing_restricted))
-
-/// 在退出当前作用域结束时执行块中代码
-#define LX_ONEXIT void (^block)(void) __attribute__((cleanup(__LXBlockCleanUp), unused)) = ^
-__attribute__((unused)) static void __LXBlockCleanUp(__strong void(^*block)(void)) { (*block)(); }
 
 /// 改变类或协议在运行时的名字
 #define LX_RUNTIME_NAME(name) __attribute__((objc_runtime_name(#name)))
@@ -72,7 +78,7 @@ __attribute__((unused)) static void __LXBlockCleanUp(__strong void(^*block)(void
  */
 #define LX_BOXABLE __attribute__((objc_boxable))
 
-#pragma mark - 忽略警告 -
+#pragma mark - 忽略警告
 
 ///--------------
 /// @name 忽略警告
@@ -81,13 +87,12 @@ __attribute__((unused)) static void __LXBlockCleanUp(__strong void(^*block)(void
 #define STRINGIFY(S) #S
 
 #define LX_DIAGNOSTIC_PUSH_IGNORED(warning) \
-\
 _Pragma("clang diagnostic push") \
 _Pragma(STRINGIFY(clang diagnostic ignored #warning))
 
 #define LX_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
 
-#pragma mark - 日志打印 -
+#pragma mark - 日志打印
 
 ///--------------
 /// @name 日志打印
@@ -111,7 +116,7 @@ LX_DIAGNOSTIC_POP
 #define LXLogInsets(insets)       LXLog(@"%s => %@", #insets, NSStringFromUIEdgeInsets(insets))
 #define LXLogIndexPath(indexPath) LXLog(@"%s => %lu - %lu", #indexPath, [indexPath indexAtPosition:0], [indexPath indexAtPosition:1])
 
-#pragma mark - 计算代码执行耗时 -
+#pragma mark - 计算代码执行耗时
 
 ///---------------------
 /// @name 计算代码执行耗时
@@ -120,44 +125,14 @@ LX_DIAGNOSTIC_POP
 #define LX_BENCHMARKING_BEGIN CFTimeInterval lx_begin = CACurrentMediaTime();
 #define LX_BENCHMARKING_END   CFTimeInterval lx_end   = CACurrentMediaTime(); printf("运行时间: %g 秒\n", lx_end - lx_begin);
 
-#pragma mark -
-
 #else
 
-#define LXLog(format, ...)
-#define LXLogRect(rect)
-#define LXLogSize(size)
-#define LXLogPoint(point)
-#define LXLogRange(range)
-#define LXLogInsets(insets)
-#define LXLogIndexPath(indexPath)
+#pragma mark -
 
+#define LXLog(format, ...)
 #define LX_BENCHMARKING_BEGIN
 #define LX_BENCHMARKING_END
 
 #endif
 
-#pragma mark - 单例 -
-
-///-----------
-/// @name 单例
-///-----------
-
-/// 使用 dispatch_once 函数实现，重写了 +allocWithZone:。
-#define LX_SINGLETON_INTERFACE(methodName) + (instancetype)methodName;
-#define LX_SINGLETON_IMPLEMENTTATION(methodName) \
-\
-+ (instancetype)methodName \
-{ \
-    static id sharedInstance = nil; \
-    static dispatch_once_t onceToken; \
-    dispatch_once(&onceToken, ^{ \
-        sharedInstance = [[super allocWithZone:NULL] init]; \
-    }); \
-    return sharedInstance; \
-} \
-\
-+ (instancetype)allocWithZone:(__unused struct _NSZone *)zone \
-{ \
-    return [self methodName]; \
-}
+#endif

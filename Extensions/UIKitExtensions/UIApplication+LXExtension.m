@@ -11,9 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIApplication (LXExtension)
 
-+ (nullable id<UIApplicationDelegate>)lx_appDelegate
-{
-	return [[self sharedApplication] delegate];
++ (AppDelegate<UIApplicationDelegate> *)lx_delegate {
+	return (AppDelegate<UIApplicationDelegate> *)[[self sharedApplication] delegate];
 }
 
 + (BOOL)lx_openPrefsWithString:(NSString *)aString

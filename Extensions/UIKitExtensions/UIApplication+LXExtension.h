@@ -6,13 +6,14 @@
 //
 
 @import UIKit;
+@class AppDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIApplication (LXExtension)
 
 /// `sharedApplication` 的代理。
-+ (nullable id<UIApplicationDelegate>)lx_appDelegate;
++ (AppDelegate<UIApplicationDelegate> *)lx_delegate;
 
 /// 打开各种系统设置
 + (BOOL)lx_openPrefsWithString:(NSString *)aString;

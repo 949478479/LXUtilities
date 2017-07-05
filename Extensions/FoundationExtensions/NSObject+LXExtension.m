@@ -5,7 +5,7 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-@import ObjectiveC.runtime;
+#import <objc/runtime.h>
 #import "LXMacro.h"
 #import "NSObject+LXExtension.h"
 
@@ -19,7 +19,7 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
     for (uint i = 0; i< outCount; ++i) {
         [propertyList addObject:@(property_getName(properties[i]))];
     }
-    LXFree(properties);
+    lx_free(properties);
     return propertyList;
 }
 
@@ -168,7 +168,7 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
     for (uint i = 0; i < outCount; ++i) {
         [propertyNameList addObject:@(property_getName(properties[i]))];
     }
-    LXFree(properties);
+    lx_free(properties);
 
     // 如下属性也会被获取到，忽略它们
     NSMutableSet *ignoredPropertyNames =
