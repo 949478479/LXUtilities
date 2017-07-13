@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIWindow (LXExtension)
 
 /// 主窗口
-+ (nullable UIWindow *)lx_keyWindow;
++ (UIWindow *)lx_keyWindow;
 /// 顶层窗口
-+ (nullable UIWindow *)lx_topWindow;
++ (UIWindow *)lx_topWindow;
 
 /// 主窗口的根视图控制器
 + (nullable __kindof UIViewController *)lx_rootViewController;
