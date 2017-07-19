@@ -7,27 +7,14 @@
 
 import UIKit
 
-extension UIView {
+/// 根据类名同名 `xib` 文件实例化视图。
+extension Swifty where Base: UIView {
 
-    /// 根据类名同名 `xib` 文件实例化视图。
-    static func instantiateFromNib() -> Self {
-        return instantiateFromNibWithOwner(nil, options: nil)
-    }
-
-    /// 根据类名同名 `xib` 文件实例化视图。
-    static func instantiateFromNibWithOwner(_ ownerOrNil: AnyObject?,
-        options optionsOrNil: [AnyHashable: Any]?) -> Self {
-
-        func _instantiateWithType<T>(_ type: T.Type,
-            ownerOrNil: AnyObject?,
-            optionsOrNil: [AnyHashable: Any]?) -> T {
-
-            let views = UINib(nibName: String(describing: type), bundle: nil).instantiate(withOwner: nil, options: nil)
-            for view in views where type(of: (view) as AnyObject) == type { return (view as! T) }
-
-            fatalError("\(String(describing: type)).xib 文件中未找到对应实例.")
-        }
-
-        return _instantiateWithType(self, ownerOrNil: ownerOrNil, optionsOrNil: optionsOrNil)
-    }
+	static func instantiateFromNib(withOwner ownerOrNil: AnyObject? = nil, options optionsOrNil: [AnyHashable: Any]? = nil) -> Base {
+		let views = UINib(nibName: String(describing: Base.self), bundle: nil).instantiate(withOwner: ownerOrNil, options: optionsOrNil)
+		guard let view = views.first(where: { type(of: $0) == Base.self }) as? Base else {
+			fatalError("\(String(describing: Base.self)).xib 文件中未找到对应实例.")
+		}
+		return view
+	}
 }
