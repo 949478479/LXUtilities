@@ -37,20 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 暂停、恢复动画
 @property (nonatomic, getter=lx_isPaused) BOOL lx_paused;
 
-/// 添加动画，在闭包中更新图层属性不会触发隐式动画
-- (void)lx_addAnimation:(CAAnimation *)anim
-                 forKey:(nullable NSString *)key
-      modelLayerUpdater:(void (^)(void))modelLayerUpdater;
-
-/// 添加动画，注意不要设置动画代理
-- (void)lx_addAnimation:(CAAnimation *)anim
-                 forKey:(nullable NSString *)key
-             completion:(void (^)(BOOL finished))completion;
-
-/// 添加动画，在 `modelLayerUpdater` 闭包中更新图层属性不会触发隐式动画，注意不要设置动画代理
+/// 添加动画，动画完成或被移除时调用闭包，注意不要设置动画代理,否则会造成覆盖。
 - (void)lx_addAnimation:(CAAnimation *)anim
 				 forKey:(nullable NSString *)key
-	  modelLayerUpdater:(void (^)(void))modelLayerUpdater
 			 completion:(void (^)(BOOL finished))completion;
 @end
 

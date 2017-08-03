@@ -9,56 +9,43 @@
 #import "LXKeyboardSpacingView.h"
 #import "NSNotificationCenter+LXExtension.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface LXKeyboardSpacingView ()
-@property (nonatomic) id keyboardObserver;
+@property (nonatomic, unsafe_unretained) id keyboardObserver;
 @end
 
 @implementation LXKeyboardSpacingView
 
-- (void)updateConstraints
-{
-	NSAssert(self.heightConstraint != nil, @"未连接高度约束。。。");
-	[super updateConstraints];
+- (void)dealloc {
+	if (_keyboardObserver) {
+		[[NSNotificationCenter defaultCenter] removeObserver:_keyboardObserver];
+	}
 }
 
-- (void)didMoveToSuperview
+- (void)willMoveToSuperview:(UIView *)newSuperview
 {
-	if (self.superview) { // 添加到父视图
+	if (newSuperview) {
+		if (self.keyboardObserver) {
+			[[NSNotificationCenter defaultCenter] removeObserver:self.keyboardObserver];
+		}
 
 		__weak typeof(self) weakSelf = self;
-
 		self.keyboardObserver =
 		[NSNotificationCenter lx_observeKeyboardFrameChangeWithBlock:^(NSNotification *note) {
-
-			__strong typeof(weakSelf) strongSelf = weakSelf;
+			__strong typeof(weakSelf) self = weakSelf;
 
 			CGRect keyboardEndFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 			CGFloat keyboardOriginY = CGRectGetMinY(keyboardEndFrame);
 			CGFloat keyboardHeight  = CGRectGetHeight(keyboardEndFrame);
 
-			/*
-			 如果主动注销响应者收回键盘，例如 endEditing: 或者 resignFirstResponder，
-			 keyboardOriginY 值为 keyboardHeight + LXScreenSize().height，而并非 LXScreenSize().height。
-			 这种情况下，如下算法会算出负数，出现约束歧义：
-				CGFloat constant = LXScreenSize().height - keyboardOriginY;
-				weakSelf.heightConstraint.constant = constant;
-			 */
 			CGFloat constant = (keyboardOriginY < [UIScreen lx_size].height) ? keyboardHeight : 0;
-			strongSelf.heightConstraint.constant = constant;
+			self.heightConstraint.constant = constant;
 
 			NSTimeInterval duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 			[UIView animateWithDuration:duration animations:^{
-				[strongSelf.superview layoutIfNeeded];
+				[self.superview layoutIfNeeded];
 			}];
 		}];
-
-	} else { // 从父视图移除
-		[[NSNotificationCenter defaultCenter] removeObserver:self.keyboardObserver];
 	}
 }
 
 @end
-
-NS_ASSUME_NONNULL_END
