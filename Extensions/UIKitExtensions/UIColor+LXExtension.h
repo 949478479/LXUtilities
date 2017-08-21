@@ -35,22 +35,22 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  根据十六进制颜色值创建 @c alpha 为 @c 1.0 的颜色。例如，传入 @c 0xFFFFFF 将创建白色。
  */
-+ (UIColor *)lx_colorWithHex:(uint)hex NS_SWIFT_NAME(init(hex:));
++ (UIColor *)lx_colorWithHexNumber:(uint)number NS_SWIFT_NAME(init(hexNumber:));
 
 /**
  *  根据十六进制颜色值和指定 @c alpha 创建颜色。例如，传入 @c 0xFFFFFF 将创建白色。
  */
-+ (UIColor *)lx_colorWithHex:(uint)hex alpha:(CGFloat)alpha NS_SWIFT_NAME(init(hex:alpha:));
++ (UIColor *)lx_colorWithHexNumber:(uint)number alpha:(CGFloat)alpha NS_SWIFT_NAME(init(hexNumber:alpha:));
 
 /**
  *  根据十六进制颜色值字符串创建 @c alpha 为 @c 1.0 的颜色。例如，传入 @c @"#FFFFFF" 或 @c @"FFFFFF" 将创建白色。
  */
-+ (UIColor *)lx_colorWithHexString:(NSString *)hexString NS_SWIFT_NAME(init(hexString:));
++ (UIColor *)lx_colorWithHexColorString:(NSString *)string NS_SWIFT_NAME(init(hexColorString:));
 
 /**
  *  根据十六进制颜色值字符串和指定 @c alpha 创建颜色。例如，传入 @c @"#FFFFFF" 或 @c @"FFFFFF" 将创建白色。
  */
-+ (UIColor *)lx_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha NS_SWIFT_NAME(init(hexString:alpha:));
++ (UIColor *)lx_colorWithHexColorString:(NSString *)string alpha:(CGFloat)alpha NS_SWIFT_NAME(init(hexColorString:alpha:));
 
 /**
  *  生成 @c alpha 为 @c 1.0 的随机色。

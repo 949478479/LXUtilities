@@ -15,69 +15,53 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIColor *)lx_colorWithRed:(CGFloat)red
                        green:(CGFloat)green
-                        blue:(CGFloat)blue
-{
+                        blue:(CGFloat)blue {
     return [self lx_colorWithRed:red green:green blue:blue alpha:1.0];
 }
 
 + (UIColor *)lx_colorWithRed:(CGFloat)red
                        green:(CGFloat)green
                         blue:(CGFloat)blue
-                       alpha:(CGFloat)alpha
-{
+                       alpha:(CGFloat)alpha {
     return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
 }
 
-+ (UIColor *)lx_colorWithHex:(uint)hex alpha:(CGFloat)alpha
-{
-    NSParameterAssert(hex >= 0x000000 && hex <= 0xFFFFFF);
-
-    return [self colorWithRed:(CGFloat)((hex >> 16) & 0xFF) / 0xFF
-                        green:(CGFloat)((hex >>  8) & 0xFF) / 0xFF
-                         blue:(CGFloat)((hex >>  0) & 0xFF) / 0xFF
++ (UIColor *)lx_colorWithHexNumber:(uint)num alpha:(CGFloat)alpha {
+    NSParameterAssert(num >= 0x000000 && num <= 0xFFFFFF);
+    return [self colorWithRed:(CGFloat)((num >> 16) & 0xFF) / 0xFF
+                        green:(CGFloat)((num >>  8) & 0xFF) / 0xFF
+                         blue:(CGFloat)((num >>  0) & 0xFF) / 0xFF
                         alpha:alpha];
 }
 
-+ (UIColor *)lx_colorWithHex:(uint)hex
-{
-    return [self lx_colorWithHex:hex alpha:1.0];
++ (UIColor *)lx_colorWithHexNumber:(uint)num {
+    return [self lx_colorWithHexNumber:num alpha:1.0];
 }
 
-+ (UIColor *)lx_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha
-{
-    if ([hexString hasPrefix:@"#"]) {
-        hexString = [hexString substringFromIndex:1];
++ (UIColor *)lx_colorWithHexColorString:(NSString *)string alpha:(CGFloat)alpha {
+	NSAssert([string rangeOfString:@"^#?[0-9A-Fa-f]{6}$"
+						options:NSRegularExpressionSearch].location != NSNotFound,
+			 @"颜色字符串格式必须为 #FFFFFF 或 FFFFFF，忽略大小写。");
+
+    if ([string hasPrefix:@"#"]) {
+        string = [string substringFromIndex:1];
     }
 
-    NSAssert([hexString rangeOfString:@"^[0-9A-Fa-f]{6}$"
-                              options:NSRegularExpressionSearch].location != NSNotFound,
-             @"参数 hexString 格式必须为 #FFFFFF 或 FFFFFF。");
+	int hex = 0;
+	sscanf(string.UTF8String, "%x", &hex);
 
-    NSString *redHexString   = [hexString substringToIndex:2];
-    NSString *greenHexString = [hexString substringWithRange:(NSRange){2,2}];
-    NSString *blueHexString  = [hexString substringFromIndex:4];
-
-    uint red = 0, green = 0, blue = 0;
-
-    [[NSScanner scannerWithString:redHexString]   scanHexInt:&red];
-    [[NSScanner scannerWithString:greenHexString] scanHexInt:&green];
-    [[NSScanner scannerWithString:blueHexString]  scanHexInt:&blue];
-
-    return [self colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
+	return [self lx_colorWithHexNumber:hex alpha:alpha];
 }
 
-+ (UIColor *)lx_colorWithHexString:(NSString *)hexString
-{
-    return [self lx_colorWithHexString:hexString alpha:1.0];
++ (UIColor *)lx_colorWithHexColorString:(NSString *)string {
+    return [self lx_colorWithHexColorString:string alpha:1.0];
 }
 
-+ (UIColor *)lx_randomColor
-{
++ (UIColor *)lx_randomColor {
     return [self lx_randomColorWithAlpha:1.0];
 }
 
-+ (UIColor *)lx_randomColorWithAlpha:(CGFloat)alpha
-{
++ (UIColor *)lx_randomColorWithAlpha:(CGFloat)alpha {
     return [self colorWithRed:arc4random_uniform(256)/255.0
                         green:arc4random_uniform(256)/255.0
                          blue:arc4random_uniform(256)/255.0
