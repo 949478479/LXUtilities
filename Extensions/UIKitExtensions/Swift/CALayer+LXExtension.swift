@@ -40,19 +40,16 @@ extension Swifty where Base: CALayer {
 		set {
 			guard newValue != paused else { return }
 			if newValue {
-				/* speed 设置为 0.0 将导致图层本地时间变为 0.0，而无论 beginTime 和 timeOffset 之前的值是多少，
-				将 timeOffset 设置为图层本地时间，就可以在 speed 设置为 0.0 后保持图层本地时间不变，
-				此时 speed 为 0.0，动画停止，且图层本地时间未变，因此动画会停止在原处。*/
-				base.timeOffset = base.convertTime(CACurrentMediaTime(), from: nil)
+				let pausedTime = base.convertTime(CACurrentMediaTime(), from: nil)
 				base.speed = 0
+				base.timeOffset = pausedTime
 			} else {
-				/* speed 设置为 1.0 后，图层本地时间会恢复正常。此时若将 timeOffset 重置为 0.0，即 timeOffset = 0.0，
-				图层本地时间将等于绝对时间 CACurrentMediaTime()。但是暂停的这段时间内图层本地时间并未增长，
-				应该减去这段时间，这个时间增量刚好是 CACurrentMediaTime() - timeOffset。若 beginTime 不为 0.0，
-				还应加上该值。因此最终结果为 timeOffset = 0 - (CACurrentMediaTime() - timeOffset) + beginTime。
-				这样图层的本地时间就会等于暂停前的值，此时 speed 恢复为 1.0，且图层本地时间未变，因此动画会从原处恢复。*/
-				base.speed = 1
-				base.timeOffset += base.beginTime - CACurrentMediaTime()
+				let pausedTime = base.timeOffset
+				base.speed = 1.0
+				base.timeOffset = 0.0
+				base.beginTime = 0.0
+				let timeSincePause = base.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+				base.beginTime = timeSincePause
 			}
 		}
 		get {
