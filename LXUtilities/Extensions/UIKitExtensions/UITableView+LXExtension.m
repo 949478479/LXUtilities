@@ -66,46 +66,46 @@
     }
 }
 
-void _lx_updateTableHeaderFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))
+void _lx_updateTableHeaderOrFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))
 {
-	UIView *headerFooterView = isHeader ? tableView.tableHeaderView : tableView.tableFooterView;
+	UIView *headerOrFooterView = isHeader ? tableView.tableHeaderView : tableView.tableFooterView;
 
-	// 添加宽度约束来从而构成完整的约束来计算头视图高度
-	headerFooterView.translatesAutoresizingMaskIntoConstraints = NO;
+	// 添加宽度约束来从而构成完整的约束来计算视图高度
+	headerOrFooterView.translatesAutoresizingMaskIntoConstraints = NO;
 	NSLayoutConstraint *widthConstraint =
-	[NSLayoutConstraint constraintWithItem:headerFooterView
+	[NSLayoutConstraint constraintWithItem:headerOrFooterView
 								 attribute:NSLayoutAttributeWidth
 								 relatedBy:NSLayoutRelationEqual
 									toItem:nil
 								 attribute:0
 								multiplier:1
 								  constant:tableView.lx_width];
-	[headerFooterView addConstraint:widthConstraint];
+	[headerOrFooterView addConstraint:widthConstraint];
 
 	// 让调用方有机会更新子视图约束
 	!configuration ?: configuration();
 
-	// 通过自动布局计算头视图高度，然后移除刚添加的约束
-	CGFloat height = [headerFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-	[headerFooterView removeConstraint:widthConstraint];
+	// 通过自动布局计算视图高度，然后移除刚添加的约束
+	CGFloat height = [headerOrFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+	[headerOrFooterView removeConstraint:widthConstraint];
 
 	// 回归传统 frame 布局后设置高度
-	headerFooterView.translatesAutoresizingMaskIntoConstraints = YES;
-	headerFooterView.lx_height = height;
+	headerOrFooterView.translatesAutoresizingMaskIntoConstraints = YES;
+	headerOrFooterView.lx_height = height;
 
 	if (isHeader) {
-		tableView.tableHeaderView = headerFooterView;
+		tableView.tableHeaderView = headerOrFooterView;
 	} else {
-		tableView.tableFooterView = headerFooterView;
+		tableView.tableFooterView = headerOrFooterView;
 	}
 }
 
 - (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^)(void))configuration {
-	_lx_updateTableHeaderFooterViewHeight(self, YES, configuration);
+	_lx_updateTableHeaderOrFooterViewHeight(self, YES, configuration);
 }
 
 - (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^)(void))configuration {
-    _lx_updateTableHeaderFooterViewHeight(self, NO, configuration);
+    _lx_updateTableHeaderOrFooterViewHeight(self, NO, configuration);
 }
 
 @end
