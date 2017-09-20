@@ -48,6 +48,8 @@
 #import "NSNotificationCenter+LXExtension.h"
 #import "NSManagedObjectModel+LXExtension.h"
 
+#import "LXAlertView.h"
+#import "LXSheetView.h"
 #import "LXWeakWrapper.h"
 #import "GCD+LXExtension.h"
 #import "LXDynamicTypeManager.h"
