@@ -17,6 +17,10 @@
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.4];
 
+        [self addGestureRecognizer:
+         [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                 action:@selector(_tapGestureHandler:)]];
+
         _alertView = [self alertView];
 		if (_alertView.translatesAutoresizingMaskIntoConstraints) {
 			_alertView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -78,6 +82,15 @@
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
+}
+
+- (void)_tapGestureHandler:(UITapGestureRecognizer *)gr {
+    CGPoint loation = [gr locationInView:_alertView];
+    if (![_alertView pointInside:loation withEvent:nil]) {
+        if (self.shouldDismissOnTouchOutside) {
+            [self dismiss];
+        }
+    }
 }
 
 @end

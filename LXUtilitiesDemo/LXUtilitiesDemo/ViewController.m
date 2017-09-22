@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "AlertView.h"
 
 @interface ViewController ()
 
@@ -16,9 +17,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a ni
 }
 
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+
+    [[AlertView new] show];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

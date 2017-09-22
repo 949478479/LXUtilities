@@ -18,10 +18,11 @@ extension Reusable {
 }
 
 extension UITableViewCell: Reusable {}
+extension UITableViewHeaderFooterView: Reusable {}
 
 extension UITableView {
 
-	func registerReusableCell<T: UITableViewCell>(_: T.Type) where T: Reusable {
+	func registerReusableCell<T: UITableViewCell>(_: T.Type) {
 		if let nib = T.nib {
 			register(nib, forCellReuseIdentifier: T.reuseIdentifier)
 		} else {
@@ -30,11 +31,11 @@ extension UITableView {
 	}
 
 	// e.g. tableView.dequeueReusableCell(for: indexPath) as CustomCell
-	func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T where T: Reusable {
+	func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
 		return dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
 	}
 
-	func registerReusableHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) where T: Reusable {
+	func registerReusableHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) {
 		if let nib = T.nib {
 			register(nib, forHeaderFooterViewReuseIdentifier: T.reuseIdentifier)
 		} else {
@@ -42,7 +43,7 @@ extension UITableView {
 		}
 	}
 
-	func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T? where T: Reusable {
+	func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T? {
 		return dequeueReusableHeaderFooterView(withIdentifier: T.reuseIdentifier) as! T?
 	}
 }

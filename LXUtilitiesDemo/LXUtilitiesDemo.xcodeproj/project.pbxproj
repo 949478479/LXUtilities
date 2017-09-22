@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		304D10131F739F07004AEEEE /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 304D10121F739F07004AEEEE /* AlertView.m */; };
+		304D10151F739F26004AEEEE /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304D10141F739F26004AEEEE /* AlertView.xib */; };
 		3069F9E51F71F46300C36F2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E41F71F46300C36F2F /* main.m */; };
 		3069F9E81F71F46300C36F2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E71F71F46300C36F2F /* AppDelegate.m */; };
 		3069F9EB1F71F46300C36F2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9EA1F71F46300C36F2F /* ViewController.m */; };
@@ -85,6 +87,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		304D10111F739F07004AEEEE /* AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView.h; sourceTree = "<group>"; };
+		304D10121F739F07004AEEEE /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
+		304D10141F739F26004AEEEE /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
 		3069F9E01F71F46300C36F2F /* LXUtilitiesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXUtilitiesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3069F9E41F71F46300C36F2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3069F9E61F71F46300C36F2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -256,6 +261,9 @@
 			isa = PBXGroup;
 			children = (
 				3069F9E61F71F46300C36F2F /* AppDelegate.h */,
+				304D10111F739F07004AEEEE /* AlertView.h */,
+				304D10121F739F07004AEEEE /* AlertView.m */,
+				304D10141F739F26004AEEEE /* AlertView.xib */,
 				3069F9E71F71F46300C36F2F /* AppDelegate.m */,
 				3069F9E91F71F46300C36F2F /* ViewController.h */,
 				3069F9EA1F71F46300C36F2F /* ViewController.m */,
@@ -281,12 +289,12 @@
 			children = (
 				3069FC5C1F71F5FA00C36F2F /* Components */,
 				3069FC731F71F5FA00C36F2F /* FoundationExtensions */,
+				3069FC991F71F5FA00C36F2F /* MBProgressHUDExtensions */,
+				3069FC9F1F71F5FA00C36F2F /* UIKitExtensions */,
 				3069FC951F71F5FA00C36F2F /* LXMacro.h */,
 				3069FC961F71F5FA00C36F2F /* LXUtilities.h */,
 				3069FC971F71F5FA00C36F2F /* LXUtilities.m */,
 				3069FC981F71F5FA00C36F2F /* LXUtilities.swift */,
-				3069FC991F71F5FA00C36F2F /* MBProgressHUDExtensions */,
-				3069FC9F1F71F5FA00C36F2F /* UIKitExtensions */,
 			);
 			name = LXUtilities;
 			path = ../LXUtilities;
@@ -534,6 +542,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3069F9F31F71F46300C36F2F /* LaunchScreen.storyboard in Resources */,
+				304D10151F739F26004AEEEE /* AlertView.xib in Resources */,
 				3069F9F01F71F46300C36F2F /* Assets.xcassets in Resources */,
 				3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */,
 				3069FD021F71F5FA00C36F2F /* MBProgressHUD+LXExtension.xcassets in Resources */,
@@ -580,6 +589,7 @@
 				3069FD1C1F71F5FA00C36F2F /* UINavigationController+LXExtension.m in Sources */,
 				3069FD211F71F5FA00C36F2F /* UITableView+LXExtension.m in Sources */,
 				3069FD031F71F5FA00C36F2F /* CALayer+LXExtension.m in Sources */,
+				304D10131F739F07004AEEEE /* AlertView.m in Sources */,
 				3069FD281F71F5FA00C36F2F /* WKWebView+LXExtension.m in Sources */,
 				3069FCF31F71F5FA00C36F2F /* NSData+LXExtension.m in Sources */,
 				3069F9E51F71F46300C36F2F /* main.m in Sources */,

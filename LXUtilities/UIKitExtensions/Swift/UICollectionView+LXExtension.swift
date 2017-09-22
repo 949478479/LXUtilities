@@ -7,11 +7,11 @@
 
 import UIKit
 
-extension UICollectionViewCell: Reusable {}
+extension UICollectionReusableView: Reusable {}
 
 extension UICollectionView {
 
-	func registerReusableCell<T: UICollectionViewCell>(_: T.Type) where T: Reusable {
+	func registerReusableCell<T: UICollectionViewCell>(_: T.Type) {
 		if let nib = T.nib {
 			register(nib, forCellWithReuseIdentifier: T.reuseIdentifier)
 		} else {
@@ -20,11 +20,11 @@ extension UICollectionView {
 	}
 
 	// e.g. collectionView.dequeueReusableCell(for: index) as CustomCell
-	func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T where T: Reusable {
+	func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
 		return dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
 	}
 
-	func registerReusableSupplementaryView<T: Reusable>(_: T.Type, ofKind elementKind: String) {
+	func registerReusableSupplementaryView<T: UICollectionReusableView>(_: T.Type, ofKind elementKind: String) {
 		if let nib = T.nib {
 			register(nib, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
 		} else {
@@ -32,7 +32,7 @@ extension UICollectionView {
 		}
 	}
 
-	func dequeueReusableSupplementaryView<T: UICollectionViewCell>(ofKind elementKind: String, for indexPath: IndexPath) -> T where T: Reusable {
+	func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind elementKind: String, for indexPath: IndexPath) -> T {
 		return dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
 	}
 }

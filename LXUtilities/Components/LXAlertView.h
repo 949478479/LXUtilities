@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXAlertView : UIView
 
+/// 是否允许点击蒙版 dismiss，默认 NO
+@property (nonatomic) BOOL shouldDismissOnTouchOutside;
+
 /// 子类返回自定义视图。
 - (UIView *)alertView;
 
