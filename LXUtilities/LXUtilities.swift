@@ -31,19 +31,6 @@ extension SwiftyProtocol {
 
 extension NSObject: SwiftyProtocol {}
 
-func printLog(_ log: String, file: String = #file, line: Int = #line, function: String = #function) {
-	#if DEBUG
-		print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log)
-	#endif
-}
-
-func value(from object: Any, forKey key: String) -> Any? {
-	for case let (label?, value) in Mirror(reflecting: object).children.lazy where label == key {
-		return value
-	}
-	return nil
-}
-
 extension Swifty where Base: AnyObject {
 
 	func synchronized(_ action: () -> Void) {
@@ -51,4 +38,24 @@ extension Swifty where Base: AnyObject {
 		action()
 		objc_sync_exit(base)
 	}
+}
+
+extension Int: SwiftyProtocol {}
+extension Swifty where Base == Int {
+    var CGFloatValue: CGFloat {
+        return CGFloat(base)
+    }
+}
+
+func printLog(_ log: String, file: String = #file, line: Int = #line, function: String = #function) {
+    #if DEBUG
+        print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log)
+    #endif
+}
+
+func value(from object: Any, forKey key: String) -> Any? {
+    for case let (label?, value) in Mirror(reflecting: object).children.lazy where label == key {
+        return value
+    }
+    return nil
 }

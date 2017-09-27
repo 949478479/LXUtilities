@@ -18,11 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 实例化方法
 
 /// 用控制器类名作为标识符实例化指定故事板中的控制器
-+ (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName;
++ (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName
+NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方法替代。");
 
 /// 实例化指定故事板中的指定控制器，若不指定标识符，则使用控制器类名作为标识符
-+ (__kindof instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-                                               identifier:(nullable NSString *)identifier;
++ (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName
+                                                     identifier:(nullable NSString *)identifier
+NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方法替代。");
 
 
 #pragma mark - 获取各种 bar
@@ -38,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, readonly) __kindof UIToolbar *lx_toolBar;
 
 /// 控制器所属 `UINavigationController` 的 `navigationBar`。
-@property (nullable, nonatomic, readonly) __kindof UINavigationBar *lx_navigationBar;
+@property (nullable, nonatomic, readonly) __kindof UINavigationBar *lx_navigationBar NS_SWIFT_UNAVAILABLE("使用 lx.navigationBar 属性替代。");
 
 
 #pragma mark - 获取相关的视图控制器

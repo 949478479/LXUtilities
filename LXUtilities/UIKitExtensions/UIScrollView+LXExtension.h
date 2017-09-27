@@ -15,8 +15,8 @@
 - (BOOL)lx_atBottom;
 
 /// 滚动到顶部
-- (void)lx_scrollToTop:(BOOL)animated;
+- (void)lx_scrollToTopAnimated:(BOOL)animated;
 /// 滚动到底部
-- (void)lx_scrollToBottom:(BOOL)animated;
+- (void)lx_scrollToBottomAnimated:(BOOL)animated;
 
 @end

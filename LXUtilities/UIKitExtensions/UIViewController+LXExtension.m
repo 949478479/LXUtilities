@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 实例化
 
-+ (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName {
++ (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName {
     return [self lx_instantiateWithStoryboardName:storyboardName identifier:nil];
 }
 
-+ (instancetype)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-                                      identifier:(nullable NSString *)identifier
++ (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName
+                                                     identifier:(nullable NSString *)identifier
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
 

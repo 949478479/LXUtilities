@@ -9,8 +9,7 @@
 
 @implementation UIScrollView (LXExtension)
 
-- (BOOL)lx_atTop
-{
+- (BOOL)lx_atTop {
     return self.contentOffset.y + self.contentInset.top <= 0;
 }
 
@@ -29,13 +28,11 @@
     return NO;
 }
 
-- (void)lx_scrollToTop:(BOOL)animated
-{
+- (void)lx_scrollToTopAnimated:(BOOL)animated {
     [self scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:animated];
 }
 
-- (void)lx_scrollToBottom:(BOOL)animated
-{
+- (void)lx_scrollToBottomAnimated:(BOOL)animated {
     [self scrollRectToVisible:CGRectMake(0, self.contentSize.height - 1, 1, 1) animated:animated];
 }
 

@@ -9,30 +9,30 @@ import UIKit
 
 extension UICollectionReusableView: Reusable {}
 
-extension UICollectionView {
+extension Swifty where Base: UICollectionView {
 
-	func registerReusableCell<T: UICollectionViewCell>(_: T.Type) {
-		if let nib = T.nib {
-			register(nib, forCellWithReuseIdentifier: T.reuseIdentifier)
-		} else {
-			register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
-		}
-	}
+    func registerReusableCell<T: UICollectionViewCell>(_: T.Type) {
+        if let nib = T.nib {
+            base.register(nib, forCellWithReuseIdentifier: T.reuseIdentifier)
+        } else {
+            base.register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
+        }
+    }
 
-	// e.g. collectionView.dequeueReusableCell(for: index) as CustomCell
-	func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
-		return dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
-	}
+    // e.g. collectionView.dequeueReusableCell(for: index) as CustomCell
+    func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
+        return base.dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
+    }
 
-	func registerReusableSupplementaryView<T: UICollectionReusableView>(_: T.Type, ofKind elementKind: String) {
-		if let nib = T.nib {
-			register(nib, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
-		} else {
-			register(T.self, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
-		}
-	}
+    func registerReusableSupplementaryView<T: UICollectionReusableView>(_: T.Type, ofKind elementKind: String) {
+        if let nib = T.nib {
+            base.register(nib, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
+        } else {
+            base.register(T.self, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
+        }
+    }
 
-	func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind elementKind: String, for indexPath: IndexPath) -> T {
-		return dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
-	}
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind elementKind: String, for indexPath: IndexPath) -> T {
+        return base.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
+    }
 }
