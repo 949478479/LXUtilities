@@ -68,7 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view
 {
-    NSParameterAssert(view);
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view ?: [UIWindow lx_topWindow] animated:YES];
     hud.label.text = status;
     return hud;
@@ -103,6 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)lx_hideHUDForWindowAnimated:(BOOL)animated {
     [self hideHUDForView:[UIWindow lx_topWindow] animated:animated];
+}
+
+- (void)lx_hideAnimated:(BOOL)animated afterDelay:(NSTimeInterval)delay {
+    NSTimer *timer = [self valueForKey:@"hideDelayTimer"];
+    if (timer) {
+        [timer invalidate];
+    }
+    [self hideAnimated:animated afterDelay:delay];
 }
 
 @end

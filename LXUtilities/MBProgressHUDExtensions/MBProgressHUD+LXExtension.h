@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)lx_hideHUDForWindow;
 /// 隐藏窗口上的 HUD
 + (void)lx_hideHUDForWindowAnimated:(BOOL)animated;
+/// 延迟隐藏 HUD
+- (void)lx_hideAnimated:(BOOL)animated afterDelay:(NSTimeInterval)delay;
 
 @end
 
