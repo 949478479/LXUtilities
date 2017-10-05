@@ -5,7 +5,7 @@
 //  Copyright © 2016年 从今以后. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Swifty<Base> {
 	let base: Base
@@ -45,6 +45,13 @@ extension Swifty where Base == Int {
     var CGFloatValue: CGFloat {
         return CGFloat(base)
     }
+}
+
+extension Double: SwiftyProtocol {}
+extension Swifty where Base == Double {
+	var CGFloatValue: CGFloat {
+		return CGFloat(base)
+	}
 }
 
 func printLog(_ log: String, file: String = #file, line: Int = #line, function: String = #function) {

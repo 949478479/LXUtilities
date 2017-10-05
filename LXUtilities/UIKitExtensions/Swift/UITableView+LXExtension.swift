@@ -43,7 +43,36 @@ extension Swifty where Base: UITableView {
         }
     }
 
-    func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T? {
-        return base.dequeueReusableHeaderFooterView(withIdentifier: T.reuseIdentifier) as! T?
+    func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T {
+        return base.dequeueReusableHeaderFooterView(withIdentifier: T.reuseIdentifier) as! T
+    }
+}
+
+extension Swifty where Base: UITableView {
+
+    func updateTableHeaderViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
+        let headerView = base.tableHeaderView!
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.frame.width)
+        widthConstraint.isActive = true
+        configuration?()
+        let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        widthConstraint.isActive = false
+        headerView.translatesAutoresizingMaskIntoConstraints = true
+        headerView.frame.size.height = height
+        base.tableHeaderView = headerView
+    }
+
+    func updateTableFooterViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
+        let footerView = base.tableFooterView!
+        footerView.translatesAutoresizingMaskIntoConstraints = false
+        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.frame.width)
+        widthConstraint.isActive = true
+        configuration?()
+        let height = footerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        widthConstraint.isActive = false
+        footerView.translatesAutoresizingMaskIntoConstraints = true
+        footerView.frame.size.height = height
+        base.tableHeaderView = footerView
     }
 }
