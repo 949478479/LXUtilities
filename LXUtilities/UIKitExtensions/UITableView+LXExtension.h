@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)lx_selectRowAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated;
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration;
+- (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("使用 lx.updateTableHeaderViewHeight(withLayoutConfiguration:) 替代.");
 /// 根据自动布局更新 tableFooterView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration;
+- (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("使用 lx.updateTableFooterViewHeight(withLayoutConfiguration:) 替代.");
 
 @end
 

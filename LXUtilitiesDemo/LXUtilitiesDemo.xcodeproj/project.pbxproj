@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		304D10131F739F07004AEEEE /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 304D10121F739F07004AEEEE /* AlertView.m */; };
-		304D10151F739F26004AEEEE /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304D10141F739F26004AEEEE /* AlertView.xib */; };
+		302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */; };
+		30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */; };
 		3069F9E51F71F46300C36F2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E41F71F46300C36F2F /* main.m */; };
 		3069F9E81F71F46300C36F2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E71F71F46300C36F2F /* AppDelegate.m */; };
-		3069F9EB1F71F46300C36F2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9EA1F71F46300C36F2F /* ViewController.m */; };
 		3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3069F9EC1F71F46300C36F2F /* Main.storyboard */; };
 		3069F9F01F71F46300C36F2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3069F9EF1F71F46300C36F2F /* Assets.xcassets */; };
 		3069F9F31F71F46300C36F2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3069F9F11F71F46300C36F2F /* LaunchScreen.storyboard */; };
@@ -84,18 +83,16 @@
 		3069FD261F71F5FA00C36F2F /* UIWebView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCDE1F71F5FA00C36F2F /* UIWebView+LXExtension.m */; };
 		3069FD271F71F5FA00C36F2F /* UIWindow+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE01F71F5FA00C36F2F /* UIWindow+LXExtension.m */; };
 		3069FD281F71F5FA00C36F2F /* WKWebView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */; };
+		30A4A58A1F7E4AF700E549B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A4A5891F7E4AF700E549B0 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		304D10111F739F07004AEEEE /* AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView.h; sourceTree = "<group>"; };
-		304D10121F739F07004AEEEE /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
-		304D10141F739F26004AEEEE /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
+		302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+LXExtension.swift"; sourceTree = "<group>"; };
+		30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dispatch+LXExtension.swift"; sourceTree = "<group>"; };
 		3069F9E01F71F46300C36F2F /* LXUtilitiesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXUtilitiesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3069F9E41F71F46300C36F2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3069F9E61F71F46300C36F2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3069F9E71F71F46300C36F2F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3069F9E91F71F46300C36F2F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		3069F9EA1F71F46300C36F2F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		3069F9ED1F71F46300C36F2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3069F9EF1F71F46300C36F2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3069F9F21F71F46300C36F2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -227,6 +224,8 @@
 		3069FCE01F71F5FA00C36F2F /* UIWindow+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LXExtension.m"; sourceTree = "<group>"; };
 		3069FCE11F71F5FA00C36F2F /* WKWebView+LXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+LXExtension.h"; sourceTree = "<group>"; };
 		3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+LXExtension.m"; sourceTree = "<group>"; };
+		30A4A5891F7E4AF700E549B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		30A4A58B1F7E4B3F00E549B0 /* Header-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Header-Bridge.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,12 +260,9 @@
 			isa = PBXGroup;
 			children = (
 				3069F9E61F71F46300C36F2F /* AppDelegate.h */,
-				304D10111F739F07004AEEEE /* AlertView.h */,
-				304D10121F739F07004AEEEE /* AlertView.m */,
-				304D10141F739F26004AEEEE /* AlertView.xib */,
 				3069F9E71F71F46300C36F2F /* AppDelegate.m */,
-				3069F9E91F71F46300C36F2F /* ViewController.h */,
-				3069F9EA1F71F46300C36F2F /* ViewController.m */,
+				30A4A5891F7E4AF700E549B0 /* ViewController.swift */,
+				30A4A58B1F7E4B3F00E549B0 /* Header-Bridge.h */,
 				3069F9EC1F71F46300C36F2F /* Main.storyboard */,
 				3069F9EF1F71F46300C36F2F /* Assets.xcassets */,
 				3069F9F11F71F46300C36F2F /* LaunchScreen.storyboard */,
@@ -378,6 +374,7 @@
 		3069FC931F71F5FA00C36F2F /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */,
 				3069FC941F71F5FA00C36F2F /* NSAttributedString+LXExtension.swift */,
 			);
 			path = Swift;
@@ -458,6 +455,7 @@
 		3069FCA71F71F5FA00C36F2F /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */,
 				3069FCA81F71F5FA00C36F2F /* CAAnimation+LXExtension.swift */,
 				3069FCA91F71F5FA00C36F2F /* CALayer+LXExtension.swift */,
 				3069FCAA1F71F5FA00C36F2F /* CATransaction+LXExtension.swift */,
@@ -543,7 +541,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3069F9F31F71F46300C36F2F /* LaunchScreen.storyboard in Resources */,
-				304D10151F739F26004AEEEE /* AlertView.xib in Resources */,
 				3069F9F01F71F46300C36F2F /* Assets.xcassets in Resources */,
 				3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */,
 				3069FD021F71F5FA00C36F2F /* MBProgressHUD+LXExtension.xcassets in Resources */,
@@ -565,16 +562,17 @@
 				3069FCF11F71F5FA00C36F2F /* NSAttributedString+LXExtension.m in Sources */,
 				3069FCEA1F71F5FA00C36F2F /* LXMulticastDelegate.m in Sources */,
 				3069FD171F71F5FA00C36F2F /* UIColor+LXExtension.m in Sources */,
+				30A4A58A1F7E4AF700E549B0 /* ViewController.swift in Sources */,
 				3069FD201F71F5FA00C36F2F /* UIStoryboard+LXExtension.m in Sources */,
 				3069FCEE1F71F5FA00C36F2F /* GCD+LXExtension.m in Sources */,
 				3069FCE91F71F5FA00C36F2F /* LXMigrationManager.m in Sources */,
 				3069FD141F71F5FA00C36F2F /* UIButton+LXExtension.m in Sources */,
 				3069FCFD1F71F5FA00C36F2F /* NSAttributedString+LXExtension.swift in Sources */,
+				302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */,
 				3069FD121F71F5FA00C36F2F /* UIApplication+LXExtension.m in Sources */,
 				3069FCF61F71F5FA00C36F2F /* NSFileManager+LXExtension.m in Sources */,
 				3069FD111F71F5FA00C36F2F /* UIWindow+LXExtension.swift in Sources */,
 				3069FCF91F71F5FA00C36F2F /* NSObject+LXExtension.m in Sources */,
-				3069F9EB1F71F46300C36F2F /* ViewController.m in Sources */,
 				3069FD0B1F71F5FA00C36F2F /* CGGeometry+LXExtension.swift in Sources */,
 				3069FCE61F71F5FA00C36F2F /* LXImagePicker.m in Sources */,
 				3069FD0E1F71F5FA00C36F2F /* UITableView+LXExtension.swift in Sources */,
@@ -590,7 +588,6 @@
 				3069FD1C1F71F5FA00C36F2F /* UINavigationController+LXExtension.m in Sources */,
 				3069FD211F71F5FA00C36F2F /* UITableView+LXExtension.m in Sources */,
 				3069FD031F71F5FA00C36F2F /* CALayer+LXExtension.m in Sources */,
-				304D10131F739F07004AEEEE /* AlertView.m in Sources */,
 				3069FD281F71F5FA00C36F2F /* WKWebView+LXExtension.m in Sources */,
 				3069FCF31F71F5FA00C36F2F /* NSData+LXExtension.m in Sources */,
 				3069F9E51F71F46300C36F2F /* main.m in Sources */,
@@ -615,6 +612,7 @@
 				3069FD071F71F5FA00C36F2F /* CALayer+LXExtension.swift in Sources */,
 				3069FCFA1F71F5FA00C36F2F /* NSString+LXExtension.m in Sources */,
 				3069FD091F71F5FA00C36F2F /* CATransform3D+LXExtension.swift in Sources */,
+				30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */,
 				3069FD261F71F5FA00C36F2F /* UIWebView+LXExtension.m in Sources */,
 				3069FCE41F71F5FA00C36F2F /* LXCoreDataController.m in Sources */,
 				3069FCEF1F71F5FA00C36F2F /* NSObject+LXIntrospection.m in Sources */,
@@ -767,6 +765,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hereafter.LXUtilitiesDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LXUtilitiesDemo/Header-Bridge.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
@@ -782,6 +781,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hereafter.LXUtilitiesDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LXUtilitiesDemo/Header-Bridge.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};

@@ -8,21 +8,18 @@
 import UIKit
 
 protocol Reusable: class {
-	static var reuseIdentifier: String { get }
-	static var nib: UINib? { get }
+    static var reuseIdentifier: String { get }
+    static var nib: UINib? { get }
 }
 
 extension Reusable {
-	static var reuseIdentifier: String { return String(describing: Self.self) }
-	static var nib: UINib? { return nil }
+    static var reuseIdentifier: String { return String(describing: Self.self) }
+    static var nib: UINib? { return nil }
 }
-
-extension UITableViewCell: Reusable {}
-extension UITableViewHeaderFooterView: Reusable {}
 
 extension Swifty where Base: UITableView {
 
-    func registerReusableCell<T: UITableViewCell>(_: T.Type) {
+    func registerReusableCell<T: UITableViewCell>(_: T.Type) where T: Reusable {
         if let nib = T.nib {
             base.register(nib, forCellReuseIdentifier: T.reuseIdentifier)
         } else {
@@ -31,11 +28,11 @@ extension Swifty where Base: UITableView {
     }
 
     // e.g. tableView.dequeueReusableCell(for: indexPath) as CustomCell
-    func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
+    func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T where T: Reusable {
         return base.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 
-    func registerReusableHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) {
+    func registerReusableHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) where T: Reusable {
         if let nib = T.nib {
             base.register(nib, forHeaderFooterViewReuseIdentifier: T.reuseIdentifier)
         } else {
@@ -43,7 +40,7 @@ extension Swifty where Base: UITableView {
         }
     }
 
-    func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T {
+    func dequeueReusableHeaderFooterView<T: UITableViewHeaderFooterView>() -> T where T: Reusable {
         return base.dequeueReusableHeaderFooterView(withIdentifier: T.reuseIdentifier) as! T
     }
 }
@@ -53,26 +50,26 @@ extension Swifty where Base: UITableView {
     func updateTableHeaderViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let headerView = base.tableHeaderView!
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.frame.width)
+        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.bounds.width)
         widthConstraint.isActive = true
         configuration?()
         let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         headerView.translatesAutoresizingMaskIntoConstraints = true
-        headerView.frame.size.height = height
+        headerView.bounds.size.height = height
         base.tableHeaderView = headerView
     }
 
     func updateTableFooterViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let footerView = base.tableFooterView!
         footerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.frame.width)
+        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.bounds.width)
         widthConstraint.isActive = true
         configuration?()
         let height = footerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         footerView.translatesAutoresizingMaskIntoConstraints = true
-        footerView.frame.size.height = height
+        footerView.bounds.size.height = height
         base.tableHeaderView = footerView
     }
 }
