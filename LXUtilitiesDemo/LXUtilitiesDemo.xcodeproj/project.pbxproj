@@ -84,6 +84,8 @@
 		3069FD271F71F5FA00C36F2F /* UIWindow+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE01F71F5FA00C36F2F /* UIWindow+LXExtension.m */; };
 		3069FD281F71F5FA00C36F2F /* WKWebView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */; };
 		30A4A58A1F7E4AF700E549B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A4A5891F7E4AF700E549B0 /* ViewController.swift */; };
+		3E50EA521F8A27C90093CD5C /* UIScreen+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */; };
+		3E9351551F88E110000121E0 /* UIDevice+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9351541F88E110000121E0 /* UIDevice+LXExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -226,6 +228,8 @@
 		3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+LXExtension.m"; sourceTree = "<group>"; };
 		30A4A5891F7E4AF700E549B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		30A4A58B1F7E4B3F00E549B0 /* Header-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Header-Bridge.h"; sourceTree = "<group>"; };
+		3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+LXExtension.swift"; sourceTree = "<group>"; };
+		3E9351541F88E110000121E0 /* UIDevice+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+LXExtension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -456,6 +460,8 @@
 			isa = PBXGroup;
 			children = (
 				302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */,
+				3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */,
+				3E9351541F88E110000121E0 /* UIDevice+LXExtension.swift */,
 				3069FCA81F71F5FA00C36F2F /* CAAnimation+LXExtension.swift */,
 				3069FCA91F71F5FA00C36F2F /* CALayer+LXExtension.swift */,
 				3069FCAA1F71F5FA00C36F2F /* CATransaction+LXExtension.swift */,
@@ -610,6 +616,7 @@
 				3069FD1B1F71F5FA00C36F2F /* UILabel+LXExtension.m in Sources */,
 				3069FCF71F71F5FA00C36F2F /* NSManagedObjectModel+LXExtension.m in Sources */,
 				3069FD071F71F5FA00C36F2F /* CALayer+LXExtension.swift in Sources */,
+				3E50EA521F8A27C90093CD5C /* UIScreen+LXExtension.swift in Sources */,
 				3069FCFA1F71F5FA00C36F2F /* NSString+LXExtension.m in Sources */,
 				3069FD091F71F5FA00C36F2F /* CATransform3D+LXExtension.swift in Sources */,
 				30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */,
