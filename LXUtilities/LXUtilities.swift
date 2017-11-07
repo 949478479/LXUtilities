@@ -57,7 +57,7 @@ func / (lhs: CGFloat, rhs: Int) -> CGFloat {
 
 // MARK: - 扩展包装
 
-struct Swifty<Base> {
+final class Swifty<Base> {
     let base: Base
     init(_ base: Base) {
         self.base = base
@@ -65,9 +65,9 @@ struct Swifty<Base> {
 }
 
 protocol SwiftyProtocol {
-    associatedtype CompatibleType
-    var lx: Swifty<CompatibleType> { get }
-    static var lx: Swifty<CompatibleType>.Type { get }
+    associatedtype LXCompatibleType
+    var lx: Swifty<LXCompatibleType> { get }
+    static var lx: Swifty<LXCompatibleType>.Type { get }
 }
 
 extension SwiftyProtocol {
@@ -105,7 +105,7 @@ extension Swifty where Base == Int {
 
 extension Double: SwiftyProtocol {}
 extension Swifty where Base == Double {
-	var CGFloatValue: CGFloat {
-		return CGFloat(base)
-	}
+    var CGFloatValue: CGFloat {
+        return CGFloat(base)
+    }
 }

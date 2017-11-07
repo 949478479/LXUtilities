@@ -18,3 +18,21 @@ extension Swifty where Base: UIView {
 		return view
 	}
 }
+
+extension Swifty where Base: UIView {
+
+    var width: CGFloat {
+        set { base.frame.size.width = newValue }
+        get { return base.frame.width }
+    }
+
+    var height: CGFloat {
+        set { base.frame.size.height = newValue }
+        get { return base.frame.height }
+    }
+
+    var centerX: CGFloat {
+        set { base.center.x = newValue }
+        get { return base.center.x }
+    }
+}

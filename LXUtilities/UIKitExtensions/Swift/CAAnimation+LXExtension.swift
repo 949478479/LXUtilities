@@ -7,7 +7,7 @@
 
 import QuartzCore
 
-extension CAMediaTimingFunction {
+@nonobjc extension CAMediaTimingFunction {
 	static let linear = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
 	static let easeIn = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
 	static let easeOut = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)

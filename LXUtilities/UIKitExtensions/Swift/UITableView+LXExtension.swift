@@ -50,26 +50,84 @@ extension Swifty where Base: UITableView {
     func updateTableHeaderViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let headerView = base.tableHeaderView!
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.bounds.width)
+        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.lx_width)
         widthConstraint.isActive = true
         configuration?()
         let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         headerView.translatesAutoresizingMaskIntoConstraints = true
-        headerView.bounds.size.height = height
+        headerView.lx_height = height
         base.tableHeaderView = headerView
     }
 
     func updateTableFooterViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let footerView = base.tableFooterView!
         footerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.bounds.width)
+        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.lx_width)
         widthConstraint.isActive = true
         configuration?()
         let height = footerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         footerView.translatesAutoresizingMaskIntoConstraints = true
-        footerView.bounds.size.height = height
+        footerView.lx_height = height
         base.tableHeaderView = footerView
+    }
+}
+
+extension Swifty where Base: UITableView {
+
+    func indexPathsInSection(_ section: Int) -> [IndexPath] {
+        return (0..<base.numberOfRows(inSection: section)).map { IndexPath(row: $0, section: section) }
+    }
+
+    func indexPaths() -> [IndexPath] {
+        return (0..<base.numberOfSections).flatMap { (section) -> [IndexPath] in
+            (0..<base.numberOfRows(inSection: section)).map { (row) in
+                IndexPath(row: row, section: section)
+            }
+        }
+    }
+    
+    func indexPathsForSelectedRowsInSection(_ section: Int) -> [IndexPath]? {
+        return base.indexPathsForSelectedRows?.filter { $0.section == section }
+    }
+}
+
+extension Swifty where Base: UITableView {
+
+    func selectRows(at indexPaths: [IndexPath], animated: Bool) {
+        base.beginUpdates()
+        indexPaths.forEach { base.selectRow(at: $0, animated: animated, scrollPosition: .none) }
+        base.endUpdates()
+    }
+
+    func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
+        base.beginUpdates()
+        indexPaths.forEach { base.deselectRow(at: $0, animated: animated) }
+        base.endUpdates()
+    }
+
+    func selectRows(inSection section: Int, animated: Bool) {
+        selectRows(at: indexPathsInSection(section), animated: animated)
+    }
+
+    func deselectRows(inSection section: Int, animated: Bool) {
+        deselectRows(at: indexPathsInSection(section), animated: animated)
+    }
+
+    func selectAllRows() {
+        base.beginUpdates()
+        indexPaths().forEach {
+            base.selectRow(at: $0, animated: false, scrollPosition: .none)
+        }
+        base.endUpdates()
+    }
+
+    func deselectAllRows() {
+        base.beginUpdates()
+        indexPaths().forEach {
+            base.deselectRow(at: $0, animated: false)
+        }
+        base.endUpdates()
     }
 }

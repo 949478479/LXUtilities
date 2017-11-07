@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */; };
 		30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */; };
+		3033DC3C1F9D97EF000802FE /* UIButton+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */; };
+		3033DC401F9E11FF000802FE /* UIScrollView+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */; };
 		3069F9E51F71F46300C36F2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E41F71F46300C36F2F /* main.m */; };
 		3069F9E81F71F46300C36F2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E71F71F46300C36F2F /* AppDelegate.m */; };
 		3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3069F9EC1F71F46300C36F2F /* Main.storyboard */; };
@@ -91,6 +93,8 @@
 /* Begin PBXFileReference section */
 		302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+LXExtension.swift"; sourceTree = "<group>"; };
 		30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dispatch+LXExtension.swift"; sourceTree = "<group>"; };
+		3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+LXExtension.swift"; sourceTree = "<group>"; };
+		3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+LXExtension.swift"; sourceTree = "<group>"; };
 		3069F9E01F71F46300C36F2F /* LXUtilitiesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXUtilitiesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3069F9E41F71F46300C36F2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3069F9E61F71F46300C36F2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -459,6 +463,7 @@
 		3069FCA71F71F5FA00C36F2F /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */,
 				302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */,
 				3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */,
 				3E9351541F88E110000121E0 /* UIDevice+LXExtension.swift */,
@@ -474,6 +479,7 @@
 				3069FCB11F71F5FA00C36F2F /* UIView+LXExtension.swift */,
 				3069FCB21F71F5FA00C36F2F /* UIViewController+LXExtension.swift */,
 				3069FCB31F71F5FA00C36F2F /* UIWindow+LXExtension.swift */,
+				3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -573,6 +579,7 @@
 				3069FCEE1F71F5FA00C36F2F /* GCD+LXExtension.m in Sources */,
 				3069FCE91F71F5FA00C36F2F /* LXMigrationManager.m in Sources */,
 				3069FD141F71F5FA00C36F2F /* UIButton+LXExtension.m in Sources */,
+				3033DC3C1F9D97EF000802FE /* UIButton+LXExtension.swift in Sources */,
 				3069FCFD1F71F5FA00C36F2F /* NSAttributedString+LXExtension.swift in Sources */,
 				302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */,
 				3069FD121F71F5FA00C36F2F /* UIApplication+LXExtension.m in Sources */,
@@ -580,6 +587,7 @@
 				3069FD111F71F5FA00C36F2F /* UIWindow+LXExtension.swift in Sources */,
 				3069FCF91F71F5FA00C36F2F /* NSObject+LXExtension.m in Sources */,
 				3069FD0B1F71F5FA00C36F2F /* CGGeometry+LXExtension.swift in Sources */,
+				3033DC401F9E11FF000802FE /* UIScrollView+LXExtension.swift in Sources */,
 				3069FCE61F71F5FA00C36F2F /* LXImagePicker.m in Sources */,
 				3069FD0E1F71F5FA00C36F2F /* UITableView+LXExtension.swift in Sources */,
 				3069FD041F71F5FA00C36F2F /* CATransaction+LXExtension.m in Sources */,

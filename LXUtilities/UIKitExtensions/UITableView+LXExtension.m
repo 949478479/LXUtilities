@@ -49,7 +49,7 @@
     return [indexPaths copy];
 }
 
-- (NSArray<NSIndexPath *> *)lx_indexPathsForSection:(NSInteger)section
+- (NSArray<NSIndexPath *> *)lx_indexPathsInSection:(NSInteger)section
 {
     NSInteger countOfRows = [self numberOfRowsInSection:section];
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:countOfRows];
@@ -59,11 +59,13 @@
     return [indexPaths copy];
 }
 
-- (void)lx_selectRowAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated
+- (void)lx_selectRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated
 {
+    [self beginUpdates];
     for (NSIndexPath *indexPath in indexPaths) {
         [self selectRowAtIndexPath:indexPath animated:animated scrollPosition:UITableViewScrollPositionNone];
     }
+    [self endUpdates];
 }
 
 void _lx_updateTableHeaderOrFooterViewHeight(UITableView *tableView, BOOL isHeader, void (^configuration)(void))

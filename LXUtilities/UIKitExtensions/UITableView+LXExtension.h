@@ -17,16 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows;
 
-- (NSArray<NSIndexPath *> *)lx_allIndexPaths;
+- (NSArray<NSIndexPath *> *)lx_allIndexPaths NS_SWIFT_UNAVAILABLE("use lx.indexPaths() instead.");
 
-- (NSArray<NSIndexPath *> *)lx_indexPathsForSection:(NSInteger)section;
+- (NSArray<NSIndexPath *> *)lx_indexPathsInSection:(NSInteger)section NS_SWIFT_UNAVAILABLE("use lx.indexPathsInSection(_:) instead.");
 
-- (void)lx_selectRowAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated;
+- (void)lx_selectRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated NS_SWIFT_UNAVAILABLE("use lx.selectRows(at:animated:) instead.");
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("使用 lx.updateTableHeaderViewHeight(withLayoutConfiguration:) 替代.");
+- (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("use lx.updateTableHeaderViewHeight(withLayoutConfiguration:) instead.");
 /// 根据自动布局更新 tableFooterView 的高度，可在块中更新子视图约束
-- (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("使用 lx.updateTableFooterViewHeight(withLayoutConfiguration:) 替代.");
+- (void)lx_updateTableFooterViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("use lx.updateTableFooterViewHeight(withLayoutConfiguration:) instead.");
 
 @end
 

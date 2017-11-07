@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIButton (LXExtension)
 
-@property (nullable, nonatomic, copy, setter=lx_setNormalTitle:) NSString *lx_normalTitle;
+@property (nullable, nonatomic, copy, setter=lx_setNormalTitle:) NSString *lx_normalTitle NS_SWIFT_UNAVAILABLE("Use 'lx.normalTitle' instead.");
 @property (nullable, nonatomic, copy, setter=lx_setDisabledTitle:) NSString *lx_disabledTitle;
 @property (nullable, nonatomic, copy, setter=lx_setSelectedTitle:) NSString *lx_selectedTitle;
 @property (nullable, nonatomic, copy, setter=lx_setHighlightedTitle:) NSString *lx_highlightedTitle;
