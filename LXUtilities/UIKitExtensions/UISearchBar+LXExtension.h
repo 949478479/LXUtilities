@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) UITextField *lx_textField;
 
+- (void)lx_setSearchIconColor:(UIColor *)color;
+
 @end
 
 NS_ASSUME_NONNULL_END

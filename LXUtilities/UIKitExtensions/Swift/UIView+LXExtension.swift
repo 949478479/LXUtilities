@@ -17,6 +17,14 @@ extension Swifty where Base: UIView {
 		}
 		return view
 	}
+
+	func viewController() -> UIViewController? {
+		var responder = base.next
+		while let _responder = responder, !(_responder is UIViewController) {
+			responder = _responder.next
+		}
+		return responder as? UIViewController
+	}
 }
 
 extension Swifty where Base: UIView {

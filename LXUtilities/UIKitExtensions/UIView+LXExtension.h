@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 视图控制器
 
 /// 视图或祖先视图所属的 `UIViewController`。
-@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_viewController;
+- (nullable __kindof UIViewController *)lx_viewController NS_SWIFT_UNAVAILABLE("Use lx.viewController() instead.");
 
 ///--------------
 /// @name xib 支持
@@ -89,11 +89,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 实例化方法
 
 /// 使用和类名同名的 `xib` 文件实例化视图。
-+ (instancetype)lx_instantiateFromNib NS_SWIFT_UNAVAILABLE("使用 instantiateFromNib() 方法。");
++ (instancetype)lx_instantiateFromNib NS_SWIFT_UNAVAILABLE("Use lx.instantiateFromNib() instead.");
 
 /// 使用和类名同名的 `xib` 文件实例化视图。
 + (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
-                                       options:(nullable NSDictionary *)optionsOrNil NS_SWIFT_UNAVAILABLE("使用 instantiateFromNibWithOwner(_:options:) 方法。");
+                                       options:(nullable NSDictionary *)optionsOrNil NS_SWIFT_UNAVAILABLE("Use lx.instantiateFromNibWithOwner(_:options:) instead.");
 ///-----------
 /// @name 动画
 ///-----------

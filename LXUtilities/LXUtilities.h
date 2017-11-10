@@ -59,6 +59,6 @@
 #import "LXImagePicker.h"
 #import "LXMulticastDelegate.h"
 
-//#import "MBProgressHUD+LXExtension.h"
+#import "MBProgressHUD+LXExtension.h"
 
 void synchronized(id obj, void (^block)(void));

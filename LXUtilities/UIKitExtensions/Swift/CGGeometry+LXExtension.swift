@@ -26,19 +26,10 @@ extension CGPoint {
     }
 }
 
-extension CGSize {
-
-    var NSValue: NSValueType {
-        return NSValueType(cgSize: self)
-    }
-
+extension CGSize: SwiftyProtocol {}
+extension Swifty where Base == CGSize {
     func adjustBy(dw: CGFloat, dh: CGFloat) -> CGSize {
-        return CGSize(width: width + dw, height: height + dh)
-    }
-
-    mutating func adjustInPlace(dw: CGFloat, dh: CGFloat) {
-        width  += dw
-        height += dh
+        return CGSize(width: base.width + dw, height: base.height + dh)
     }
 }
 
