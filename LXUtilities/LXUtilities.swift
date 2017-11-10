@@ -21,6 +21,17 @@ struct lx {
         }
         return nil
     }
+
+    static func value(from any: Any) -> Any? {
+        let mirror = Mirror(reflecting: any)
+        guard mirror.displayStyle == .optional else {
+            return any
+        }
+        if let value = mirror.children.first?.value {
+            return value
+        }
+        return nil
+    }
 }
 
 extension Swifty where Base: AnyObject {

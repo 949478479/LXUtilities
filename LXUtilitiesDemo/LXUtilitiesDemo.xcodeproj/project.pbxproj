@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		301EE7871FB532F80070EEE3 /* WKWebView+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301EE7861FB532F80070EEE3 /* WKWebView+LXExtension.swift */; };
+		301EE7901FB553DD0070EEE3 /* String+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 301EE78F1FB553DD0070EEE3 /* String+LXExtension.swift */; };
 		302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */; };
 		30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */; };
 		3033DC3C1F9D97EF000802FE /* UIButton+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */; };
@@ -92,6 +93,7 @@
 
 /* Begin PBXFileReference section */
 		301EE7861FB532F80070EEE3 /* WKWebView+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WKWebView+LXExtension.swift"; sourceTree = "<group>"; };
+		301EE78F1FB553DD0070EEE3 /* String+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+LXExtension.swift"; sourceTree = "<group>"; };
 		302ED67D1F8EF66500513A3A /* UIStoryboard+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+LXExtension.swift"; sourceTree = "<group>"; };
 		30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dispatch+LXExtension.swift"; sourceTree = "<group>"; };
 		3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+LXExtension.swift"; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 		3069FC931F71F5FA00C36F2F /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				301EE78F1FB553DD0070EEE3 /* String+LXExtension.swift */,
 				30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */,
 				3069FC941F71F5FA00C36F2F /* NSAttributedString+LXExtension.swift */,
 			);
@@ -638,6 +641,7 @@
 				3069FD061F71F5FA00C36F2F /* CAAnimation+LXExtension.swift in Sources */,
 				3069FD0F1F71F5FA00C36F2F /* UIView+LXExtension.swift in Sources */,
 				3069FD1F1F71F5FA00C36F2F /* UISearchBar+LXExtension.m in Sources */,
+				301EE7901FB553DD0070EEE3 /* String+LXExtension.swift in Sources */,
 				3069FD151F71F5FA00C36F2F /* UICollectionView+LXExtension.m in Sources */,
 				3069FD221F71F5FA00C36F2F /* UITextField+LXExtension.m in Sources */,
 				3069FCFE1F71F5FA00C36F2F /* LXUtilities.m in Sources */,
