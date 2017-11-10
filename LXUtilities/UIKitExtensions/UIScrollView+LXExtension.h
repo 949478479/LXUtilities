@@ -15,7 +15,7 @@
 - (BOOL)lx_atBottom;
 
 /// 滚动到顶部
-- (void)lx_scrollToTopAnimated:(BOOL)animated NS_SWIFT_UNAVAILABLE("use lx.scrollToTop(animated:) instead.");
+- (void)lx_scrollToTopAnimated:(BOOL)animated NS_SWIFT_UNAVAILABLE("Use lx.scrollToTop(animated:) instead.");
 /// 滚动到底部
 - (void)lx_scrollToBottomAnimated:(BOOL)animated;
 

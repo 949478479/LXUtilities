@@ -10,11 +10,11 @@ import UIKit
 
 extension Swifty where Base: UIScreen {
 
-	var size: CGSize {
+	static var size: CGSize {
 		return Base.main.bounds.size
 	}
 
-	var scale: CGFloat {
+	static var scale: CGFloat {
 		return Base.main.scale
 	}
 }

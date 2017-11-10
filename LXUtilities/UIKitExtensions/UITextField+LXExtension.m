@@ -22,27 +22,27 @@
         [self lx_exchangeOriginalSEL:@selector(editingRectForBounds:) swizzledSEL:@selector(lx_editingRectForBounds:)];
         [self lx_exchangeOriginalSEL:@selector(leftViewRectForBounds:) swizzledSEL:@selector(lx_leftViewRectForBounds:)];
         [self lx_exchangeOriginalSEL:@selector(rightViewRectForBounds:) swizzledSEL:@selector(lx_rightViewRectForBounds:)];
-		[self lx_exchangeOriginalSEL:@selector(placeholderRectForBounds:) swizzledSEL:@selector(lx_placeholderRectForBounds:)];
+        [self lx_exchangeOriginalSEL:@selector(placeholderRectForBounds:) swizzledSEL:@selector(lx_placeholderRectForBounds:)];
     });
 }
 
 #pragma mark - 设置左右视图
 
-- (void)setLeftViewImage:(UIImage *)leftViewImage {
+- (void)setLx_leftViewImage:(UIImage *)leftViewImage {
     UIImageView *leftView = [[UIImageView alloc] initWithImage:leftViewImage];
     leftView.contentMode  = UIViewContentModeCenter;
     self.leftView = leftView;
     self.leftViewMode = UITextFieldViewModeAlways;
 }
 
-- (UIImage *)leftViewImage {
+- (UIImage *)lx_leftViewImage {
     if ([self.leftView isKindOfClass:[UIImageView class]]) {
         return ((UIImageView *)self.leftView).image;
     }
     return nil;
 }
 
-- (void)setRightViewImage:(UIImage *)rightViewImage {
+- (void)setLx_rightViewImage:(UIImage *)rightViewImage {
     UIButton *rightView = [UIButton new];
     [rightView setContentMode:UIViewContentModeCenter];
     [rightView setImage:rightViewImage forState:UIControlStateNormal];
@@ -50,7 +50,7 @@
     self.rightViewMode = UITextFieldViewModeAlways;
 }
 
-- (UIImage *)rightViewImage {
+- (UIImage *)lx_rightViewImage {
     if ([self.rightView isKindOfClass:[UIButton class]]) {
         return ((UIButton *)self.leftView).currentImage;
     }
@@ -59,13 +59,13 @@
 
 #pragma mark - 设置左右视图范围
 
-- (void)setLeftViewRect:(NSString *)leftViewRect {
+- (void)setLx_leftViewRect:(NSString *)leftViewRect {
     NSArray *components = leftViewRect ? [self lx_rectComponentsForRectString:leftViewRect] : nil;
     objc_setAssociatedObject(self, @selector(lx_leftViewRectComponents), components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(self, @selector(leftViewRect), leftViewRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(lx_leftViewRect), leftViewRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSString *)leftViewRect {
+- (NSString *)lx_leftViewRect {
     return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -83,13 +83,13 @@
     return originRect;
 }
 
-- (void)setRightViewRect:(NSString *)rightViewRect {
+- (void)setLx_rightViewRect:(NSString *)rightViewRect {
     NSArray *components = rightViewRect ? [self lx_rectComponentsForRectString:rightViewRect] : nil;
     objc_setAssociatedObject(self, @selector(lx_rightViewRectComponents), components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(self, @selector(rightViewRect), rightViewRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(lx_rightViewRect), rightViewRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSString *)rightViewRect {
+- (NSString *)lx_rightViewRect {
     return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -109,13 +109,13 @@
 
 #pragma mark - 设置编辑区域
 
-- (void)setEditingRect:(NSString *)editingRect {
+- (void)setLx_editingRect:(NSString *)editingRect {
     NSArray *components = editingRect ? [self lx_rectComponentsForRectString:editingRect] : nil;
     objc_setAssociatedObject(self, @selector(lx_editingRectComponents), components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	objc_setAssociatedObject(self, @selector(editingRect), editingRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
+	objc_setAssociatedObject(self, @selector(lx_editingRect), editingRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSString *)editingRect {
+- (NSString *)lx_editingRect {
 	return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -134,13 +134,13 @@
 
 #pragma mark - 设置文本区域
 
-- (void)setTextRect:(NSString *)textRect {
+- (void)setLx_textRect:(NSString *)textRect {
     NSArray *components = textRect ? [self lx_rectComponentsForRectString:textRect] : nil;
     objc_setAssociatedObject(self, @selector(lx_textRectComponents), components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	objc_setAssociatedObject(self, @selector(textRect), textRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
+	objc_setAssociatedObject(self, @selector(lx_textRect), textRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSString *)textRect {
+- (NSString *)lx_textRect {
 	return objc_getAssociatedObject(self, _cmd);
 }
 
@@ -159,29 +159,29 @@
 
 #pragma mark - 设置占位符
 
-- (void)setPlaceholderColor:(UIColor *)placeholderColor {
+- (void)setLx_placeholderColor:(UIColor *)placeholderColor {
     [self setValue:placeholderColor forKeyPath:@"placeholderLabel.textColor"];
 }
 
-- (UIColor *)placeholderColor {
+- (UIColor *)lx_placeholderColor {
     return [self valueForKeyPath:@"placeholderLabel.textColor"];
 }
 
-- (void)setPlaceholderFont:(UIFont *)placeholderFont {
+- (void)setLx_placeholderFont:(UIFont *)placeholderFont {
 	[self setValue:placeholderFont forKeyPath:@"placeholderLabel.font"];
 }
 
-- (UIFont *)placeholderFont {
+- (UIFont *)lx_placeholderFont {
 	return [self valueForKeyPath:@"placeholderLabel.font"];
 }
 
-- (void)setPlaceholderRect:(NSString *)placeholderRect {
+- (void)setLx_placeholderRect:(NSString *)placeholderRect {
     NSArray *components = placeholderRect ? [self lx_rectComponentsForRectString:placeholderRect] : nil;
 	objc_setAssociatedObject(self, @selector(lx_placeholderRectComponents), components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	objc_setAssociatedObject(self, @selector(placeholderRect), placeholderRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
+	objc_setAssociatedObject(self, @selector(lx_placeholderRect), placeholderRect, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSString *)placeholderRect {
+- (NSString *)lx_placeholderRect {
 	return objc_getAssociatedObject(self, _cmd);
 }
 
