@@ -20,7 +20,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:_observer];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame {
+    return [self init];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"-initWithCoder: has not been implemented." userInfo:nil];
+    return [self init];
+}
+
+- (instancetype)init
 {
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     if (self) {

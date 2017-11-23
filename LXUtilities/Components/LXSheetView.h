@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LXSheetView : UIView
 
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 /// 子类返回自定义视图
 - (UIView *)sheetView;
 

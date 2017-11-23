@@ -29,6 +29,16 @@ extension Swifty where Base: UIView {
 
 extension Swifty where Base: UIView {
 
+    var originX: CGFloat {
+        set { base.frame.origin.x = newValue }
+        get { return base.frame.origin.x }
+    }
+
+    var originY: CGFloat {
+        set { base.frame.origin.y = newValue }
+        get { return base.frame.origin.y }
+    }
+
     var width: CGFloat {
         set { base.frame.size.width = newValue }
         get { return base.frame.width }
@@ -42,5 +52,10 @@ extension Swifty where Base: UIView {
     var centerX: CGFloat {
         set { base.center.x = newValue }
         get { return base.center.x }
+    }
+
+    var centerY: CGFloat {
+        set { base.center.y = newValue }
+        get { return base.center.y }
     }
 }

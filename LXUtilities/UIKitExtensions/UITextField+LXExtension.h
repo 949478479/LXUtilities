@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic) IBInspectable UIImage *lx_rightViewImage;
 
 /// 占位文字颜色
-@property (nonatomic) IBInspectable UIColor *lx_placeholderColor;
+@property (nonatomic) IBInspectable UIColor *lx_placeholderColor NS_SWIFT_UNAVAILABLE("Use lx.placeholderColor instead.");
 /// 占位文字字体
 @property (nonatomic) UIFont *lx_placeholderFont;
 
