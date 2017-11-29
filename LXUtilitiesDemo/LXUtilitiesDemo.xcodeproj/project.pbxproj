@@ -87,6 +87,7 @@
 		3069FD261F71F5FA00C36F2F /* UIWebView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCDE1F71F5FA00C36F2F /* UIWebView+LXExtension.m */; };
 		3069FD271F71F5FA00C36F2F /* UIWindow+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE01F71F5FA00C36F2F /* UIWindow+LXExtension.m */; };
 		3069FD281F71F5FA00C36F2F /* WKWebView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */; };
+		308588131FC265B000A48B35 /* city.txt in Resources */ = {isa = PBXBuildFile; fileRef = 308588121FC265AF00A48B35 /* city.txt */; };
 		30A4A58A1F7E4AF700E549B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A4A5891F7E4AF700E549B0 /* ViewController.swift */; };
 		3E50EA521F8A27C90093CD5C /* UIScreen+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */; };
 /* End PBXBuildFile section */
@@ -233,6 +234,7 @@
 		3069FCE01F71F5FA00C36F2F /* UIWindow+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LXExtension.m"; sourceTree = "<group>"; };
 		3069FCE11F71F5FA00C36F2F /* WKWebView+LXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+LXExtension.h"; sourceTree = "<group>"; };
 		3069FCE21F71F5FA00C36F2F /* WKWebView+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+LXExtension.m"; sourceTree = "<group>"; };
+		308588121FC265AF00A48B35 /* city.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = city.txt; sourceTree = "<group>"; };
 		30A4A5891F7E4AF700E549B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		30A4A58B1F7E4B3F00E549B0 /* Header-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Header-Bridge.h"; sourceTree = "<group>"; };
 		3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+LXExtension.swift"; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				3069F9EF1F71F46300C36F2F /* Assets.xcassets */,
 				3069F9F11F71F46300C36F2F /* LaunchScreen.storyboard */,
 				3069F9F41F71F46300C36F2F /* Info.plist */,
+				308588121FC265AF00A48B35 /* city.txt */,
 				3069F9E31F71F46300C36F2F /* Supporting Files */,
 			);
 			path = LXUtilitiesDemo;
@@ -561,6 +564,7 @@
 				3069F9F01F71F46300C36F2F /* Assets.xcassets in Resources */,
 				3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */,
 				3069FD021F71F5FA00C36F2F /* MBProgressHUD+LXExtension.xcassets in Resources */,
+				308588131FC265B000A48B35 /* city.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

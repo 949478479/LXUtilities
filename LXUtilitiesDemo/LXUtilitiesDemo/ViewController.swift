@@ -10,10 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet private var textField: UITextField!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor(hexColorString: "AFFFFF")
+
+//        textField.background = UIImage(color: UIColor(hexNumber: 0xf7f7f7))
     }
 
     override func didReceiveMemoryWarning() {

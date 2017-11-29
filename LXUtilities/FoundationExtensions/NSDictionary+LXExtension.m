@@ -82,20 +82,30 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 打印对齐
 
 #ifdef DEBUG
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wat-protocol"
+
 - (NSString *)descriptionWithLocale:(nullable id)locale
 {
     NSMutableString *description = [NSMutableString stringWithString:@"{\n"];
 
     [self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
+        if ([key isKindOfClass:[NSString class]]) {
+            key = [NSString stringWithFormat:@"\"%@\"", key];
+        }
+
+        if ([obj isKindOfClass:[NSString class]]) {
+            obj = [NSString stringWithFormat:@"\"%@\"", obj];
+        }
+
         NSMutableString *subDescription =
-		[NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
+        [NSMutableString stringWithFormat:@"    %@ = %@;\n", key, obj];
 
-        if ([obj isKindOfClass:NSArray.self] ||
-            [obj isKindOfClass:NSDictionary.self] ||
-            [obj conformsToProtocol:@protocol(LXDescriptionProtocol)]) {
-
+        if ([obj isKindOfClass:[NSArray class]] ||
+            [obj isKindOfClass:[NSDictionary class]] ||
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wat-protocol"
+            [obj conformsToProtocol:@protocol(LXDescriptionProtocol)])
+#pragma clang diagnostic pop
+        {
             [subDescription replaceOccurrencesOfString:@"\n"
                                             withString:@"\n    "
                                                options:(NSStringCompareOptions)0
@@ -109,10 +119,15 @@ NS_ASSUME_NONNULL_BEGIN
 
     return description;
 }
-#pragma clang diagnostic pop
+
+- (NSString *)description {
+    return [self descriptionWithLocale:nil];
+}
+
 - (NSString *)debugDescription {
     return [self descriptionWithLocale:nil];
 }
+
 #endif
 
 @end

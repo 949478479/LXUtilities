@@ -8,10 +8,10 @@
 import UIKit
 
 struct lx {
-    
-    static func printLog(_ log: String = "", file: String = #file, line: Int = #line, function: String = #function) {
+
+    static func printLog(_ log: @autoclosure () -> String = "", file: String = #file, line: Int = #line, function: String = #function) {
         #if DEBUG
-            print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log)
+            print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log())
         #endif
     }
 
