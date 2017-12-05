@@ -10,12 +10,16 @@ import UIKit
 
 extension Swifty where Base: UIWindow {
 
-	static var key: UIWindow {
+    static func keyWindow() -> UIWindow {
 		if let window = UIWindow.value(forKey: "keyWindow") as? UIWindow {
 			return window
-		} else if let window = UIApplication.shared.delegate?.window, let _window = window {
-			return _window
+		} else if let window = UIApplication.shared.delegate?.window as? UIWindow{
+			return window
 		}
-		fatalError("window 不存在.")
+		fatalError()
 	}
+
+    static func topWindow() -> UIWindow {
+        return UIApplication.shared.windows.last!
+    }
 }

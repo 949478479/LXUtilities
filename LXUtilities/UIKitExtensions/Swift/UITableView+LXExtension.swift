@@ -74,6 +74,7 @@ extension Swifty where Base: UITableView {
     }
 }
 
+// MARK: - 访问单元格
 extension Swifty where Base: UITableView {
 
     func indexPathsInSection(_ section: Int) -> [IndexPath] {
@@ -91,8 +92,20 @@ extension Swifty where Base: UITableView {
     func indexPathsForSelectedRowsInSection(_ section: Int) -> [IndexPath]? {
         return base.indexPathsForSelectedRows?.filter { $0.section == section }
     }
+
+    func cellForSelectedRow() -> UITableViewCell? {
+        if let indexPath = base.indexPathForSelectedRow, let cell = base.cellForRow(at: indexPath) {
+            return cell
+        }
+        return nil
+    }
+
+    func cellsForSelectedRows() -> [UITableViewCell]? {
+        return base.indexPathsForSelectedRows?.flatMap { base.cellForRow(at: $0) }
+    }
 }
 
+// MARK: - 选中
 extension Swifty where Base: UITableView {
 
     func selectRows(at indexPaths: [IndexPath], animated: Bool) {

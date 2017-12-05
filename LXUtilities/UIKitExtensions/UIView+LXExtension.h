@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 图层边框宽度，单位是像素
 @property (nonatomic) IBInspectable CGFloat borderWidth;
 /// 图层边框颜色
-@property (nullable, nonatomic) IBInspectable UIColor *borderColor;
+@property (nonatomic) IBInspectable UIColor *borderColor;
 
 /// 图层阴影偏移
 @property (nonatomic) IBInspectable CGSize shadowOffset;
@@ -56,10 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 图层阴影模糊半径
 @property (nonatomic) IBInspectable CGFloat shadowRadius;
 /// 图层阴影颜色
-@property (nullable, nonatomic) IBInspectable UIColor *shadowColor;
-
-/// 添加图层到附属图层上。
-- (void)lx_addSublayer:(CALayer *)layer;
+@property (nonatomic) IBInspectable UIColor *shadowColor;
 
 ///----------------
 /// @name 视图控制器
@@ -100,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 动画
 
-/// 暂停、恢复动画。
+/// 暂停/恢复动画。
 @property (nonatomic) BOOL lx_paused;
 
 /// 执行水平晃动动画。

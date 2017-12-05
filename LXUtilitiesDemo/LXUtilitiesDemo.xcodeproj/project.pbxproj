@@ -13,6 +13,7 @@
 		30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */; };
 		3033DC3C1F9D97EF000802FE /* UIButton+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */; };
 		3033DC401F9E11FF000802FE /* UIScrollView+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */; };
+		305812321FD691690038F604 /* UIView+LXNibBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 305812311FD691690038F604 /* UIView+LXNibBridge.m */; };
 		3069F9E51F71F46300C36F2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E41F71F46300C36F2F /* main.m */; };
 		3069F9E81F71F46300C36F2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069F9E71F71F46300C36F2F /* AppDelegate.m */; };
 		3069F9EE1F71F46300C36F2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3069F9EC1F71F46300C36F2F /* Main.storyboard */; };
@@ -99,6 +100,8 @@
 		30335B811F7F73B100D2A217 /* Dispatch+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dispatch+LXExtension.swift"; sourceTree = "<group>"; };
 		3033DC3B1F9D97EF000802FE /* UIButton+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+LXExtension.swift"; sourceTree = "<group>"; };
 		3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+LXExtension.swift"; sourceTree = "<group>"; };
+		305812301FD691690038F604 /* UIView+LXNibBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LXNibBridge.h"; sourceTree = "<group>"; };
+		305812311FD691690038F604 /* UIView+LXNibBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LXNibBridge.m"; sourceTree = "<group>"; };
 		3069F9E01F71F46300C36F2F /* LXUtilitiesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXUtilitiesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3069F9E41F71F46300C36F2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3069F9E61F71F46300C36F2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -410,6 +413,8 @@
 		3069FC9F1F71F5FA00C36F2F /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				305812301FD691690038F604 /* UIView+LXNibBridge.h */,
+				305812311FD691690038F604 /* UIView+LXNibBridge.m */,
 				3069FCA01F71F5FA00C36F2F /* CALayer+LXExtension.h */,
 				3069FCA11F71F5FA00C36F2F /* CALayer+LXExtension.m */,
 				3069FCA21F71F5FA00C36F2F /* CATransaction+LXExtension.h */,
@@ -652,6 +657,7 @@
 				3069FCFB1F71F5FA00C36F2F /* NSTimer+LXExtension.m in Sources */,
 				3069FCED1F71F5FA00C36F2F /* LXWeakWrapper.m in Sources */,
 				3069FD0C1F71F5FA00C36F2F /* CLLocation+LXExtension.swift in Sources */,
+				305812321FD691690038F604 /* UIView+LXNibBridge.m in Sources */,
 				3069FD271F71F5FA00C36F2F /* UIWindow+LXExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

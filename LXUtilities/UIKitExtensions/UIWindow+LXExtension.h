@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIWindow (LXExtension)
 
 /// 主窗口
-+ (UIWindow *)lx_keyWindow NS_SWIFT_UNAVAILABLE("Use UIWindow.lx.key instead.");
++ (UIWindow *)lx_keyWindow NS_SWIFT_UNAVAILABLE("Use UIWindow.lx.key() instead.");
 /// 顶层窗口
-+ (UIWindow *)lx_topWindow;
++ (UIWindow *)lx_topWindow NS_SWIFT_UNAVAILABLE("Use UIWindow.lx.top() instead.");
 
 /// 主窗口的根视图控制器
 + (nullable __kindof UIViewController *)lx_rootViewController;

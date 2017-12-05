@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
 
-- (nullable __kindof UITableViewCell *)lx_cellForSelectedRow;
+- (nullable __kindof UITableViewCell *)lx_cellForSelectedRow NS_SWIFT_UNAVAILABLE("Use lx.cellForSelectedRow() instead.");
 
-- (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows;
+- (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows NS_SWIFT_UNAVAILABLE("Use lx.cellsForSelectedRows() instead.");
 
 - (NSArray<NSIndexPath *> *)lx_allIndexPaths NS_SWIFT_UNAVAILABLE("Use lx.indexPaths() instead.");
 

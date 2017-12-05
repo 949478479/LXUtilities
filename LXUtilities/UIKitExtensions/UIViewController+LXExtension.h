@@ -40,7 +40,7 @@ NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方�
 @property (nullable, nonatomic, readonly) __kindof UIToolbar *lx_toolBar;
 
 /// 控制器所属 `UINavigationController` 的 `navigationBar`。
-@property (nullable, nonatomic, readonly) __kindof UINavigationBar *lx_navigationBar NS_SWIFT_UNAVAILABLE("使用 lx.navigationBar 属性替代。");
+@property (nullable, nonatomic, readonly) __kindof UINavigationBar *lx_navigationBar NS_SWIFT_UNAVAILABLE("Use lx.navigationBar instead.");
 
 
 #pragma mark - 获取相关的视图控制器
@@ -50,7 +50,7 @@ NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方�
 ///------------------------
 
 /// 获取自身所在的导航控制器栈中的上一个视图控制器。
-@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_previousViewController;
+@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_previousViewController NS_SWIFT_UNAVAILABLE("Use lx.previousViewControllerInNavigationStack instead.");
 
 /// 获取当前视图控制器层级中的顶层可见视图控制器。
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_visibleViewControllerIfExist;

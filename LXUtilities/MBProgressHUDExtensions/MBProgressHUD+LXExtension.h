@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showStatus:(NSString *)status withImage:(UIImage *)image toView:(UIView *)view;
 
 /// 在视图上显示纯文本并自动移除，若 view 传 nil 则在顶层窗口显示
-+ (MBProgressHUD *)lx_showStatus:(NSString *)status toView:(nullable UIView *)view;
++ (MBProgressHUD *)lx_showStatus:(NSString *)status toView:(nullable UIView *)view NS_SWIFT_UNAVAILABLE("Use lx.showStatus(_:to:) instead.");
 
 /// 在视图上短暂显示带感叹号图标的文本并自动移除，若 view 传 nil 则在顶层窗口显示
 + (MBProgressHUD *)lx_showInfoWithStatus:(NSString *)status toView:(nullable UIView *)view;
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (MBProgressHUD *)lx_showRingActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
 
 /// 在指定视图上持续显示原生活动指示器，若 view 传 nil 则在顶层窗口显示，需要手动移除
-+ (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;
++ (MBProgressHUD *)lx_showActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view NS_SWIFT_UNAVAILABLE("Use lx.showIndicator(to:) instead.");
 
 /// 在视图上持续显示伴有背景遮罩的原生活动指示器，若 view 传 nil 则在顶层窗口显示，需要手动移除
 + (MBProgressHUD *)lx_showMaskActivityIndicatorWithStatus:(nullable NSString *)status toView:(nullable UIView *)view;

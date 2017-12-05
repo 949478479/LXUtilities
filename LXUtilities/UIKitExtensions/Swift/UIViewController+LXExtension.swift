@@ -7,18 +7,31 @@
 
 import UIKit
 
+protocol InstantiateFromStoryboardSupporting: class {
+    static var storyboardName: String { get }
+    static var storyboardIdentifier: String { get }
+}
+
+extension InstantiateFromStoryboardSupporting {
+    static var storyboardIdentifier: String { return String(describing: Self.self) }
+}
+
+extension Swifty where Base: UIViewController & InstantiateFromStoryboardSupporting {
+    static func instantiateFromStoryboard() -> Base {
+        return UIStoryboard(name: Base.storyboardName, bundle: nil).instantiateViewController(withIdentifier: Base.storyboardIdentifier) as! Base
+    }
+}
+
 extension Swifty where Base: UIViewController {
 
     var navigationBar: UINavigationBar? {
         return base.navigationController?.navigationBar
     }
 
-    static func instantiate(withStoryboardName name: String, identifier: String? = nil) -> Base {
-        let sb = UIStoryboard(name: name, bundle: nil)
-        if let identifier = identifier {
-            return sb.instantiateViewController(withIdentifier: identifier) as! Base
-        }
-        return sb.instantiateViewController(withIdentifier: String(describing: Base.self)) as! Base
+    var previousViewControllerInNavigationStack: UIViewController? {
+        guard let viewControllers = base.navigationController?.viewControllers else { return nil }
+        guard let index = viewControllers.index(of: base), index > 0 else { return nil }
+        return viewControllers[index - 1]
     }
 }
 

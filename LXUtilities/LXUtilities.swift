@@ -43,32 +43,6 @@ extension Swifty where Base: AnyObject {
     }
 }
 
-// MARK: - 运算符重载
-
-func + (lhs: Int, rhs: CGFloat) -> CGFloat {
-    return CGFloat(lhs) + rhs
-}
-
-func + (lhs: CGFloat, rhs: Int) -> CGFloat {
-    return rhs + lhs
-}
-
-func * (lhs: Int, rhs: CGFloat) -> CGFloat {
-    return CGFloat(lhs) * rhs
-}
-
-func * (lhs: CGFloat, rhs: Int) -> CGFloat {
-    return rhs * lhs
-}
-
-func / (lhs: Int, rhs: CGFloat) -> CGFloat {
-    return CGFloat(lhs) / rhs
-}
-
-func / (lhs: CGFloat, rhs: Int) -> CGFloat {
-    return lhs / CGFloat(rhs)
-}
-
 // MARK: - 扩展包装
 
 final class Swifty<Base> {
@@ -94,32 +68,3 @@ extension SwiftyProtocol {
 }
 
 extension NSObject: SwiftyProtocol {}
-
-// MARK: - 数值扩展
-
-extension Swifty where Base: BinaryFloatingPoint {
-    var ceiled: Base {
-        return ceil(base)
-    }
-}
-
-extension CGFloat: SwiftyProtocol {}
-extension Swifty where Base == CGFloat {
-    var ceiled: Base {
-        return ceil(base)
-    }
-}
-
-extension Int: SwiftyProtocol {}
-extension Swifty where Base == Int {
-    var CGFloatValue: CGFloat {
-        return CGFloat(base)
-    }
-}
-
-extension Double: SwiftyProtocol {}
-extension Swifty where Base == Double {
-    var CGFloatValue: CGFloat {
-        return CGFloat(base)
-    }
-}

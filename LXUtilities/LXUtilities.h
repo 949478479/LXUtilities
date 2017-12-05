@@ -11,6 +11,7 @@
 #import "CALayer+LXExtension.h"
 #import "CATransaction+LXExtension.h"
 
+#import "UIView+LXNibBridge.h"
 #import "UIView+LXExtension.h"
 #import "UILabel+LXExtension.h"
 #import "UIImage+LXExtension.h"
@@ -59,6 +60,6 @@
 #import "LXImagePicker.h"
 #import "LXMulticastDelegate.h"
 
-#import "MBProgressHUD+LXExtension.h"
+//#import "MBProgressHUD+LXExtension.h"
 
 void synchronized(id obj, void (^block)(void));

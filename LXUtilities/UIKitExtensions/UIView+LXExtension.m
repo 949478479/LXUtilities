@@ -21,8 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGSize)lx_size
-{
+- (CGSize)lx_size {
     return self.frame.size;
 }
 
@@ -33,8 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGFloat)lx_width
-{
+- (CGFloat)lx_width {
     return self.frame.size.width;
 }
 
@@ -45,8 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGFloat)lx_height
-{
+- (CGFloat)lx_height {
     return self.frame.size.height;
 }
 
@@ -59,8 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGPoint)lx_origin
-{
+- (CGPoint)lx_origin {
     return self.frame.origin;
 }
 
@@ -71,8 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGFloat)lx_originX
-{
+- (CGFloat)lx_originX {
     return self.frame.origin.x;
 }
 
@@ -83,50 +78,41 @@ NS_ASSUME_NONNULL_BEGIN
     self.frame = frame;
 }
 
-- (CGFloat)lx_originY
-{
+- (CGFloat)lx_originY {
     return self.frame.origin.y;
 }
 
 #pragma mark center
 
-- (void)lx_setCenterX:(CGFloat)lx_centerX
-{
-	self.center = (CGPoint){lx_centerX, self.center.y};
+- (void)lx_setCenterX:(CGFloat)lx_centerX {
+	self.center = (CGPoint){ lx_centerX, self.center.y };
 }
 
-- (CGFloat)lx_centerX
-{
+- (CGFloat)lx_centerX {
     return self.center.x;
 }
 
-- (void)lx_setCenterY:(CGFloat)lx_centerY
-{
-	self.center = (CGPoint){self.center.x, lx_centerY};
+- (void)lx_setCenterY:(CGFloat)lx_centerY {
+	self.center = (CGPoint){ self.center.x, lx_centerY };
 }
 
-- (CGFloat)lx_centerY
-{
+- (CGFloat)lx_centerY {
     return self.center.y;
 }
 
-- (CGFloat)lx_minX
-{
+- (CGFloat)lx_minX {
     return CGRectGetMinX(self.frame);
 }
 
-- (CGFloat)lx_minY
-{
+- (CGFloat)lx_minY {
     return CGRectGetMinY(self.frame);
 }
 
-- (CGFloat)lx_maxX
-{
+- (CGFloat)lx_maxX {
     return CGRectGetMaxX(self.frame);
 }
 
-- (CGFloat)lx_maxY
-{
+- (CGFloat)lx_maxY {
     return CGRectGetMaxY(self.frame);
 }
 
@@ -138,94 +124,74 @@ NS_ASSUME_NONNULL_BEGIN
     self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
 }
 
-- (BOOL)shouldRasterize
-{
+- (BOOL)shouldRasterize {
     return self.layer.shouldRasterize;
 }
 
 #pragma mark 圆角
 
-- (void)setCornerRadius:(CGFloat)cornerRadius
-{
+- (void)setCornerRadius:(CGFloat)cornerRadius {
     self.layer.cornerRadius = cornerRadius;
 }
 
-- (CGFloat)cornerRadius
-{
+- (CGFloat)cornerRadius {
     return self.layer.cornerRadius;
 }
 
 #pragma mark 边框
 
-- (void)setBorderWidth:(CGFloat)borderWidth
-{
+- (void)setBorderWidth:(CGFloat)borderWidth {
     self.layer.borderWidth = borderWidth / [[UIScreen mainScreen] scale];
 }
 
-- (CGFloat)borderWidth
-{
+- (CGFloat)borderWidth {
     return self.layer.borderWidth;
 }
 
-- (void)setBorderColor:(nullable UIColor *)borderColor
-{
+- (void)setBorderColor:(UIColor *)borderColor {
     self.layer.borderColor = borderColor.CGColor;
 }
 
-- (nullable UIColor *)borderColor
+- (UIColor *)borderColor
 {
     CGColorRef color = self.layer.borderColor;
-    return color ? [UIColor colorWithCGColor:color] : nil;
+    return [UIColor colorWithCGColor:color];
 }
 
 #pragma mark 阴影
 
-- (void)setShadowOffset:(CGSize)shadowOffset
-{
+- (void)setShadowOffset:(CGSize)shadowOffset {
     self.layer.shadowOffset = shadowOffset;
 }
 
-- (CGSize)shadowOffset
-{
+- (CGSize)shadowOffset {
     return self.layer.shadowOffset;
 }
 
-- (void)setShadowOpacity:(float)shadowOpacity
-{
+- (void)setShadowOpacity:(float)shadowOpacity {
     self.layer.shadowOpacity = shadowOpacity;
 }
 
-- (float)shadowOpacity
-{
+- (float)shadowOpacity {
     return self.layer.shadowOpacity;
 }
 
-- (void)setShadowRadius:(CGFloat)shadowRadius
-{
+- (void)setShadowRadius:(CGFloat)shadowRadius {
     self.layer.shadowRadius = shadowRadius;
 }
 
-- (CGFloat)shadowRadius
-{
+- (CGFloat)shadowRadius {
     return self.layer.shadowRadius;
 }
 
-- (void)setShadowColor:(nullable UIColor *)shadowColor
-{
+- (void)setShadowColor:(UIColor *)shadowColor {
     self.layer.shadowColor = shadowColor.CGColor;
 }
 
-- (nullable UIColor *)shadowColor
+- (UIColor *)shadowColor
 {
     CGColorRef color = self.layer.shadowColor;
-    return color ? [UIColor colorWithCGColor:color] : nil;
-}
-
-#pragma mark 添加图层
-
-- (void)lx_addSublayer:(CALayer *)layer
-{
-    [self.layer addSublayer:layer];
+    return [UIColor colorWithCGColor:color];
 }
 
 #pragma mark - 视图控制器
@@ -241,25 +207,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - xib
 
-+ (UINib *)lx_nib
-{
++ (UINib *)lx_nib {
     return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
 }
 
-+ (NSString *)lx_nibName
-{
++ (NSString *)lx_nibName {
     return NSStringFromClass(self);
 }
 
-+ (instancetype)lx_instantiateFromNib
-{
++ (instancetype)lx_instantiateFromNib {
     return [self lx_instantiateFromNibWithOwner:nil options:nil];
 }
 
 + (instancetype)lx_instantiateFromNibWithOwner:(nullable id)ownerOrNil
                                        options:(nullable NSDictionary *)optionsOrNil
 {
-    NSArray *views = [self.lx_nib instantiateWithOwner:ownerOrNil options:optionsOrNil];
+    NSArray *views = [[self lx_nib] instantiateWithOwner:ownerOrNil options:optionsOrNil];
     for (UIView *view in views) {
         if ([view isMemberOfClass:self]) {
             return view;
@@ -271,13 +234,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 动画
 
-- (void)setLx_paused:(BOOL)lx_paused
-{
+- (void)setLx_paused:(BOOL)lx_paused {
 	self.layer.lx_paused = lx_paused;
 }
 
-- (BOOL)lx_paused
-{
+- (BOOL)lx_paused {
 	return self.layer.lx_paused;
 }
 
