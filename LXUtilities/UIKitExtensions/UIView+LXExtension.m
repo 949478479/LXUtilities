@@ -208,11 +208,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - xib
 
 + (UINib *)lx_nib {
-    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+    return [UINib nibWithNibName:[self lx_nibName] bundle:nil];
 }
 
 + (NSString *)lx_nibName {
-    return NSStringFromClass(self);
+    return [NSStringFromClass(self) componentsSeparatedByString:@"."].lastObject;
 }
 
 + (instancetype)lx_instantiateFromNib {

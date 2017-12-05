@@ -17,23 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"city" withExtension:@"txt"];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    NSMutableArray *citys = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingMutableContainers) error:NULL];
-    [citys enumerateObjectsUsingBlock:^(NSMutableDictionary *_Nonnull dict, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSMutableArray *subRegions = dict[@"subRegions"];
-        id city = @{
-          @"id": dict[@"id"],
-          @"name": @"全部",
-          @"shortName": @"",
-          @"spell": @"",
-          @"subRegions": @[]
-          };
-        [subRegions insertObject:city atIndex:0];
-    }];
-    [citys writeToFile:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"city.plist"] atomically:YES];
-
     return YES;
 }
 
