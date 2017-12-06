@@ -102,6 +102,7 @@
 		3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+LXExtension.swift"; sourceTree = "<group>"; };
 		305812301FD691690038F604 /* UIView+LXNibBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LXNibBridge.h"; sourceTree = "<group>"; };
 		305812311FD691690038F604 /* UIView+LXNibBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LXNibBridge.m"; sourceTree = "<group>"; };
+		30679F261FD77E9B00D96AC9 /* MBProgressHUD+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+LXExtension.swift"; sourceTree = "<group>"; };
 		3069F9E01F71F46300C36F2F /* LXUtilitiesDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LXUtilitiesDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3069F9E41F71F46300C36F2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3069F9E61F71F46300C36F2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -405,6 +406,7 @@
 				3069FC9B1F71F5FA00C36F2F /* LXRingAnimatedView.m */,
 				3069FC9C1F71F5FA00C36F2F /* MBProgressHUD+LXExtension.h */,
 				3069FC9D1F71F5FA00C36F2F /* MBProgressHUD+LXExtension.m */,
+				30679F261FD77E9B00D96AC9 /* MBProgressHUD+LXExtension.swift */,
 				3069FC9E1F71F5FA00C36F2F /* MBProgressHUD+LXExtension.xcassets */,
 			);
 			path = MBProgressHUDExtensions;

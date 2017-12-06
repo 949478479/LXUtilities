@@ -13,7 +13,7 @@ extension Swifty where Base: MBProgressHUD {
     ///
     /// - Parameter view: HUD 的父视图，默认为顶层窗口
     /// - Returns:        创建的 HUD 实例
-    @discardableResult static func showIndicator(to view: UIView = UIWindow.lx.top()) -> MBProgressHUD {
+    @discardableResult static func showIndicator(to view: UIView = UIWindow.lx.topWindow()) -> MBProgressHUD {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.bezelView.style = .solidColor
         hud.bezelView.color = .clear
@@ -26,7 +26,7 @@ extension Swifty where Base: MBProgressHUD {
     ///   - status: 提示文字
     ///   - view:   HUD 的父视图，默认为顶层窗口
     /// - Returns:  创建的 HUD 实例
-    @discardableResult static func showStatus(_ status: String, to view: UIView = UIWindow.lx.top()) -> MBProgressHUD {
+    @discardableResult static func showStatus(_ status: String, to view: UIView = UIWindow.lx.topWindow()) -> MBProgressHUD {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = .text
         hud.label.text = status
