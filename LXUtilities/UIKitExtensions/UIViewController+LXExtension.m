@@ -52,19 +52,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 获取相关的视图控制器
 
-- (nullable UIViewController *)lx_visibleViewControllerIfExist
+- (nullable UIViewController *)lx_visibleViewControllerInHierarchy
 {
 	if (self.presentedViewController) {
-		return [self.presentedViewController lx_visibleViewControllerIfExist];
+		return [self.presentedViewController lx_visibleViewControllerInHierarchy];
 	}
 
 	if ([self isKindOfClass:[UINavigationController class]]) {
-		return [((UINavigationController *)self).topViewController lx_visibleViewControllerIfExist];
+		return [((UINavigationController *)self).topViewController lx_visibleViewControllerInHierarchy];
 	}
 
 	if ([self isKindOfClass:[UITabBarController class]]) {
-		return [((UITabBarController *)self).selectedViewController lx_visibleViewControllerIfExist];
+		return [((UITabBarController *)self).selectedViewController lx_visibleViewControllerInHierarchy];
 	}
+
+    if ([self isKindOfClass:[UISplitViewController class]]) {
+        return [((UISplitViewController *)self).viewControllers.firstObject lx_visibleViewControllerInHierarchy];
+    }
 
 	if (self.isViewLoaded && self.view.window) {
 		return self;

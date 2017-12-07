@@ -19,12 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 用控制器类名作为标识符实例化指定故事板中的控制器
 + (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName
-NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方法替代。");
+NS_SWIFT_UNAVAILABLE("Use lx.instantiate(withStoryboardName:identifier:) instead.");
 
 /// 实例化指定故事板中的指定控制器，若不指定标识符，则使用控制器类名作为标识符
 + (__kindof UIViewController *)lx_instantiateWithStoryboardName:(NSString *)storyboardName
                                                      identifier:(nullable NSString *)identifier
-NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方法替代。");
+NS_SWIFT_UNAVAILABLE("Use lx.instantiate(withStoryboardName:identifier:) instead.");
 
 
 #pragma mark - 获取各种 bar
@@ -53,7 +53,7 @@ NS_SWIFT_UNAVAILABLE("使用 lx.instantiate(withStoryboardName:identifier:) 方�
 @property (nullable, nonatomic, readonly) __kindof UIViewController *lx_previousViewController NS_SWIFT_UNAVAILABLE("Use lx.previousViewControllerInNavigationStack instead.");
 
 /// 获取当前视图控制器层级中的顶层可见视图控制器。
-@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_visibleViewControllerIfExist;
+@property (nullable, nonatomic, readonly) __kindof UIViewController *lx_visibleViewControllerInHierarchy NS_SWIFT_UNAVAILABLE("Use lx.visibleViewControllerInHierarchy instead.");
 
 
 #pragma mark - 标题视图

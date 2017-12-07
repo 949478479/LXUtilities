@@ -22,4 +22,12 @@ extension Swifty where Base: UIWindow {
     static func topWindow() -> UIWindow {
         return UIApplication.shared.windows.last!
     }
+
+    static func rootViewControllerForKeyWindow() -> UIViewController? {
+        return keyWindow().rootViewController
+    }
+
+    static func topViewControllerOnKeyWindow() -> UIViewController? {
+        return rootViewControllerForKeyWindow()?.lx.visibleViewControllerInHierarchy
+    }
 }

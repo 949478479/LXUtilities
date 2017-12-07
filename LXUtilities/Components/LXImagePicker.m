@@ -101,9 +101,9 @@ NS_ASSUME_NONNULL_BEGIN
 	[alertController addAction:cameraAction];
 	[alertController addAction:cancelAction];
 
-	[[UIWindow lx_topViewController] presentViewController:alertController
-												  animated:YES
-												completion:nil];
+    [[UIWindow lx_topViewControllerOnKeyWindow] presentViewController:alertController
+                                                             animated:YES
+                                                           completion:nil];
 }
 
 - (BOOL)__presentImagePickerControllerWithSourceType:(UIImagePickerControllerSourceType)sourceType
@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 	ipc.sourceType = sourceType;
 	ipc.allowsEditing = self.allowsEditing;
 
-    [[UIWindow lx_topViewController] presentViewController:ipc animated:YES completion:nil];
+    [[UIWindow lx_topViewControllerOnKeyWindow] presentViewController:ipc animated:YES completion:nil];
 
     return YES;
 }

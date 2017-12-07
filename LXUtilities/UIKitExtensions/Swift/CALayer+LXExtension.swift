@@ -10,24 +10,25 @@ import UIKit
 extension Swifty where Base: CALayer {
 
 	private class AnimationDelegate: NSObject, CAAnimationDelegate {
+
 		var completion: ((Bool) -> Void)?
+
 		init(completion: @escaping (Bool) -> Void) {
 			self.completion = completion
 		}
-		func animationDidStart(_ anim: CAAnimation) {}
+
 		func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
 			completion?(flag)
 			completion = nil
 		}
 	}
 
-	/**
-	添加动画。
-
-	- parameter anim:       动画对象。
-	- parameter key:        动画对象的键。
-	- parameter completion: 动画完成或被移除时调用此闭包，注意不要设置动画代理,否则会造成覆盖。
-	*/
+	/// 添加动画。
+	///
+	/// - Parameters:
+	///   - anim: 动画对象
+	///   - key: 标识动画对象的字符串
+	///   - completion: 动画结束回调。不要设置动画代理，否则闭包将无法回调。
 	func add(_ anim: CAAnimation, forKey key: String? = nil, completion: ((Bool) -> Void)?) {
 		if let completion = completion {
 			anim.delegate = AnimationDelegate(completion: completion)
@@ -57,5 +58,3 @@ extension Swifty where Base: CALayer {
 		}
 	}
 }
-
-

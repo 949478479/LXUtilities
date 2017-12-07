@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加动画，动画完成或被移除时调用闭包，注意不要设置动画代理,否则会造成覆盖。
 - (void)lx_addAnimation:(CAAnimation *)anim
 				 forKey:(nullable NSString *)key
-			 completion:(void (^)(BOOL finished))completion;
+			 completion:(void (^)(BOOL finished))completion NS_SWIFT_UNAVAILABLE("Use lx.add(_:forKey:completion:) instead.");
 @end
 
 NS_ASSUME_NONNULL_END

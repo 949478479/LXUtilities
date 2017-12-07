@@ -149,44 +149,54 @@
 
 #pragma mark - 设置背景颜色
 
-- (void)setLabelBackgroundColor:(UIColor *)labelBackgroundColor
+- (void)setLabelBGColor:(UIColor *)color
 {
     self.titleLabel.clipsToBounds = YES;
-    self.titleLabel.backgroundColor = labelBackgroundColor;
+    self.titleLabel.backgroundColor = color;
 }
 
-- (UIColor *)labelBackgroundColor {
+- (UIColor *)labelBGColor {
     return self.titleLabel.backgroundColor;
 }
 
-- (void)setDisabledBackgroundColor:(UIColor *)disabledBackgroundColor
+- (void)setNormalBGColor:(UIColor *)normalBGColor
 {
-    [self lx_associateValue:disabledBackgroundColor forKey:@"disabledBackgroundColor"];
-    [self lx_setDisabledBackgroundImage:[UIImage lx_imageWithColor:disabledBackgroundColor]];
+    [self lx_associateValue:normalBGColor forKey:@"normalBGColor"];
+    [self lx_setNormalBackgroundImage:[UIImage lx_imageWithColor:normalBGColor]];
 }
 
-- (UIColor *)disabledBackgroundColor {
-    return [self lx_associatedValueForKey:@"disabledBackgroundColor"];
+- (UIColor *)normalBGColor {
+    return [self lx_associatedValueForKey:@"normalBGColor"];
 }
 
-- (void)setHighlightedBackgroundColor:(UIColor *)highlightedBackgroundColor
+- (void)setDisabledBGColor:(UIColor *)disabledBGColor
 {
-    [self lx_associateValue:highlightedBackgroundColor forKey:@"highlightedBackgroundColor"];
-    [self lx_setHighlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBackgroundColor]];
+    [self lx_associateValue:disabledBGColor forKey:@"disabledBGColor"];
+    [self lx_setDisabledBackgroundImage:[UIImage lx_imageWithColor:disabledBGColor]];
 }
 
-- (UIColor *)highlightedBackgroundColor {
-    return [self lx_associatedValueForKey:@"highlightedBackgroundColor"];
+- (UIColor *)disabledBGColor {
+    return [self lx_associatedValueForKey:@"disabledBGColor"];
 }
 
-- (void)setSelectedBackgroundColor:(UIColor *)selectedBackgroundColor
+- (void)setHighlightedBGColor:(UIColor *)highlightedBGColor
 {
-    [self lx_associateValue:selectedBackgroundColor forKey:@"selectedBackgroundColor"];
-    [self lx_setSelectedBackgroundImage:[UIImage lx_imageWithColor:selectedBackgroundColor]];
+    [self lx_associateValue:highlightedBGColor forKey:@"highlightedBGColor"];
+    [self lx_setHighlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBGColor]];
 }
 
-- (UIColor *)selectedBackgroundColor {
-    return [self lx_associatedValueForKey:@"selectedBackgroundColor"];
+- (UIColor *)highlightedBGColor {
+    return [self lx_associatedValueForKey:@"highlightedBGColor"];
+}
+
+- (void)setSelectedBGColor:(UIColor *)selectedBGColor
+{
+    [self lx_associateValue:selectedBGColor forKey:@"selectedBGColor"];
+    [self lx_setSelectedBackgroundImage:[UIImage lx_imageWithColor:selectedBGColor]];
+}
+
+- (UIColor *)selectedBGColor {
+    return [self lx_associatedValueForKey:@"selectedBGColor"];
 }
 
 @end

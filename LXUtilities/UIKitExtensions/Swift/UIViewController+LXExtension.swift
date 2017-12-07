@@ -28,10 +28,37 @@ extension Swifty where Base: UIViewController {
         return base.navigationController?.navigationBar
     }
 
+    /// 获取当前导航栈中的上一级视图控制器。
     var previousViewControllerInNavigationStack: UIViewController? {
         guard let viewControllers = base.navigationController?.viewControllers else { return nil }
         guard let index = viewControllers.index(of: base), index > 0 else { return nil }
         return viewControllers[index - 1]
+    }
+
+    /// 获取当前视图控制器层级中的顶层可见视图控制器。
+    var visibleViewControllerInHierarchy: UIViewController? {
+        if let presentedViewController = base.presentedViewController {
+            return presentedViewController.lx.visibleViewControllerInHierarchy
+        }
+
+        if let navigationController = base as? UINavigationController {
+            return navigationController.visibleViewController?.lx.visibleViewControllerInHierarchy
+        }
+
+        if let tabBarController = base as? UITabBarController {
+            return tabBarController.selectedViewController?.lx.visibleViewControllerInHierarchy
+        }
+
+        if let splitViewController = base as? UISplitViewController {
+            return splitViewController.viewControllers.first?.lx.visibleViewControllerInHierarchy
+        }
+
+        if base.isViewLoaded && base.view.window != nil {
+            return base
+        } else {
+            lx.printLog("visible view controller not exist in hierarchy.");
+            return nil
+        }
     }
 }
 

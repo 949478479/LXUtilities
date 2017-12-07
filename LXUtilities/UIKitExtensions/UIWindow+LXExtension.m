@@ -21,11 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
     return [UIApplication sharedApplication].windows.lastObject;
 }
 
-+ (nullable UIViewController *)lx_topViewController {
-    return [[self lx_keyWindow].rootViewController lx_visibleViewControllerIfExist];
++ (nullable UIViewController *)lx_topViewControllerOnKeyWindow {
+    return [[self lx_rootViewControllerForKeyWindow] lx_visibleViewControllerInHierarchy];
 }
 
-+ (nullable UIViewController *)lx_rootViewController {
++ (nullable UIViewController *)lx_rootViewControllerForKeyWindow {
 	return [self lx_keyWindow].rootViewController;
 }
 
