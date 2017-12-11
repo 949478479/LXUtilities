@@ -23,37 +23,33 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol);
 /// @name 方法交换
 ///--------------
 
-+ (void)lx_exchangeOriginalSEL:(SEL)originalSel swizzledSEL:(SEL)swizzledSel;
++ (void)lx_exchangeMethodWithOriginalSelector:(SEL)originalSel swizzledSelector:(SEL)swizzledSel;
 
 ///--------------
 /// @name 关联对象
 ///--------------
 
-/// 使用 retain 语义根据指定 key 关联值
-- (void)lx_associateValue:(nullable id)value forKey:(NSString *)key;
-/// 使用 copy 语义根据指定 key 关联值
-- (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key;
-/// 使用 weak 语义根据指定 key 关联值
-- (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key;
-/// 根据 key 获取对应的关联值
-- (nullable id)lx_associatedValueForKey:(NSString *)key;
-/// 根据 key 获取对应的 weak 语义关联值
-- (nullable id)lx_weakAssociatedValueForKey:(NSString *)key;
-/// 移除所有关联值
-- (void)lx_removeAllAssociatedObjects;
+/// 使用 retain 语义和指定 key 设置对应的关联值。
+- (void)lx_setRetainAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 使用 copy 语义和指定 key 设置对应的关联值。
+- (void)lx_setCopyAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 使用 weak 语义和指定 key 设置对应的关联值。
+- (void)lx_setWeakAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 根据 key 获取对应的关联值。
+- (nullable id)lx_associatedValueForKey:(const void * _Nonnull)key;
+/// 移除所有关联值。
+- (void)lx_removeAllAssociatedValues;
 
-/// 使用 retain 语义根据指定 key 关联值
-+ (void)lx_associateValue:(nullable id)value forKey:(NSString *)key;
-/// 使用 copy 语义根据指定 key 关联值
-+ (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key;
-/// 使用 weak 语义根据指定 key 关联值
-+ (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key;
-/// 根据 key 获取对应的关联值
-+ (nullable id)lx_associatedValueForKey:(NSString *)key;
-/// 根据 key 获取对应的 weak 语义关联值
-+ (nullable id)lx_weakAssociatedValueForKey:(NSString *)key;
-/// 移除所有关联值
-+ (void)lx_removeAllAssociatedObjects;
+/// 使用 retain 语义和指定 key 设置对应的关联值。
++ (void)lx_setRetainAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 使用 copy 语义和指定 key 设置对应的关联值。
++ (void)lx_setCopyAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 使用 weak 语义和指定 key 设置对应的关联值。
++ (void)lx_setWeakAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key;
+/// 根据 key 获取对应的关联值。
++ (nullable id)lx_associatedValueForKey:(const void * _Nonnull)key;
+/// 移除所有关联值。
++ (void)lx_removeAllAssociatedValues;
 
 ///------------------
 /// @name KVO 相关方法

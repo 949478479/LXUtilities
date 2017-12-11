@@ -5,7 +5,7 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-@import ObjectiveC.runtime;
+#import <objc/runtime.h>
 #import "NSObject+LXExtension.h"
 #import "UITextField+LXExtension.h"
 
@@ -18,11 +18,11 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self lx_exchangeOriginalSEL:@selector(textRectForBounds:) swizzledSEL:@selector(lx_textRectForBounds:)];
-        [self lx_exchangeOriginalSEL:@selector(editingRectForBounds:) swizzledSEL:@selector(lx_editingRectForBounds:)];
-        [self lx_exchangeOriginalSEL:@selector(leftViewRectForBounds:) swizzledSEL:@selector(lx_leftViewRectForBounds:)];
-        [self lx_exchangeOriginalSEL:@selector(rightViewRectForBounds:) swizzledSEL:@selector(lx_rightViewRectForBounds:)];
-        [self lx_exchangeOriginalSEL:@selector(placeholderRectForBounds:) swizzledSEL:@selector(lx_placeholderRectForBounds:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(textRectForBounds:) swizzledSelector:@selector(lx_textRectForBounds:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(editingRectForBounds:) swizzledSelector:@selector(lx_editingRectForBounds:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(leftViewRectForBounds:) swizzledSelector:@selector(lx_leftViewRectForBounds:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(rightViewRectForBounds:) swizzledSelector:@selector(lx_rightViewRectForBounds:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(placeholderRectForBounds:) swizzledSelector:@selector(lx_placeholderRectForBounds:)];
     });
 }
 

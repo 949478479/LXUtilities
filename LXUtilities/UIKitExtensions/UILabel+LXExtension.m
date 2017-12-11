@@ -7,24 +7,43 @@
 
 #import "NSAttributedString+LXExtension.h"
 #import "NSString+LXExtension.h"
+#import "NSObject+LXExtension.h"
 #import "UILabel+LXExtension.h"
-#import <objc/runtime.h>
 
 @implementation UILabel (LXExtension)
 
-- (BOOL)lx_hasText
-{
++ (void)load {
+    [self lx_exchangeMethodWithOriginalSelector:@selector(intrinsicContentSize) swizzledSelector:@selector(lx_intrinsicContentSize)];
+}
+
+- (BOOL)lx_hasText {
     return self.text.length > 0;
 }
 
-- (void)setLayerColor:(UIColor *)layerColor
-{
+- (void)setLayerColor:(UIColor *)layerColor {
 	self.layer.backgroundColor = layerColor.CGColor;
 }
 
-- (UIColor *)layerColor
-{
+- (UIColor *)layerColor {
 	return [UIColor colorWithCGColor:self.layer.backgroundColor];
+}
+
+- (void)setAdditionalContentSize:(CGSize)additionalContentSize {
+    [self lx_setRetainAssociatedValue:[NSValue valueWithCGSize:additionalContentSize]
+                               forKey:@selector(lx_additionalContentSize)];
+}
+
+- (CGSize)lx_additionalContentSize {
+    return [[self lx_associatedValueForKey:_cmd] CGSizeValue];
+}
+
+- (CGSize)lx_intrinsicContentSize
+{
+    CGSize size = [self lx_intrinsicContentSize];
+    CGSize additionalSize = [self lx_additionalContentSize];
+    size.width += additionalSize.width;
+    size.height += additionalSize.height;
+    return size;
 }
 
 @end
@@ -52,14 +71,13 @@ NS_INLINE NSAttributedString *_LXGetAttributedTextFromLabel(UILabel *label)
 
 @implementation UILabel (LXTouchExtension)
 
-- (void)lx_refreshTextView
-{
-    objc_setAssociatedObject(self, @selector(lx_textView), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)lx_refreshTextView {
+    [self lx_setRetainAssociatedValue:nil forKey:@selector(lx_textView)];
 }
 
 - (UITextView *)lx_textView
 {
-    UITextView *textView = objc_getAssociatedObject(self, _cmd);
+    UITextView *textView = [self lx_associatedValueForKey:_cmd];
     if (!textView) {
         textView = [[UITextView alloc] initWithFrame:self.frame];
         textView.textContainer.maximumNumberOfLines = self.numberOfLines;
@@ -68,8 +86,8 @@ NS_INLINE NSAttributedString *_LXGetAttributedTextFromLabel(UILabel *label)
         textView.scrollEnabled = NO;
         textView.editable = NO;
         textView.attributedText = _LXGetAttributedTextFromLabel(self);
-        objc_setAssociatedObject(self, _cmd, textView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
+        [self lx_setRetainAssociatedValue:textView forKey:_cmd];
+
         _KVOObserver *observer = [_KVOObserver new];
         observer.label = self;
         [self addObserver:observer forKeyPath:@"text" options:kNilOptions context:&_KVOContext];
@@ -77,7 +95,7 @@ NS_INLINE NSAttributedString *_LXGetAttributedTextFromLabel(UILabel *label)
         [self addObserver:observer forKeyPath:@"bounds" options:kNilOptions context:&_KVOContext];
         [self addObserver:observer forKeyPath:@"numberOfLines" options:kNilOptions context:&_KVOContext];
         [self addObserver:observer forKeyPath:@"attributedText" options:kNilOptions context:&_KVOContext];
-        objc_setAssociatedObject(self, &_KVOContext, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self lx_setRetainAssociatedValue:observer forKey:&_KVOContext];
     }
     return textView;
 }

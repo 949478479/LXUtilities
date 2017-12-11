@@ -161,42 +161,42 @@
 
 - (void)setNormalBGColor:(UIColor *)normalBGColor
 {
-    [self lx_associateValue:normalBGColor forKey:@"normalBGColor"];
     [self lx_setNormalBackgroundImage:[UIImage lx_imageWithColor:normalBGColor]];
+    [self lx_setRetainAssociatedValue:normalBGColor forKey:@selector(normalBGColor)];
 }
 
 - (UIColor *)normalBGColor {
-    return [self lx_associatedValueForKey:@"normalBGColor"];
+    return [self lx_associatedValueForKey:_cmd];
 }
 
 - (void)setDisabledBGColor:(UIColor *)disabledBGColor
 {
-    [self lx_associateValue:disabledBGColor forKey:@"disabledBGColor"];
     [self lx_setDisabledBackgroundImage:[UIImage lx_imageWithColor:disabledBGColor]];
+    [self lx_setRetainAssociatedValue:disabledBGColor forKey:@selector(disabledBGColor)];
 }
 
 - (UIColor *)disabledBGColor {
-    return [self lx_associatedValueForKey:@"disabledBGColor"];
+    return [self lx_associatedValueForKey:_cmd];
 }
 
 - (void)setHighlightedBGColor:(UIColor *)highlightedBGColor
 {
-    [self lx_associateValue:highlightedBGColor forKey:@"highlightedBGColor"];
     [self lx_setHighlightedBackgroundImage:[UIImage lx_imageWithColor:highlightedBGColor]];
+    [self lx_setRetainAssociatedValue:highlightedBGColor forKey:@selector(highlightedBGColor)];
 }
 
 - (UIColor *)highlightedBGColor {
-    return [self lx_associatedValueForKey:@"highlightedBGColor"];
+    return [self lx_associatedValueForKey:_cmd];
 }
 
 - (void)setSelectedBGColor:(UIColor *)selectedBGColor
 {
-    [self lx_associateValue:selectedBGColor forKey:@"selectedBGColor"];
     [self lx_setSelectedBackgroundImage:[UIImage lx_imageWithColor:selectedBGColor]];
+    [self lx_setRetainAssociatedValue:selectedBGColor forKey:@selector(selectedBGColor)];
 }
 
 - (UIColor *)selectedBGColor {
-    return [self lx_associatedValueForKey:@"selectedBGColor"];
+    return [self lx_associatedValueForKey:_cmd];
 }
 
 @end

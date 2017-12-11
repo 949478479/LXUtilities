@@ -22,15 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
  不过 UILabel 上设置 backgroundColor 的行为被更改了，
  不再是设定 layer 的背景色而是为 contents 设置背景色，
  UITextView 则没有改变这一点，所以在 UILabel 上实现圆角要这么做：
-
- label.layer.backgroundColor = aColor
+ label.layer.backgroundColor = color
  label.layer.cornerRadius = 5
-
  而不要这么做：
- 
- label.backgroundColor = aColor 
+ label.backgroundColor = color
  */
-@property (nullable, nonatomic) IBInspectable UIColor *layerColor;
+@property (nonatomic) IBInspectable UIColor *layerColor;
+
+/// 设置该属性来调整 `intrinsicContentSize` 属性的值。
+@property (nonatomic, getter=lx_additionalContentSize) IBInspectable CGSize additionalContentSize;
 
 @end
 

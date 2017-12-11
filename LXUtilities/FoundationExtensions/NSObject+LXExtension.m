@@ -5,8 +5,8 @@
 //  Copyright © 2015年 从今以后. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "LXMacro.h"
+#import <objc/runtime.h>
 #import "NSObject+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,15 +23,11 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
     return propertyList;
 }
 
-/***********************************/
-
-@interface _LXWeakWrapper : NSObject
+@interface _LXWeakBox : NSObject
 @property (nullable, nonatomic, weak) id value;
 @end
-@implementation _LXWeakWrapper
+@implementation _LXWeakBox
 @end
-
-/*************************************/
 
 @implementation NSObject (LXExtension)
 
@@ -42,12 +38,12 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self lx_exchangeOriginalSEL:@selector(description) swizzledSEL:@selector(lx_description)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(description) swizzledSelector:@selector(lx_description)];
     });
 }
 #endif
 
-+ (void)lx_exchangeOriginalSEL:(SEL)originalSel swizzledSEL:(SEL)swizzledSel
++ (void)lx_exchangeMethodWithOriginalSelector:(SEL)originalSel swizzledSelector:(SEL)swizzledSel
 {
     NSParameterAssert(originalSel);
     NSParameterAssert(swizzledSel);
@@ -71,73 +67,65 @@ NSArray<NSString *> *lx_protocol_propertyList(Protocol *protocol)
 
 #pragma mark - 关联对象
 
-- (void)lx_associateValue:(nullable id)value forKey:(NSString *)key
-{
-    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)lx_setRetainAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key {
+    objc_setAssociatedObject(self, key, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key
-{
-    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_COPY_NONATOMIC);
+- (void)lx_setCopyAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key {
+    objc_setAssociatedObject(self, key, value, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key
+- (void)lx_setWeakAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key
 {
-    _LXWeakWrapper *wrapper = objc_getAssociatedObject(self, NSSelectorFromString(key));
-    if (!wrapper) {
-        wrapper = [_LXWeakWrapper new];
-        [self lx_associateValue:wrapper forKey:key];
+    _LXWeakBox *box = objc_getAssociatedObject(self, key);
+    if (!box) {
+        box = [_LXWeakBox new];
+        objc_setAssociatedObject(self, key, box, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    wrapper.value = value;
+    box.value = value;
 }
 
-- (nullable id)lx_associatedValueForKey:(NSString *)key
+- (nullable id)lx_associatedValueForKey:(const void * _Nonnull)key
 {
-    return objc_getAssociatedObject(self, NSSelectorFromString(key));
+    id value = objc_getAssociatedObject(self, key);
+    if ([value class] == [_LXWeakBox class]) {
+        return [value value];
+    }
+    return value;
 }
 
-- (nullable id)lx_weakAssociatedValueForKey:(NSString *)key
-{
-    return [(_LXWeakWrapper *)objc_getAssociatedObject(self, NSSelectorFromString(key)) value];
-}
-
-- (void)lx_removeAllAssociatedObjects
-{
+- (void)lx_removeAllAssociatedValues {
     objc_removeAssociatedObjects(self);
 }
 
-+ (void)lx_associateValue:(nullable id)value forKey:(NSString *)key
-{
-    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
++ (void)lx_setRetainAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key {
+    objc_setAssociatedObject(self, key, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-+ (void)lx_associateCopyOfValue:(nullable id)value forKey:(NSString *)key
-{
-    objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_COPY_NONATOMIC);
++ (void)lx_setCopyAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key {
+    objc_setAssociatedObject(self, key, value, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-+ (void)lx_weaklyAssociateValue:(nullable id)value forKey:(NSString *)key
++ (void)lx_setWeakAssociatedValue:(nullable id)value forKey:(const void * _Nonnull)key
 {
-    _LXWeakWrapper *wrapper = objc_getAssociatedObject(self, NSSelectorFromString(key));
-    if (!wrapper) {
-        wrapper = [_LXWeakWrapper new];
-        [self lx_associateValue:wrapper forKey:key];
+    _LXWeakBox *box = objc_getAssociatedObject(self, key);
+    if (!box) {
+        box = [_LXWeakBox new];
+        objc_setAssociatedObject(self, key, box, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-    wrapper.value = value;
+    box.value = value;
 }
 
-+ (nullable id)lx_associatedValueForKey:(NSString *)key
++ (nullable id)lx_associatedValueForKey:(const void * _Nonnull)key
 {
-    return objc_getAssociatedObject(self, NSSelectorFromString(key));
+    id value = objc_getAssociatedObject(self, key);
+    if ([value class] == [_LXWeakBox class]) {
+        return [value value];
+    }
+    return value;
 }
 
-+ (nullable id)lx_weakAssociatedValueForKey:(NSString *)key
-{
-    return [(_LXWeakWrapper *)objc_getAssociatedObject(self, NSSelectorFromString(key)) value];
-}
-
-+ (void)lx_removeAllAssociatedObjects
-{
++ (void)lx_removeAllAssociatedValues {
     objc_removeAssociatedObjects(self);
 }
 

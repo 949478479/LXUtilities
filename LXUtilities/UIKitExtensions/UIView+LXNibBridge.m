@@ -18,7 +18,7 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self lx_exchangeOriginalSEL:@selector(awakeAfterUsingCoder:) swizzledSEL:@selector(lx_awakeAfterUsingCoder:)];
+        [self lx_exchangeMethodWithOriginalSelector:@selector(awakeAfterUsingCoder:) swizzledSelector:@selector(lx_awakeAfterUsingCoder:)];
     });
 }
 
