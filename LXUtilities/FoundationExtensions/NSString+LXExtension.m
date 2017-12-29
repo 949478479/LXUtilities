@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[NSPredicate predicateWithFormat:@"SELF MATCHES %@", regExp] evaluateWithObject:self];
 }
 
-- (BOOL)lx_isMoney {
+- (BOOL)lx_isRMBAmount {
     return [self lx_evaluateWithRegExp:@"^(([1-9]\\d*)|(0))(\\.\\d{1,2})?$"];
 }
 
@@ -174,8 +174,16 @@ NS_ASSUME_NONNULL_BEGIN
     return [idCardLast intValue] == idCardY[idCardMod];
 }
 
-- (BOOL)lx_onlyContainsAlphanumericUnderline {
+- (BOOL)lx_onlyContainsAlphanumericAndChinese {
+    return [self lx_evaluateWithRegExp:@"^[\\w]+$"];
+}
+
+- (BOOL)lx_onlyContainsAlphanumericAndUnderline {
     return [self lx_evaluateWithRegExp:@"^[a-zA-Z0-9_]+$"];
+}
+
+- (BOOL)lx_containsWhitespaceOrNewline {
+    return [self rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].location != NSNotFound;
 }
 
 - (BOOL)lx_isEmpty {

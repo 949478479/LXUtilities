@@ -24,14 +24,8 @@
 
 - (id)lx_awakeAfterUsingCoder:(NSCoder *)aDecoder
 {
-	// 此方法只会在主线程调用
-	// 如果多个采纳 LXNibBridge 协议的视图构成了层级关系，构建顺序是先构建子视图再构建父视图
-	static BOOL _shouldReplace = YES;
-    if (_shouldReplace && [[self class] conformsToProtocol:@protocol(LXNibBridge)]) {
-        _shouldReplace = NO;
-        UIView *realView = [self lx_instantiateRealViewFromPlaceholder:self];
-        _shouldReplace = YES;
-        return realView;
+    if ([[self class] conformsToProtocol:@protocol(LXNibBridge)] && self.subviews.count == 0) {
+        return [self lx_instantiateRealViewFromPlaceholder:self];
     }
     return self;
 }

@@ -34,3 +34,18 @@ extension Swifty where Base: UICollectionView {
         return base.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 }
+
+// MARK: - 选中管理
+extension Swifty where Base: UICollectionView {
+
+    func cellForSelectedItem() -> UICollectionViewCell? {
+        if let indexPath = base.indexPathsForSelectedItems?.first {
+            return base.cellForItem(at: indexPath)
+        }
+        return nil
+    }
+
+    func visibleCellsForSelectedItems() -> [UICollectionViewCell]? {
+        return base.indexPathsForSelectedItems?.flatMap { base.cellForItem(at: $0) }
+    }
+}

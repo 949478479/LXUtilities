@@ -32,12 +32,12 @@ NS_CLASS_AVAILABLE_IOS(8_0) @interface LXImagePicker : NSObject
 
 /// `ActionSheet` 的标题。
 @property (nullable, nonatomic, copy) NSString *title;
-/// `ActionSheet` 的标题。
+/// `ActionSheet` 的内容。
 @property (nullable, nonatomic, copy) NSString *message;
 /// `ActionSheet` 的取消回调。
 @property (nullable, nonatomic, copy) LXImagePickerActionCancelHandler actionCancelHandler;
 
-/// 是否允许编辑照片。
+/// 是否允许编辑照片。默认 NO。
 @property (nonatomic) BOOL allowsEditing;
 
 /// 不使用闭包方法时必须设置代理。若设置了代理却使用闭包方法，代理方法会被忽略。

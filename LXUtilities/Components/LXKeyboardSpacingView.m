@@ -10,6 +10,7 @@
 #import "NSNotificationCenter+LXExtension.h"
 
 @interface LXKeyboardSpacingView ()
+@property (nonatomic) CGFloat heightConstraintConstant;
 @property (nonatomic, unsafe_unretained) id keyboardObserver;
 @end
 
@@ -21,13 +22,16 @@
 	}
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.hidden = YES;
+}
+
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
 	if (newSuperview) {
-		if (self.keyboardObserver) {
-			[[NSNotificationCenter defaultCenter] removeObserver:self.keyboardObserver];
-		}
-
 		__weak typeof(self) weakSelf = self;
 		self.keyboardObserver =
 		[NSNotificationCenter lx_observeKeyboardFrameChangeWithBlock:^(NSNotification *note) {
@@ -37,7 +41,7 @@
 			CGFloat keyboardOriginY = CGRectGetMinY(keyboardEndFrame);
 			CGFloat keyboardHeight  = CGRectGetHeight(keyboardEndFrame);
 
-			CGFloat constant = (keyboardOriginY < [UIScreen lx_size].height) ? keyboardHeight : 0;
+			CGFloat constant = (keyboardOriginY < [UIScreen lx_size].height) ? keyboardHeight : self.heightConstraintConstant;
 			self.heightConstraint.constant = constant;
 
 			NSTimeInterval duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -46,6 +50,25 @@
 			}];
 		}];
 	}
+}
+
+- (void)setKeyboardObserver:(id)keyboardObserver
+{
+    if (_keyboardObserver == keyboardObserver) {
+        return;
+    }
+
+    if (_keyboardObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:_keyboardObserver];
+    }
+
+    _keyboardObserver = keyboardObserver;
+}
+
+- (void)setHeightConstraint:(NSLayoutConstraint *)heightConstraint
+{
+    _heightConstraint = heightConstraint;
+    self.heightConstraintConstant = heightConstraint.constant;
 }
 
 @end

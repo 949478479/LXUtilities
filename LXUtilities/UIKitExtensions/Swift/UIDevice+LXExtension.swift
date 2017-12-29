@@ -9,6 +9,10 @@ import UIKit
 
 extension Swifty where Base: UIDevice {
 	
+    static var isPhonePlus: Bool {
+        return UIScreen.main.bounds.size == CGSize(width: 414, height: 736)
+    }
+    
 	static var isPhoneX: Bool {
 		return UIScreen.main.bounds.size == CGSize(width: 375, height: 812)
 	}

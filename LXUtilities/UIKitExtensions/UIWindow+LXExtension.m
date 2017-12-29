@@ -6,7 +6,6 @@
 //
 
 #import "UIWindow+LXExtension.h"
-#import "UIApplication+LXExtension.h"
 #import "UIViewController+LXExtension.h"
 
 NS_ASSUME_NONNULL_BEGIN

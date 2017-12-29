@@ -70,7 +70,7 @@ extension Swifty where Base: UITableView {
         widthConstraint.isActive = false
         footerView.translatesAutoresizingMaskIntoConstraints = true
         footerView.lx_height = height
-        base.tableHeaderView = footerView
+        base.tableFooterView = footerView
     }
 }
 

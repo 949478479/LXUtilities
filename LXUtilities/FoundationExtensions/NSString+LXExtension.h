@@ -24,13 +24,16 @@ NS_INLINE NSRange LXMaxRange(NSString *string) {
 
 @interface NSString (LXRegularExpression)
 
-- (BOOL)lx_isMoney;
 - (BOOL)lx_isDigit;
 - (BOOL)lx_isEmail;
 - (BOOL)lx_isChinese;
+/// 例如，1 或 1.0 或 1.00
+- (BOOL)lx_isRMBAmount;
 - (BOOL)lx_isPhoneNumber;
 - (BOOL)lx_isIDCardNumber;
-- (BOOL)lx_onlyContainsAlphanumericUnderline;
+- (BOOL)lx_containsWhitespaceOrNewline;
+- (BOOL)lx_onlyContainsAlphanumericAndChinese;
+- (BOOL)lx_onlyContainsAlphanumericAndUnderline;
 
 - (BOOL)lx_isEmpty;
 - (BOOL)lx_hasCharacters;

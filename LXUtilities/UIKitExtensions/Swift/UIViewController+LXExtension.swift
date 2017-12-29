@@ -8,8 +8,8 @@
 import UIKit
 
 protocol InstantiateFromStoryboardSupporting: class {
-    @nonobjc static var storyboardName: String { get }
-    @nonobjc static var storyboardIdentifier: String { get }
+    static var storyboardName: String { get }
+    static var storyboardIdentifier: String { get }
 }
 
 extension InstantiateFromStoryboardSupporting {

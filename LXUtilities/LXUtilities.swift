@@ -45,10 +45,27 @@ extension Swifty where Base: AnyObject {
 
 // MARK: - 扩展包装
 
-final class Swifty<Base> {
+struct Swifty<Base> {
     let base: Base
     init(_ base: Base) {
         self.base = base
+    }
+}
+
+protocol SwiftyProtocol_class: class {
+    associatedtype LXCompatibleType
+    var lx: Swifty<LXCompatibleType> { get }
+    static var lx: Swifty<LXCompatibleType>.Type { get }
+}
+
+extension SwiftyProtocol_class {
+    var lx: Swifty<Self> {
+        set {}
+        get { return Swifty(self) }
+    }
+    static var lx: Swifty<Self>.Type {
+        set {}
+        get { return Swifty<Self>.self }
     }
 }
 
@@ -60,11 +77,11 @@ protocol SwiftyProtocol {
 
 extension SwiftyProtocol {
     var lx: Swifty<Self> {
-        return Swifty(self)
+        return Swifty(self) 
     }
     static var lx: Swifty<Self>.Type {
         return Swifty<Self>.self
     }
 }
 
-extension NSObject: SwiftyProtocol {}
+extension NSObject: SwiftyProtocol_class {}

@@ -13,9 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
 
-- (nullable __kindof UICollectionView *)lx_cellForSelectedItem;
-
-- (nullable NSArray<__kindof UICollectionView *> *)lx_cellsForSelectedItems;
+- (nullable __kindof UICollectionView *)lx_cellForSelectedItem NS_SWIFT_UNAVAILABLE("User lx.cellForSelectedItem() instead.");
+- (nullable NSArray<__kindof UICollectionView *> *)lx_visibleCellsForSelectedItems NS_SWIFT_UNAVAILABLE("User lx.visibleCellsForSelectedItems() instead.");
 
 @end
 

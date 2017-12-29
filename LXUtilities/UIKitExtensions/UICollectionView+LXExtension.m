@@ -27,11 +27,15 @@
     return nil;
 }
 
-- (NSArray<UICollectionViewCell *> *)lx_cellsForSelectedItems
+- (NSArray<UICollectionViewCell *> *)lx_visibleCellsForSelectedItems
 {
-    NSMutableArray *cells = [NSMutableArray new];
-    for (NSIndexPath *indexPath in [self indexPathsForSelectedItems]) {
-        [cells addObject:[self cellForItemAtIndexPath:indexPath]];
+    NSArray *indexPathsForSelectedItems = [self indexPathsForSelectedItems];
+    NSMutableArray *cells = [NSMutableArray arrayWithCapacity:indexPathsForSelectedItems.count];
+    for (NSIndexPath *indexPath in indexPathsForSelectedItems) {
+        UICollectionViewCell *cell = [self cellForItemAtIndexPath:indexPath];
+        if (cell) {
+            [cells addObject:cell];
+        }
     }
     return [cells copy];
 }

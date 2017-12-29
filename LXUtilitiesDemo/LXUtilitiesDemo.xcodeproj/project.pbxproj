@@ -65,7 +65,6 @@
 		3069FD0F1F71F5FA00C36F2F /* UIView+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB11F71F5FA00C36F2F /* UIView+LXExtension.swift */; };
 		3069FD101F71F5FA00C36F2F /* UIViewController+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB21F71F5FA00C36F2F /* UIViewController+LXExtension.swift */; };
 		3069FD111F71F5FA00C36F2F /* UIWindow+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB31F71F5FA00C36F2F /* UIWindow+LXExtension.swift */; };
-		3069FD121F71F5FA00C36F2F /* UIApplication+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB51F71F5FA00C36F2F /* UIApplication+LXExtension.m */; };
 		3069FD131F71F5FA00C36F2F /* UIBezierPath+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB71F71F5FA00C36F2F /* UIBezierPath+LXExtension.m */; };
 		3069FD141F71F5FA00C36F2F /* UIButton+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCB91F71F5FA00C36F2F /* UIButton+LXExtension.m */; };
 		3069FD151F71F5FA00C36F2F /* UICollectionView+LXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FCBB1F71F5FA00C36F2F /* UICollectionView+LXExtension.m */; };
@@ -192,8 +191,6 @@
 		3069FCB11F71F5FA00C36F2F /* UIView+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LXExtension.swift"; sourceTree = "<group>"; };
 		3069FCB21F71F5FA00C36F2F /* UIViewController+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+LXExtension.swift"; sourceTree = "<group>"; };
 		3069FCB31F71F5FA00C36F2F /* UIWindow+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+LXExtension.swift"; sourceTree = "<group>"; };
-		3069FCB41F71F5FA00C36F2F /* UIApplication+LXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+LXExtension.h"; sourceTree = "<group>"; };
-		3069FCB51F71F5FA00C36F2F /* UIApplication+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+LXExtension.m"; sourceTree = "<group>"; };
 		3069FCB61F71F5FA00C36F2F /* UIBezierPath+LXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+LXExtension.h"; sourceTree = "<group>"; };
 		3069FCB71F71F5FA00C36F2F /* UIBezierPath+LXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+LXExtension.m"; sourceTree = "<group>"; };
 		3069FCB81F71F5FA00C36F2F /* UIButton+LXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+LXExtension.h"; sourceTree = "<group>"; };
@@ -425,8 +422,6 @@
 				3069FCA51F71F5FA00C36F2F /* NSLayoutConstraint+LXExtension.h */,
 				3069FCA61F71F5FA00C36F2F /* NSLayoutConstraint+LXExtension.m */,
 				3069FCA71F71F5FA00C36F2F /* Swift */,
-				3069FCB41F71F5FA00C36F2F /* UIApplication+LXExtension.h */,
-				3069FCB51F71F5FA00C36F2F /* UIApplication+LXExtension.m */,
 				3069FCB61F71F5FA00C36F2F /* UIBezierPath+LXExtension.h */,
 				3069FCB71F71F5FA00C36F2F /* UIBezierPath+LXExtension.m */,
 				3069FCB81F71F5FA00C36F2F /* UIButton+LXExtension.h */,
@@ -599,7 +594,6 @@
 				3033DC3C1F9D97EF000802FE /* UIButton+LXExtension.swift in Sources */,
 				3069FCFD1F71F5FA00C36F2F /* NSAttributedString+LXExtension.swift in Sources */,
 				302ED67E1F8EF66500513A3A /* UIStoryboard+LXExtension.swift in Sources */,
-				3069FD121F71F5FA00C36F2F /* UIApplication+LXExtension.m in Sources */,
 				3069FCF61F71F5FA00C36F2F /* NSFileManager+LXExtension.m in Sources */,
 				3069FD111F71F5FA00C36F2F /* UIWindow+LXExtension.swift in Sources */,
 				3069FCF91F71F5FA00C36F2F /* NSObject+LXExtension.m in Sources */,
