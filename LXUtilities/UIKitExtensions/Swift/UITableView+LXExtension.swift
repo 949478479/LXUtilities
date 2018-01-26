@@ -137,10 +137,12 @@ extension Swifty where Base: UITableView {
     }
 
     func deselectAllRows() {
-        base.beginUpdates()
-        indexPaths().forEach {
-            base.deselectRow(at: $0, animated: false)
+        if let indexPathsForSelectedRows = base.indexPathsForSelectedRows {
+            base.beginUpdates()
+            indexPathsForSelectedRows.forEach {
+                base.deselectRow(at: $0, animated: false)
+            }
+            base.endUpdates()
         }
-        base.endUpdates()
     }
 }

@@ -48,4 +48,22 @@ extension Swifty where Base: UICollectionView {
     func visibleCellsForSelectedItems() -> [UICollectionViewCell]? {
         return base.indexPathsForSelectedItems?.flatMap { base.cellForItem(at: $0) }
     }
+
+    func selectItems(at indexPaths: [IndexPath]) {
+        base.performBatchUpdates({
+            indexPaths.forEach {
+                base.selectItem(at: $0, animated: false, scrollPosition: [])
+            }
+        }, completion: nil)
+    }
+    
+    func deselectAllItems() {
+        if let indexPaths = base.indexPathsForSelectedItems {
+            base.performBatchUpdates({
+                indexPaths.forEach {
+                    base.deselectItem(at: $0, animated: false)
+                }
+            }, completion: nil)
+        }
+    }
 }

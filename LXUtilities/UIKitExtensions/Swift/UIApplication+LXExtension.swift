@@ -1,6 +1,6 @@
 //
 //  UIApplication+LXExtension.swift
-//  WuLianWu
+//  SLHTClient
 //
 //  Created by 冠霖环如 on 2017/12/27.
 //  Copyright © 2017年 冠霖环如. All rights reserved.

@@ -1,9 +1,8 @@
 //
 //  String+LXExtension.swift
-//  WuLianWu
 //
-//  Created by 冠霖环如 on 2017/10/12.
-//  Copyright © 2017年 冠霖环如. All rights reserved.
+//  Created by 从今以后 on 2017/10/12.
+//  Copyright © 2017年 从今以后. All rights reserved.
 //
 
 extension String: SwiftyProtocol {}
