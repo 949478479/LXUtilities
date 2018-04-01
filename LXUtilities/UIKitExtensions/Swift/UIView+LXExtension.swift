@@ -7,16 +7,25 @@
 
 import UIKit
 
-/// 根据类名同名 `xib` 文件实例化视图。
-extension Swifty where Base: UIView {
+protocol ReusableView: class {}
 
-	static func instantiateFromNib(withOwner ownerOrNil: AnyObject? = nil, options optionsOrNil: [AnyHashable: Any]? = nil) -> Base {
-		let views = UINib(nibName: String(describing: Base.self), bundle: nil).instantiate(withOwner: ownerOrNil, options: optionsOrNil)
-		guard let view = views.first(where: { type(of: $0) == Base.self }) as? Base else {
-			fatalError("\(String(describing: Base.self)).xib 文件中未找到对应实例.")
-		}
-		return view
+extension ReusableView where Self: UIView {
+
+	static var reuseIdentifier: String {
+		return String(describing: self)
 	}
+}
+
+protocol NibLoadableView: class {}
+
+extension NibLoadableView where Self: UIView {
+
+	static var nib: UINib? {
+		return UINib(nibName: String(describing: self), bundle: nil)
+	}
+}
+
+extension Swifty where Base: UIView {
 
 	func viewController() -> UIViewController? {
         var responder: UIResponder? = base.next
@@ -27,6 +36,17 @@ extension Swifty where Base: UIView {
             responder = responder?.next
         } while responder != nil
         return nil
+	}
+}
+
+extension Swifty where Base: UIView & NibLoadableView {
+
+	static func instantiateFromNib(withOwner ownerOrNil: AnyObject? = nil, options optionsOrNil: [AnyHashable: Any]? = nil) -> Base {
+		let views = Base.nib!.instantiate(withOwner: ownerOrNil, options: optionsOrNil)
+		guard let view = views.first(where: { type(of: $0) == Base.self }) as? Base else {
+			fatalError("\(String(describing: Base.self)).xib 文件中未找到对应实例.")
+		}
+		return view
 	}
 }
 
