@@ -85,3 +85,34 @@ extension SwiftyProtocol {
 }
 
 extension NSObject: SwiftyProtocol_class {}
+
+// MARK: - 包装自定义结构体实现“写时拷贝”
+
+/// var rect1 = Box(CGRect(x: 1, y: 2, width: 3, height: 4))
+/// rect1.value.origin.x = 666
+struct Box<T> {
+
+	private var ref: Ref<T>
+
+	init(_ value: T) {
+		self.ref = Ref(value)
+	}
+
+	var value: T {
+		get { return ref.value }
+		set {
+			if isKnownUniquelyReferenced(&ref) {
+				ref.value = newValue
+			} else {
+				ref = Ref(newValue)
+			}
+		}
+	}
+
+	private class Ref<T> {
+		var value: T
+		init(_ value: T) {
+			self.value = value
+		}
+	}
+}
