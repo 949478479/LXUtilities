@@ -1,6 +1,5 @@
 //
 //  UIWindow+LXExtension.swift
-//  ofo_demo
 //
 //  Created by 从今以后 on 2017/7/20.
 //  Copyright © 2017年 从今以后. All rights reserved.
@@ -13,7 +12,7 @@ extension Swifty where Base: UIWindow {
     static func keyWindow() -> UIWindow {
 		if let window = UIWindow.value(forKey: "keyWindow") as? UIWindow {
 			return window
-		} else if let window = UIApplication.shared.delegate?.window as? UIWindow{
+		} else if let window = UIApplication.shared.delegate?.window as? UIWindow {
 			return window
 		}
 		fatalError()
@@ -27,7 +26,7 @@ extension Swifty where Base: UIWindow {
         return keyWindow().rootViewController
     }
 
-    static func topViewControllerOnKeyWindow() -> UIViewController? {
+    static func topViewControllerForKeyWindow() -> UIViewController? {
         return rootViewControllerForKeyWindow()?.lx.visibleViewControllerInHierarchy
     }
 }

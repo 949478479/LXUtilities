@@ -40,26 +40,26 @@ extension Swifty where Base: UITableView {
     func updateTableHeaderViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let headerView = base.tableHeaderView!
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.lx_width)
+        let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.lx.width)
         widthConstraint.isActive = true
         configuration?()
         let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         headerView.translatesAutoresizingMaskIntoConstraints = true
-        headerView.lx_height = height
+        headerView.lx.height = height
         base.tableHeaderView = headerView
     }
 
     func updateTableFooterViewHeight(withLayoutConfiguration configuration: (() -> Void)? = nil) {
         let footerView = base.tableFooterView!
         footerView.translatesAutoresizingMaskIntoConstraints = false
-        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.lx_width)
+        let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.lx.width)
         widthConstraint.isActive = true
         configuration?()
         let height = footerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         widthConstraint.isActive = false
         footerView.translatesAutoresizingMaskIntoConstraints = true
-        footerView.lx_height = height
+        footerView.lx.height = height
         base.tableFooterView = footerView
     }
 }

@@ -82,3 +82,28 @@ extension Swifty where Base: UIView {
         get { return base.center.y }
     }
 }
+
+extension Swifty where Base: UIView {
+
+	func addShakeAnimation(repeatCount: Float = 0) {
+		guard base.layer.animation(forKey: "shake") == nil else { return }
+
+		let animation = CAKeyframeAnimation(keyPath: "position.x")
+		animation.duration = 0.4
+		animation.isAdditive = true
+		animation.values = [0, 10, -10, 10, 0, 0]
+		animation.keyTimes = [0, 1.0/6, 3.0/6, 5.0/6, 1] as [NSNumber]
+
+		let group = CAAnimationGroup()
+		group.animations = [animation]
+		group.repeatCount = repeatCount
+		group.isRemovedOnCompletion = false
+		group.duration = animation.duration + (repeatCount > 0 ? 1 : 0)
+
+		base.layer.add(group, forKey: "shake")
+	}
+
+	func removeShakeAnimation() {
+		base.layer.removeAnimation(forKey: "shake")
+	}
+}

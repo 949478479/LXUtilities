@@ -90,6 +90,7 @@
 		308588131FC265B000A48B35 /* city.txt in Resources */ = {isa = PBXBuildFile; fileRef = 308588121FC265AF00A48B35 /* city.txt */; };
 		30A4A58A1F7E4AF700E549B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A4A5891F7E4AF700E549B0 /* ViewController.swift */; };
 		3E50EA521F8A27C90093CD5C /* UIScreen+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */; };
+		3EE223BF20846D4200E32009 /* UINavigationController+LXExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE223BE20846D4200E32009 /* UINavigationController+LXExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -240,6 +241,7 @@
 		30A4A58B1F7E4B3F00E549B0 /* Header-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Header-Bridge.h"; sourceTree = "<group>"; };
 		3E50EA511F8A27C90093CD5C /* UIScreen+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+LXExtension.swift"; sourceTree = "<group>"; };
 		3E9351541F88E110000121E0 /* UIDevice+LXExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+LXExtension.swift"; sourceTree = "<group>"; };
+		3EE223BE20846D4200E32009 /* UINavigationController+LXExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+LXExtension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +492,7 @@
 				3069FCB21F71F5FA00C36F2F /* UIViewController+LXExtension.swift */,
 				3069FCB31F71F5FA00C36F2F /* UIWindow+LXExtension.swift */,
 				3033DC3F1F9E11FF000802FE /* UIScrollView+LXExtension.swift */,
+				3EE223BE20846D4200E32009 /* UINavigationController+LXExtension.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -636,6 +639,7 @@
 				3069FCF71F71F5FA00C36F2F /* NSManagedObjectModel+LXExtension.m in Sources */,
 				3069FD071F71F5FA00C36F2F /* CALayer+LXExtension.swift in Sources */,
 				3E50EA521F8A27C90093CD5C /* UIScreen+LXExtension.swift in Sources */,
+				3EE223BF20846D4200E32009 /* UINavigationController+LXExtension.swift in Sources */,
 				3069FCFA1F71F5FA00C36F2F /* NSString+LXExtension.m in Sources */,
 				3069FD091F71F5FA00C36F2F /* CATransform3D+LXExtension.swift in Sources */,
 				30335B821F7F73B100D2A217 /* Dispatch+LXExtension.swift in Sources */,

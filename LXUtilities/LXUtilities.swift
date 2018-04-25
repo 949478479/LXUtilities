@@ -7,31 +7,28 @@
 
 import UIKit
 
-struct lx {
+func printLog(_ log: @autoclosure () -> String = "", file: String = #file, line: Int = #line, function: String = #function) {
+	#if DEBUG
+	print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log())
+	#endif
+}
 
-    static func printLog(_ log: @autoclosure () -> String = "", file: String = #file, line: Int = #line, function: String = #function) {
-        #if DEBUG
-            print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log())
-        #endif
-    }
+func value(from object: Any, forKey key: String) -> Any? {
+	for case let (label?, value) in Mirror(reflecting: object).children.lazy where label == key {
+		return value
+	}
+	return nil
+}
 
-    static func value(from object: Any, forKey key: String) -> Any? {
-        for case let (label?, value) in Mirror(reflecting: object).children.lazy where label == key {
-            return value
-        }
-        return nil
-    }
-
-    static func value(from any: Any) -> Any? {
-        let mirror = Mirror(reflecting: any)
-        guard mirror.displayStyle == .optional else {
-            return any
-        }
-        if let value = mirror.children.first?.value {
-            return value
-        }
-        return nil
-    }
+func value(from any: Any) -> Any? {
+	let mirror = Mirror(reflecting: any)
+	guard mirror.displayStyle == .optional else {
+		return any
+	}
+	if let value = mirror.children.first?.value {
+		return value
+	}
+	return nil
 }
 
 extension Swifty where Base: AnyObject {

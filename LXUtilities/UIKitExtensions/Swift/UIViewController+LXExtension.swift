@@ -56,7 +56,7 @@ extension Swifty where Base: UIViewController {
         if base.isViewLoaded && base.view.window != nil {
             return base
         } else {
-            lx.printLog("visible view controller not exist in hierarchy.");
+            printLog("visible view controller not exist in hierarchy.");
             return nil
         }
     }

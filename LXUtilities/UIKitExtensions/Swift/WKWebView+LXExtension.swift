@@ -5,6 +5,8 @@
 //  Copyright © 2017年 从今以后. All rights reserved.
 //
 
+import WebKit
+
 extension Swifty where Base: WKWebView {
 	
 	func loadRequest(withURLString string: String) throws {
