@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 			__strong typeof(weakSelf) self = weakSelf;
 			if (self) {
-				dispatch_resume(_timerSource);
-				_isSuspended = NO;
+                dispatch_resume(self->_timerSource);
+                self->_isSuspended = NO;
 			}
 		});
     }

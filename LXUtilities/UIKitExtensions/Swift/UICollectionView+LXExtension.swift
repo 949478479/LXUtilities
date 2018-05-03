@@ -46,7 +46,7 @@ extension Swifty where Base: UICollectionView {
     }
 
     func visibleCellsForSelectedItems() -> [UICollectionViewCell]? {
-        return base.indexPathsForSelectedItems?.flatMap { base.cellForItem(at: $0) }
+        return base.indexPathsForSelectedItems?.compactMap { base.cellForItem(at: $0) }
     }
 
     func selectItems(at indexPaths: [IndexPath]) {

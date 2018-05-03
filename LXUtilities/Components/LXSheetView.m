@@ -135,7 +135,7 @@
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          [self layoutIfNeeded];
-                         [_dimmingBackgroundView setAlpha:1.0];
+                         [self->_dimmingBackgroundView setAlpha:1.0];
                      } completion:nil];
 }
 
@@ -147,7 +147,7 @@
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          [self layoutIfNeeded];
-                         [_dimmingBackgroundView setAlpha:0.0];
+                         [self->_dimmingBackgroundView setAlpha:0.0];
                      } completion:^(BOOL finished) {
                          [self removeFromSuperview];
                      }];

@@ -72,7 +72,7 @@
     _alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
 	[UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 		self.alpha = 1.0;
-		_alertView.transform = CGAffineTransformIdentity;
+        self->_alertView.transform = CGAffineTransformIdentity;
 	} completion:nil];
 }
 
