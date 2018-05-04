@@ -91,7 +91,7 @@ extension Swifty where Base: UITableView {
     }
 
     func cellsForSelectedRows() -> [UITableViewCell]? {
-        return base.indexPathsForSelectedRows?.flatMap { base.cellForRow(at: $0) }
+        return base.indexPathsForSelectedRows?.compactMap { base.cellForRow(at: $0) }
     }
 }
 

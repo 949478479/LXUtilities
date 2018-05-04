@@ -2,12 +2,12 @@
 //  CATransaction+LXExtension.swift
 //
 //  Created by 从今以后 on 16/1/12.
-//  Copyright © 2016年 apple. All rights reserved.
+//  Copyright © 2016年 从今以后. All rights reserved.
 //
 
-import QuartzCore.CATransaction
+import QuartzCore
 
-extension CATransaction {
+extension Swifty where Base: CATransaction {
 
     /**
      禁用隐式动画。
@@ -15,10 +15,10 @@ extension CATransaction {
      - parameter actionsWithoutAnimation: 在闭包内修改图层属性不会触发隐式动画
      */
     static func performWithoutAnimation(_ actionsWithoutAnimation: () -> ()) {
-        begin()
-        setDisableActions(true)
+        Base.begin()
+        Base.setDisableActions(true)
         actionsWithoutAnimation()
-        commit()
+        Base.commit()
     }
 
     /**
@@ -30,10 +30,10 @@ extension CATransaction {
      */
     static func animateWithDuration(_ duration: CFTimeInterval, animations: () -> (),
         completion: (() -> ())? = nil) {
-        begin()
-        setAnimationDuration(duration)
-        setCompletionBlock(completion)
+        Base.begin()
+        Base.setAnimationDuration(duration)
+        Base.setCompletionBlock(completion)
         animations();
-        commit()
+        Base.commit()
     }
 }
