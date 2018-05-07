@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UITableView (LXExtension)
 
-- (void)lx_reloadDataWithCompletion:(void (^)(void))completion;
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion NS_SWIFT_UNAVAILABLE("Use lx.reloadData(completion:) instead.");
 
 - (nullable __kindof UITableViewCell *)lx_cellForSelectedRow NS_SWIFT_UNAVAILABLE("Use lx.cellForSelectedRow() instead.");
 

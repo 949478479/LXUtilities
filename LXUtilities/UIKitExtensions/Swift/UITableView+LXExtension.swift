@@ -64,6 +64,17 @@ extension Swifty where Base: UITableView {
     }
 }
 
+// MARK: - 刷新数据
+extension Swifty where Base: UITableView {
+
+    func reloadData(completion: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            self.base.reloadData()
+            DispatchQueue.main.async(execute: completion)
+        }
+    }
+}
+
 // MARK: - 访问单元格
 extension Swifty where Base: UITableView {
 

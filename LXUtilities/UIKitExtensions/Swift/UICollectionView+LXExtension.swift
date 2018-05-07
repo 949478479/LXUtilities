@@ -35,6 +35,17 @@ extension Swifty where Base: UICollectionView {
     }
 }
 
+// MARK: - 刷新数据
+extension Swifty where Base: UICollectionView {
+
+    func reloadData(completion: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            self.base.reloadData()
+            DispatchQueue.main.async(execute: completion)
+        }
+    }
+}
+
 // MARK: - 选中管理
 extension Swifty where Base: UICollectionView {
 
