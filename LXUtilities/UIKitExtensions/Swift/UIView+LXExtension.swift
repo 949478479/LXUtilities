@@ -93,7 +93,14 @@ extension Swifty where Base: UIView {
 		animation.isAdditive = true
 		animation.values = [0, 10, -10, 10, 0, 0]
 		animation.keyTimes = [0, 1.0/6, 3.0/6, 5.0/6, 1] as [NSNumber]
-
+        animation.timingFunctions = [
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
+            CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear),
+        ]
+        
 		let group = CAAnimationGroup()
 		group.animations = [animation]
 		group.repeatCount = repeatCount
