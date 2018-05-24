@@ -9,31 +9,50 @@
 
 @implementation UIScrollView (LXExtension)
 
-- (BOOL)lx_atTop {
+- (BOOL)lx_isContentAtTop
+{
+    if (@available(iOS 11, *)) {
+        return self.contentOffset.y + self.adjustedContentInset.top <= 0;
+    }
     return self.contentOffset.y + self.contentInset.top <= 0;
 }
 
-- (BOOL)lx_atBottom
+- (BOOL)lx_isContentAtBottom
 {
-    CGFloat height = CGRectGetHeight(self.bounds);
-    NSInteger height1 = self.contentOffset.y - self.contentInset.bottom + height;
-    NSInteger contentSizeHeight = self.contentSize.height;
-    if (height1 >= contentSizeHeight) {
+    CGFloat contentInsetBottom;
+    if (@available(iOS 11, *)) {
+        contentInsetBottom = self.adjustedContentInset.bottom;
+    } else {
+        contentInsetBottom = self.contentInset.bottom;
+    }
+
+    if (self.contentOffset.y + self.bounds.size.height - contentInsetBottom >= self.contentSize.height) {
         return YES;
     }
-    NSInteger height2 = height - self.contentInset.top - self.contentInset.bottom;
-    if (height2 >= contentSizeHeight) {
-        return YES;
-    }
+
     return NO;
 }
 
-- (void)lx_scrollToTopAnimated:(BOOL)animated {
-    [self scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:animated];
+- (void)lx_scrollToTopAnimated:(BOOL)animated
+{
+    CGPoint offset;
+    if (@available(iOS 11.0, *)) {
+        offset = CGPointMake(0, -self.adjustedContentInset.top);
+    } else {
+        offset = CGPointMake(0, -self.contentInset.top);
+    }
+    [self setContentOffset:offset animated:animated];
 }
 
-- (void)lx_scrollToBottomAnimated:(BOOL)animated {
-    [self scrollRectToVisible:CGRectMake(0, self.contentSize.height - 1, 1, 1) animated:animated];
+- (void)lx_scrollToBottomAnimated:(BOOL)animated
+{
+    CGPoint offset;
+    if (@available(iOS 11.0, *)) {
+        offset = CGPointMake(0, self.contentSize.height - self.bounds.size.height + self.adjustedContentInset.bottom);
+    } else {
+        offset = CGPointMake(0, self.contentSize.height - self.bounds.size.height + self.contentInset.bottom);
+    }
+    [self setContentOffset:offset animated:animated];
 }
 
 @end

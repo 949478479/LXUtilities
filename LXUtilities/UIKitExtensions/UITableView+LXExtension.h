@@ -11,17 +11,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UITableView (LXExtension)
 
-- (void)lx_reloadDataWithCompletion:(void (^)(void))completion NS_SWIFT_UNAVAILABLE("Use lx.reloadData(completion:) instead.");
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion NS_SWIFT_UNAVAILABLE("use lx.reloadData(completion:) instead");
 
-- (nullable __kindof UITableViewCell *)lx_cellForSelectedRow NS_SWIFT_UNAVAILABLE("Use lx.cellForSelectedRow() instead.");
+- (nullable __kindof UITableViewCell *)lx_cellForSelectedRow NS_SWIFT_UNAVAILABLE("use lx.cellForSelectedRow() instead");
 
-- (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows NS_SWIFT_UNAVAILABLE("Use lx.cellsForSelectedRows() instead.");
+- (NSArray<__kindof UITableViewCell *> *)lx_cellsForSelectedRows NS_SWIFT_UNAVAILABLE("use lx.cellsForSelectedRows() instead");
 
-- (NSArray<NSIndexPath *> *)lx_allIndexPaths NS_SWIFT_UNAVAILABLE("Use lx.indexPaths() instead.");
+- (NSArray<NSIndexPath *> *)lx_allIndexPaths NS_SWIFT_UNAVAILABLE("use lx.indexPaths() instead");
 
-- (NSArray<NSIndexPath *> *)lx_indexPathsInSection:(NSInteger)section NS_SWIFT_UNAVAILABLE("Use lx.indexPathsInSection(_:) instead.");
+- (NSArray<NSIndexPath *> *)lx_indexPathsInSection:(NSInteger)section NS_SWIFT_UNAVAILABLE("use lx.indexPathsInSection(_:) instead");
 
-- (void)lx_selectRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated NS_SWIFT_UNAVAILABLE("Use lx.selectRows(at:animated:) instead.");
+- (void)lx_selectRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths animated:(BOOL)animated NS_SWIFT_UNAVAILABLE("use lx.selectRows(at:animated:) instead");
 
 /// 根据自动布局更新 tableHeaderView 的高度，可在块中更新子视图约束
 - (void)lx_updateTableHeaderViewHeightWithLayoutConfiguration:(void (^_Nullable)(void))configuration NS_SWIFT_UNAVAILABLE("Use lx.updateTableHeaderViewHeight(withLayoutConfiguration:) instead.");

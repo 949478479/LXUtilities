@@ -10,13 +10,13 @@
 @interface UIScrollView (LXExtension)
 
 /// 是否已抵达顶部
-- (BOOL)lx_atTop;
+- (BOOL)lx_isContentAtTop NS_SWIFT_UNAVAILABLE("use lx.isContentAtTop instead");
 /// 是否已抵达底部
-- (BOOL)lx_atBottom;
+- (BOOL)lx_isContentAtBottom NS_SWIFT_UNAVAILABLE("use lx.isContentAtBottom instead");
 
 /// 滚动到顶部
-- (void)lx_scrollToTopAnimated:(BOOL)animated NS_SWIFT_UNAVAILABLE("Use lx.scrollToTop(animated:) instead.");
+- (void)lx_scrollToTopAnimated:(BOOL)animated NS_SWIFT_UNAVAILABLE("use lx.scrollToTop(animated:) instead");
 /// 滚动到底部
-- (void)lx_scrollToBottomAnimated:(BOOL)animated;
+- (void)lx_scrollToBottomAnimated:(BOOL)animated NS_SWIFT_UNAVAILABLE("use lx.scrollToTop(animated:) instead");
 
 @end

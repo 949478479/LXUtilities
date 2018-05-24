@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UICollectionView (LXExtension)
 
-- (void)lx_reloadDataWithCompletion:(void (^)(void))completion NS_SWIFT_UNAVAILABLE("User lx.reloadData(completion:) instead.");
+- (void)lx_reloadDataWithCompletion:(void (^)(void))completion NS_SWIFT_UNAVAILABLE("use lx.reloadData(completion:) instead");
 
 - (nullable __kindof UICollectionView *)lx_cellForSelectedItem NS_SWIFT_UNAVAILABLE("User lx.cellForSelectedItem() instead.");
 - (nullable NSArray<__kindof UICollectionView *> *)lx_visibleCellsForSelectedItems NS_SWIFT_UNAVAILABLE("User lx.visibleCellsForSelectedItems() instead.");
