@@ -5,6 +5,8 @@
 //  Copyright © 2017年 从今以后. All rights reserved.
 //
 
+import Foundation
+
 extension Data: SwiftyProtocol {}
 extension Swifty where Base == Data {
     var hexString: String {
