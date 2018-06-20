@@ -78,16 +78,20 @@ extension Swifty where Base: UITableView {
 // MARK: - 访问单元格
 extension Swifty where Base: UITableView {
 
-    func indexPathsInSection(_ section: Int) -> [IndexPath] {
-        return (0..<base.numberOfRows(inSection: section)).map { IndexPath(row: $0, section: section) }
+    func indexPathsInSection(_ section: Int) -> [IndexPath]? {
+        let indexPaths = (0..<base.numberOfRows(inSection: section)).map {
+            IndexPath(row: $0, section: section)
+        }
+        return indexPaths.isEmpty ? nil : indexPaths
     }
 
-    func indexPaths() -> [IndexPath] {
-        return (0..<base.numberOfSections).flatMap { (section) -> [IndexPath] in
+    func allIndexPaths() -> [IndexPath]? {
+        let indexPaths = (0..<base.numberOfSections).flatMap { (section) -> [IndexPath] in
             (0..<base.numberOfRows(inSection: section)).map { (row) in
                 IndexPath(row: row, section: section)
             }
         }
+        return indexPaths.isEmpty ? nil : indexPaths
     }
     
     func indexPathsForSelectedRowsInSection(_ section: Int) -> [IndexPath]? {
@@ -95,10 +99,13 @@ extension Swifty where Base: UITableView {
     }
 
     func cellForSelectedRow() -> UITableViewCell? {
-        if let indexPath = base.indexPathForSelectedRow, let cell = base.cellForRow(at: indexPath) {
-            return cell
+        guard let indexPath = base.indexPathForSelectedRow else {
+            return nil
         }
-        return nil
+        guard let cell = base.cellForRow(at: indexPath) else {
+            return nil
+        }
+        return cell
     }
 
     func cellsForSelectedRows() -> [UITableViewCell]? {
@@ -110,39 +117,53 @@ extension Swifty where Base: UITableView {
 extension Swifty where Base: UITableView {
 
     func selectRows(at indexPaths: [IndexPath], animated: Bool) {
-        base.beginUpdates()
-        indexPaths.forEach { base.selectRow(at: $0, animated: animated, scrollPosition: .none) }
-        base.endUpdates()
+        UIView.performWithoutAnimation {
+            base.beginUpdates()
+            indexPaths.forEach { base.selectRow(at: $0, animated: animated, scrollPosition: .none) }
+            base.endUpdates()
+        }
     }
 
     func deselectRows(at indexPaths: [IndexPath], animated: Bool) {
-        base.beginUpdates()
-        indexPaths.forEach { base.deselectRow(at: $0, animated: animated) }
-        base.endUpdates()
+        UIView.performWithoutAnimation {
+            base.beginUpdates()
+            indexPaths.forEach { base.deselectRow(at: $0, animated: animated) }
+            base.endUpdates()
+        }
     }
 
     func selectRows(inSection section: Int, animated: Bool) {
-        selectRows(at: indexPathsInSection(section), animated: animated)
+        guard let indexPaths = indexPathsInSection(section) else {
+            return
+        }
+        selectRows(at: indexPaths, animated: animated)
     }
 
     func deselectRows(inSection section: Int, animated: Bool) {
-        deselectRows(at: indexPathsInSection(section), animated: animated)
+        guard let indexPaths = indexPathsInSection(section) else {
+            return
+        }
+        deselectRows(at: indexPaths, animated: animated)
     }
 
     func selectAllRows() {
-        base.beginUpdates()
-        indexPaths().forEach {
-            base.selectRow(at: $0, animated: false, scrollPosition: .none)
+        guard let indexPaths = allIndexPaths() else {
+            return
         }
-        base.endUpdates()
+        UIView.performWithoutAnimation {
+            base.beginUpdates()
+            indexPaths.forEach { base.selectRow(at: $0, animated: false, scrollPosition: .none) }
+            base.endUpdates()
+        }
     }
 
     func deselectAllRows() {
-        if let indexPathsForSelectedRows = base.indexPathsForSelectedRows {
+        guard let indexPaths = base.indexPathsForSelectedRows else {
+            return
+        }
+        UIView.performWithoutAnimation {
             base.beginUpdates()
-            indexPathsForSelectedRows.forEach {
-                base.deselectRow(at: $0, animated: false)
-            }
+            indexPaths.forEach { base.deselectRow(at: $0, animated: false) }
             base.endUpdates()
         }
     }

@@ -61,19 +61,21 @@ extension Swifty where Base: UICollectionView {
     }
 
     func selectItems(at indexPaths: [IndexPath]) {
-        base.performBatchUpdates({
-            indexPaths.forEach {
-                base.selectItem(at: $0, animated: false, scrollPosition: [])
-            }
-        }, completion: nil)
+        UIView.performWithoutAnimation {
+            base.performBatchUpdates({
+                indexPaths.forEach { base.selectItem(at: $0, animated: false, scrollPosition: []) }
+            }, completion: nil)
+        }
     }
     
     func deselectAllItems() {
-        if let indexPaths = base.indexPathsForSelectedItems {
+        guard let indexPaths = base.indexPathsForSelectedItems else {
+            return
+        }
+
+        UIView.performWithoutAnimation {
             base.performBatchUpdates({
-                indexPaths.forEach {
-                    base.deselectItem(at: $0, animated: false)
-                }
+                indexPaths.forEach { base.deselectItem(at: $0, animated: false) }
             }, completion: nil)
         }
     }
