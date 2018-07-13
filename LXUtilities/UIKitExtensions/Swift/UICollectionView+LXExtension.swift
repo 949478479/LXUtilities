@@ -7,30 +7,37 @@
 
 import UIKit
 
+// MARK: - 协议
+protocol CollectionViewCellViewModel {
+    associatedtype Cell: UICollectionViewCell & ReusableView & ConfigurableView
+    func cell(for collectionView: UICollectionView, at indexPath: IndexPath) -> Cell
+}
+
+// MARK: - 数据源
 extension Swifty where Base: UICollectionView {
 
-    func registerReusableCell<T: UICollectionViewCell>(_: T.Type) where T: ReusableView {
+    func registerReusableCell<T: UICollectionViewCell & ReusableView>(_: T.Type) {
 		base.register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
     }
 
-	func registerReusableCell<T: UICollectionViewCell>(_: T.Type) where T: ReusableView & NibLoadableView {
+	func registerReusableCell<T: UICollectionViewCell & ReusableView & NibLoadableView>(_: T.Type) {
 		base.register(T.nib, forCellWithReuseIdentifier: T.reuseIdentifier)
 	}
 
     // e.g. collectionView.dequeueReusableCell(for: index) as CustomCell
-    func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T where T: ReusableView {
+    func dequeueReusableCell<T: UICollectionViewCell & ReusableView>(for indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 
-    func registerReusableSupplementaryView<T: UICollectionReusableView>(_: T.Type, ofKind elementKind: String) where T: ReusableView {
+    func registerReusableSupplementaryView<T: UICollectionReusableView & ReusableView>(_: T.Type, ofKind elementKind: String) {
 		base.register(T.self, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
     }
 
-	func registerReusableSupplementaryView<T: UICollectionReusableView>(_: T.Type, ofKind elementKind: String) where T: ReusableView & NibLoadableView {
+	func registerReusableSupplementaryView<T: UICollectionReusableView & ReusableView & NibLoadableView>(_: T.Type, ofKind elementKind: String) {
 		base.register(T.nib, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseIdentifier)
 	}
 
-    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(ofKind elementKind: String, for indexPath: IndexPath) -> T where T: ReusableView {
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView & ReusableView>(ofKind elementKind: String, for indexPath: IndexPath) -> T {
         return base.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 }
@@ -46,7 +53,7 @@ extension Swifty where Base: UICollectionView {
     }
 }
 
-// MARK: - 选中管理
+// MARK: - 单元格
 extension Swifty where Base: UICollectionView {
 
     func cellForSelectedItem() -> UICollectionViewCell? {
@@ -59,6 +66,10 @@ extension Swifty where Base: UICollectionView {
     func visibleCellsForSelectedItems() -> [UICollectionViewCell]? {
         return base.indexPathsForSelectedItems?.compactMap { base.cellForItem(at: $0) }
     }
+}
+
+// MARK: - 选中
+extension Swifty where Base: UICollectionView {
 
     func selectItems(at indexPaths: [IndexPath]) {
         UIView.performWithoutAnimation {
@@ -67,7 +78,11 @@ extension Swifty where Base: UICollectionView {
             }, completion: nil)
         }
     }
-    
+}
+
+// MARK: - 反选
+extension Swifty where Base: UICollectionView {
+
     func deselectAllItems() {
         guard let indexPaths = base.indexPathsForSelectedItems else {
             return
@@ -75,7 +90,9 @@ extension Swifty where Base: UICollectionView {
 
         UIView.performWithoutAnimation {
             base.performBatchUpdates({
-                indexPaths.forEach { base.deselectItem(at: $0, animated: false) }
+                indexPaths.forEach {
+                    base.deselectItem(at: $0, animated: false)
+                }
             }, completion: nil)
         }
     }

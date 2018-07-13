@@ -7,6 +7,13 @@
 
 import UIKit
 
+// MARK: - 协议
+protocol ConfigurableView: class {
+    associatedtype ViewModel
+    var viewModel: ViewModel? { get }
+    func configure(with viewModel: ViewModel)
+}
+
 protocol ReusableView: class {}
 
 extension ReusableView where Self: UIView {
@@ -25,6 +32,7 @@ extension NibLoadableView where Self: UIView {
 	}
 }
 
+// MARK: - 控制器
 extension Swifty where Base: UIView {
 
 	func viewController() -> UIViewController? {
@@ -39,9 +47,14 @@ extension Swifty where Base: UIView {
 	}
 }
 
+// MARK: - 实例化
 extension Swifty where Base: UIView & NibLoadableView {
 
-	static func instantiateFromNib(withOwner ownerOrNil: AnyObject? = nil, options optionsOrNil: [AnyHashable: Any]? = nil) -> Base {
+	static func instantiateFromNib(
+        withOwner ownerOrNil: AnyObject? = nil,
+        options optionsOrNil: [AnyHashable: Any]? = nil)
+        -> Base
+    {
 		let views = Base.nib!.instantiate(withOwner: ownerOrNil, options: optionsOrNil)
 		guard let view = views.first(where: { type(of: $0) == Base.self }) as? Base else {
 			fatalError("\(String(describing: Base.self)).xib 文件中未找到对应实例.")
@@ -50,6 +63,7 @@ extension Swifty where Base: UIView & NibLoadableView {
 	}
 }
 
+// MARK: - 几何
 extension Swifty where Base: UIView {
 
     var originX: CGFloat {
@@ -83,6 +97,7 @@ extension Swifty where Base: UIView {
     }
 }
 
+// MARK: - 动画
 extension Swifty where Base: UIView {
 
 	func addShakeAnimation(repeatCount: Float = 0) {
