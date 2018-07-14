@@ -85,9 +85,9 @@ extension NSObject: SwiftyProtocol_class {}
 
 // MARK: - 包装自定义结构体实现“写时拷贝”
 
-/// var rect1 = Box(CGRect(x: 1, y: 2, width: 3, height: 4))
+/// var rect1 = CopyOnWriteBox(CGRect(x: 1, y: 2, width: 3, height: 4))
 /// rect1.value.origin.x = 666
-struct Box<T> {
+struct CopyOnWriteBox<T> {
 
 	private var ref: Ref<T>
 
@@ -96,7 +96,9 @@ struct Box<T> {
 	}
 
 	var value: T {
-		get { return ref.value }
+		get {
+            return ref.value
+        }
 		set {
 			if isKnownUniquelyReferenced(&ref) {
 				ref.value = newValue
