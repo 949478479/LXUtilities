@@ -7,12 +7,6 @@
 
 import UIKit
 
-// MARK: - 协议
-protocol CollectionViewCellViewModel {
-    associatedtype Cell: UICollectionViewCell & ReusableView & ConfigurableView
-    func cell(for collectionView: UICollectionView, at indexPath: IndexPath) -> Cell
-}
-
 // MARK: - 数据源
 extension Swifty where Base: UICollectionView {
 

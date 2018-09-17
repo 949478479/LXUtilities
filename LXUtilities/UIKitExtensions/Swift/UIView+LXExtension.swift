@@ -7,13 +7,6 @@
 
 import UIKit
 
-// MARK: - 协议
-protocol ConfigurableView: class {
-    associatedtype ViewModel
-    var viewModel: ViewModel? { get }
-    func configure(with viewModel: ViewModel)
-}
-
 protocol ReusableView: class {}
 
 extension ReusableView where Self: UIView {

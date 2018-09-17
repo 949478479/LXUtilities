@@ -7,12 +7,6 @@
 
 import UIKit
 
-// MARK: - 协议
-protocol TableViewCellViewModel {
-    associatedtype Cell: UITableViewCell & ReusableView & ConfigurableView
-    func cell(for tableView: UITableView, at indexPath: IndexPath) -> Cell
-}
-
 // MARK: - 数据源
 extension Swifty where Base: UITableView {
 
@@ -25,7 +19,7 @@ extension Swifty where Base: UITableView {
 	}
 
     // e.g. tableView.dequeueReusableCell(for: indexPath) as CustomCell
-    func dequeueReusableCell<T: UITableViewCell & ReusableView & ConfigurableView>(for indexPath: IndexPath) -> T {
+    func dequeueReusableCell<T: UITableViewCell & ReusableView>(for indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 
