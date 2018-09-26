@@ -166,7 +166,7 @@ extension Swifty where Base: UITableView {
         let widthConstraint = headerView.widthAnchor.constraint(equalToConstant: base.lx.width)
         widthConstraint.isActive = true
         configuration?()
-        let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         widthConstraint.isActive = false
         headerView.translatesAutoresizingMaskIntoConstraints = true
         headerView.lx.height = height
@@ -179,7 +179,7 @@ extension Swifty where Base: UITableView {
         let widthConstraint = footerView.widthAnchor.constraint(equalToConstant: base.lx.width)
         widthConstraint.isActive = true
         configuration?()
-        let height = footerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let height = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         widthConstraint.isActive = false
         footerView.translatesAutoresizingMaskIntoConstraints = true
         footerView.lx.height = height

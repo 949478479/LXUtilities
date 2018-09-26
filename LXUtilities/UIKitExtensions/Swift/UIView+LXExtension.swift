@@ -45,7 +45,7 @@ extension Swifty where Base: UIView & NibLoadableView {
 
 	static func instantiateFromNib(
         withOwner ownerOrNil: AnyObject? = nil,
-        options optionsOrNil: [AnyHashable: Any]? = nil)
+        options optionsOrNil: [UINib.OptionsKey: Any]? = nil)
         -> Base
     {
 		let views = Base.nib!.instantiate(withOwner: ownerOrNil, options: optionsOrNil)
@@ -102,11 +102,11 @@ extension Swifty where Base: UIView {
 		animation.values = [0, 10, -10, 10, 0, 0]
 		animation.keyTimes = [0, 1.0/6, 3.0/6, 5.0/6, 1] as [NSNumber]
         animation.timingFunctions = [
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn),
-            CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear),
+            .easeOut,
+            .easeInEaseOut,
+            .easeInEaseOut,
+            .easeIn,
+            .linear
         ]
         
 		let group = CAAnimationGroup()
