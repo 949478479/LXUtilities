@@ -7,37 +7,76 @@
 
 import UIKit
 
-func printLog(_ log: @autoclosure () -> String = "", file: String = #file, line: Int = #line, function: String = #function) {
-	#if DEBUG
-	print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log())
-	#endif
-}
+// MARK: - 运算符
 
-func value(from object: Any, forKey key: String) -> Any? {
-	for case let (label?, value) in Mirror(reflecting: object).children.lazy where label == key {
-		return value
-	}
-	return nil
-}
+infix operator ???: NilCoalescingPrecedence
 
-func value(from any: Any) -> Any? {
-	let mirror = Mirror(reflecting: any)
-	guard mirror.displayStyle == .optional else {
-		return any
-	}
-	if let value = mirror.children.first?.value {
-		return value
-	}
-	return nil
-}
-
-extension Swifty where Base: AnyObject {
-
-    func synchronized(_ action: () -> Void) {
-        objc_sync_enter(base)
-        action()
-        objc_sync_exit(base)
+/// 打印可选值时，当可选值为 nil 时返回指定文本。示例：
+/// let a: Double? = nil
+/// print(a ??? "n/a") // n/a
+func ???<T>(optional: T?, defaultValue: @autoclosure () -> String) -> String {
+    switch optional {
+    case let value?:
+        return "\(value)"
+    case nil:
+        return defaultValue()
     }
+}
+
+infix operator !?: NilCoalescingPrecedence
+
+/// 当可选值为 nil 时，debug 模式下触发断言并提示指定文本，release 模式下返回默认值。示例：
+/// Int("foo") !? (233, "Expected integer")
+func !?<T>(wrapped: T?, nilDefault: @autoclosure () -> (value: T, text: String)) -> T {
+    assert(wrapped != nil, nilDefault().text)
+    return wrapped ?? nilDefault().value
+}
+
+/// 检测一个可选链调用遇到 nil 而并没有完成调用的情况，debug 模式下将触发断言。示例：
+/// var output: String? = nil
+/// output?.write("something") !? "Wasn't expecting chained nil here"
+func !?(wrapped: ()?, failureText: @autoclosure () -> String) {
+    assert(wrapped != nil, failureText)
+}
+
+// MARK: - 全局函数
+
+struct LX {
+
+    static func printLog(_ log: @autoclosure () -> String = "",
+                         file: String = #file,
+                         line: Int = #line,
+                         function: String = #function)
+    {
+        #if DEBUG
+        print("\(function) at \((file as NSString).lastPathComponent)[\(line)]", log())
+        #endif
+    }
+
+    static func value(from any: Any, forKey key: String) -> Any? {
+        return Mirror(reflecting: any).children.first { $0.0 == key }?.value
+    }
+
+    static func value(from any: Any) -> Any? {
+        let mirror = Mirror(reflecting: any)
+
+        guard mirror.displayStyle == .optional else {
+            return any
+        }
+
+        if let value = mirror.children.first?.value {
+            return value
+        }
+
+        return nil
+    }
+
+    static func synchronized(_ any: Any, _ action: () -> Void) {
+        objc_sync_enter(any)
+        action()
+        objc_sync_exit(any)
+    }
+
 }
 
 // MARK: - 扩展包装
@@ -114,4 +153,5 @@ struct CopyOnWriteBox<T> {
 			self.value = value
 		}
 	}
+
 }
