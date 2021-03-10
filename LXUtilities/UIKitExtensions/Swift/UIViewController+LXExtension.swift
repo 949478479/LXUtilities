@@ -31,7 +31,7 @@ extension Swifty where Base: UIViewController {
     /// 获取当前导航栈中的上一级视图控制器。
     var previousViewControllerInNavigationStack: UIViewController? {
         guard let viewControllers = base.navigationController?.viewControllers else { return nil }
-        guard let index = viewControllers.index(of: base), index > 0 else { return nil }
+        guard let index = viewControllers.firstIndex(of: base), index > 0 else { return nil }
         return viewControllers[index - 1]
     }
 

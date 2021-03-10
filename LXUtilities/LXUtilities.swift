@@ -36,7 +36,7 @@ func !?<T>(wrapped: T?, nilDefault: @autoclosure () -> (value: T, text: String))
 /// var output: String? = nil
 /// output?.write("something") !? "Wasn't expecting chained nil here"
 func !?(wrapped: ()?, failureText: @autoclosure () -> String) {
-    assert(wrapped != nil, failureText)
+    assert(wrapped != nil, failureText())
 }
 
 // MARK: - 全局函数

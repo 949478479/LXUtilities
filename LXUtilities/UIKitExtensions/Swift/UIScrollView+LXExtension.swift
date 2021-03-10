@@ -32,28 +32,17 @@ extension Swifty where Base: UIScrollView {
     }
 
     func scrollToTop(animated: Bool) {
-        guard !isContentAtTop() else { return }
-        
-        let offset: CGPoint = {
-            if #available(iOS 11, *) {
-                return CGPoint(x: 0, y: -base.adjustedContentInset.top)
-            }
-            return CGPoint(x: 0, y: -base.contentInset.top)
-        }()
-
-        base.setContentOffset(offset, animated: animated)
+        guard !isContentAtTop() else {
+            return
+        }
+        base.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: animated)
     }
 
     func scrollToBottom(animated: Bool) {
-        guard !isContentAtBottom() else { return }
-
-        let offset: CGPoint = {
-            if #available(iOS 11, *) {
-                return CGPoint(x: 0, y: base.contentSize.height - base.bounds.height + base.adjustedContentInset.bottom)
-            }
-            return CGPoint(x: 0, y: base.contentSize.height - base.bounds.height + base.contentInset.bottom)
-        }()
-
-        base.setContentOffset(offset, animated: animated)
+        guard !isContentAtBottom() else {
+            return
+        }
+        let y = base.contentSize.height - 1
+        base.scrollRectToVisible(CGRect(x: 0, y: y, width: 1, height: 1), animated: animated)
     }
 }
