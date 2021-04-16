@@ -6,26 +6,45 @@
 //  Copyright © 2021 XinMo. All rights reserved.
 //
 
+import Foundation
+
 private class Key {}
 
 private var Map = [Int: [String: Key]]()
 
 extension Swifty where Base: NSObject {
 
-    private func address(of obj: AnyObject) -> Int {
+    func setAssociatedObject(_ obj: Any?, forKey key: String) {
+        objc_setAssociatedObject(base, associatedObjectKey(forKey: key), obj, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+        if obj == nil {
+            removeAssociatedObjectKey(forKey: key)
+        }
+    }
+
+    func getAssociatedObject(forKey key: String) -> Any? {
+        objc_getAssociatedObject(base, associatedObjectKey(forKey: key))
+    }
+
+    func address(of obj: AnyObject) -> Int {
         unsafeBitCast(obj, to: Int.self)
     }
 
     private func associatedObjectKey(forKey key: String) -> UnsafeMutableRawPointer {
-        let token = Map[address(of: self.base), default: [:]][key, default: Key()]
-        return Unmanaged.passUnretained(token).toOpaque()
+        var map = Map[address(of: base)] ?? [:]
+        let associatedKey = map[key] ?? {
+            let k = Key()
+            map[key] = k
+            Map[address(of: base)] = map
+            return k
+        }()
+        return Unmanaged.passUnretained(associatedKey).toOpaque()
     }
 
-    func setAssociatedObject(_ obj: Any?, forKey key: String) {
-        objc_setAssociatedObject(self.base, associatedObjectKey(forKey: key), obj, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    func getAssociatedObject<T>(forKey key: String) -> T? {
-        objc_getAssociatedObject(self.base, associatedObjectKey(forKey: key)) as? T
+    private func removeAssociatedObjectKey(forKey key: String) {
+        if var map = Map[address(of: base)] {
+            map[key] = nil
+            Map[address(of: base)] = map.isEmpty ? nil : map
+        }
     }
 }
