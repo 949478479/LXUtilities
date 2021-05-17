@@ -23,4 +23,28 @@ extension Swifty where Base: UITextView {
         }
         return rects
     }
+
+    func link(for point: CGPoint) -> URL? {
+        var point = point
+        point.x -= base.textContainerInset.left
+        point.y -= base.textContainerInset.top
+
+        var f: CGFloat = 0
+        let index = base.layoutManager.characterIndex(for: point, in: base.textContainer, fractionOfDistanceBetweenInsertionPoints: &f)
+        let attributes = base.attributedText.attributes(at: index, effectiveRange: nil)
+
+        // if no character is under the point, the nearest character is returned.
+        // 试验发现可以通过这种方式过滤一下这种情况
+        guard f > 0, f < 1 else { return nil }
+
+        if let url = attributes[.link] as? URL {
+            return url
+        }
+
+        if let string = attributes[.link] as? String {
+            return URL(string: string)
+        }
+
+        return nil
+    }
 }
