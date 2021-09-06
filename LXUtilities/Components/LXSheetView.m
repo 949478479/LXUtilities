@@ -82,7 +82,7 @@
                 NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
                 UIViewAnimationOptions curve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
                 
-                [UIView animateWithDuration:duration delay:0 options:curve animations:^{
+                [UIView animateWithDuration:duration delay:0 options:curve << 16 animations:^{
                     self.bounds = ({
                         CGRect bounds = self.bounds;
                         bounds.origin.y = (keyboardOriginY < CGRectGetHeight(bounds)) ? keyboardHeight : 0;

@@ -22,16 +22,11 @@
 	}
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.hidden = YES;
-}
-
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
 	if (newSuperview) {
+        self.hidden = YES;
+
 		__weak typeof(self) weakSelf = self;
 		self.keyboardObserver =
 		[NSNotificationCenter lx_observeKeyboardFrameChangeWithBlock:^(NSNotification *note) {
@@ -41,13 +36,20 @@
 			CGFloat keyboardOriginY = CGRectGetMinY(keyboardEndFrame);
 			CGFloat keyboardHeight  = CGRectGetHeight(keyboardEndFrame);
 
-			CGFloat constant = (keyboardOriginY < [UIScreen lx_size].height) ? keyboardHeight : self.heightConstraintConstant;
-			self.heightConstraint.constant = constant;
+            if (keyboardOriginY < [UIScreen lx_size].height) {
+                self.heightConstraint.constant = keyboardHeight;
+            } else {
+                self.heightConstraint.constant = self.heightConstraintConstant;
+            }
 
 			NSTimeInterval duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-			[UIView animateWithDuration:duration animations:^{
-				[self.superview layoutIfNeeded];
-			}];
+            NSUInteger curve = [note.userInfo[UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
+
+            [UIView animateWithDuration:duration delay:0 options:curve << 16 animations:^{
+                [self.superview layoutIfNeeded];
+            } completion:^(BOOL finished) {
+
+            }];
 		}];
 	}
 }
