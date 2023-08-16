@@ -40,10 +40,12 @@ extension Swifty where Base: UICollectionView {
 extension Swifty where Base: UICollectionView {
 
     func reloadData(completion: @escaping () -> Void) {
-        DispatchQueue.main.async {
-            self.base.reloadData()
-            DispatchQueue.main.async(execute: completion)
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            completion()
         }
+        base.reloadData()
+        CATransaction.commit()
     }
 }
 

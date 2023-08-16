@@ -12,11 +12,12 @@
 
 - (void)lx_reloadDataWithCompletion:(void (^)(void))completion
 {
-	[UIView animateWithDuration:0 animations:^{
-		[self reloadData];
-	} completion:^(BOOL finished) {
-		completion();
-	}];
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        completion();
+    }];
+    [self reloadData];
+    [CATransaction commit];
 }
 
 - (UITableViewCell *)lx_cellForSelectedRow {
