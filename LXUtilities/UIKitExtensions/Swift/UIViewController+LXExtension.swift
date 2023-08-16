@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol InstantiateFromStoryboardSupporting: class {
+protocol InstantiateFromStoryboardSupporting: AnyObject {
     static var storyboardName: String { get }
     static var storyboardIdentifier: String { get }
 }

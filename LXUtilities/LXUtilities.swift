@@ -88,7 +88,7 @@ struct Swifty<Base> {
     }
 }
 
-protocol SwiftyProtocol_class: class {
+protocol SwiftyProtocol_class: AnyObject {
     associatedtype LXCompatibleType
     var lx: Swifty<LXCompatibleType> { get }
     static var lx: Swifty<LXCompatibleType>.Type { get }

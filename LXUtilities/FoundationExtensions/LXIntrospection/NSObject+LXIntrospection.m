@@ -204,7 +204,7 @@ static NSArray<NSString *> *__LXProtocolMethodDescriptionList(Protocol *proto, B
 
 #pragma mark - 查看所有类的类名
 
-NSArray<NSString *> *LXClassNameList()
+NSArray<NSString *> *LXClassNameList(void)
 {
 	uint outCount;
 	Class *classes = objc_copyClassList(&outCount);
@@ -216,7 +216,7 @@ NSArray<NSString *> *LXClassNameList()
 	return [classNameList sortedArrayUsingSelector:@selector(compare:)];
 }
 
-void LXPrintClassNameList()
+void LXPrintClassNameList(void)
 {
 	NSArray *classList = LXClassNameList();
 	LXLog(@"总计：%lu\n%@", (u_long)classList.count, classList);
