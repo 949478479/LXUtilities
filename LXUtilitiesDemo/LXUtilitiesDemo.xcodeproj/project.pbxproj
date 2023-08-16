@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,7 +24,6 @@
 		3069FCE51F71F5FA00C36F2F /* LXDynamicTypeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC621F71F5FA00C36F2F /* LXDynamicTypeManager.m */; };
 		3069FCE61F71F5FA00C36F2F /* LXImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC641F71F5FA00C36F2F /* LXImagePicker.m */; };
 		3069FCE71F71F5FA00C36F2F /* LXKeyboardSpacingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC661F71F5FA00C36F2F /* LXKeyboardSpacingView.m */; };
-		3069FCE81F71F5FA00C36F2F /* LXMessageInterceptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC681F71F5FA00C36F2F /* LXMessageInterceptor.m */; };
 		3069FCE91F71F5FA00C36F2F /* LXMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC6A1F71F5FA00C36F2F /* LXMigrationManager.m */; };
 		3069FCEA1F71F5FA00C36F2F /* LXMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC6C1F71F5FA00C36F2F /* LXMulticastDelegate.m */; };
 		3069FCEB1F71F5FA00C36F2F /* LXSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3069FC6E1F71F5FA00C36F2F /* LXSheetView.m */; };
@@ -122,8 +121,6 @@
 		3069FC641F71F5FA00C36F2F /* LXImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXImagePicker.m; sourceTree = "<group>"; };
 		3069FC651F71F5FA00C36F2F /* LXKeyboardSpacingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXKeyboardSpacingView.h; sourceTree = "<group>"; };
 		3069FC661F71F5FA00C36F2F /* LXKeyboardSpacingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXKeyboardSpacingView.m; sourceTree = "<group>"; };
-		3069FC671F71F5FA00C36F2F /* LXMessageInterceptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMessageInterceptor.h; sourceTree = "<group>"; };
-		3069FC681F71F5FA00C36F2F /* LXMessageInterceptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXMessageInterceptor.m; sourceTree = "<group>"; };
 		3069FC691F71F5FA00C36F2F /* LXMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMigrationManager.h; sourceTree = "<group>"; };
 		3069FC6A1F71F5FA00C36F2F /* LXMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXMigrationManager.m; sourceTree = "<group>"; };
 		3069FC6B1F71F5FA00C36F2F /* LXMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMulticastDelegate.h; sourceTree = "<group>"; };
@@ -328,8 +325,6 @@
 				3069FC641F71F5FA00C36F2F /* LXImagePicker.m */,
 				3069FC651F71F5FA00C36F2F /* LXKeyboardSpacingView.h */,
 				3069FC661F71F5FA00C36F2F /* LXKeyboardSpacingView.m */,
-				3069FC671F71F5FA00C36F2F /* LXMessageInterceptor.h */,
-				3069FC681F71F5FA00C36F2F /* LXMessageInterceptor.m */,
 				3069FC691F71F5FA00C36F2F /* LXMigrationManager.h */,
 				3069FC6A1F71F5FA00C36F2F /* LXMigrationManager.m */,
 				3069FC6B1F71F5FA00C36F2F /* LXMulticastDelegate.h */,
@@ -535,7 +530,8 @@
 		3069F9D81F71F46300C36F2F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "从今以后";
 				TargetAttributes = {
 					3069F9DF1F71F46300C36F2F = {
@@ -548,7 +544,7 @@
 			};
 			buildConfigurationList = 3069F9DB1F71F46300C36F2F /* Build configuration list for PBXProject "LXUtilitiesDemo" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -612,7 +608,6 @@
 				3069FD041F71F5FA00C36F2F /* CATransaction+LXExtension.m in Sources */,
 				3069FD001F71F5FA00C36F2F /* LXRingAnimatedView.m in Sources */,
 				3069FCFF1F71F5FA00C36F2F /* LXUtilities.swift in Sources */,
-				3069FCE81F71F5FA00C36F2F /* LXMessageInterceptor.m in Sources */,
 				3069FCF81F71F5FA00C36F2F /* NSNotificationCenter+LXExtension.m in Sources */,
 				3069FD251F71F5FA00C36F2F /* UIViewController+LXExtension.m in Sources */,
 				3069FD231F71F5FA00C36F2F /* UITextView+LXExtension.m in Sources */,
@@ -693,6 +688,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -714,6 +710,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -738,7 +735,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -749,6 +746,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -770,6 +768,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -788,10 +787,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -802,14 +802,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 26C6FEX752;
 				INFOPLIST_FILE = LXUtilitiesDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hereafter.LXUtilitiesDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LXUtilitiesDemo/Header-Bridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -819,13 +822,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 26C6FEX752;
 				INFOPLIST_FILE = LXUtilitiesDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.hereafter.LXUtilitiesDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LXUtilitiesDemo/Header-Bridge.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
